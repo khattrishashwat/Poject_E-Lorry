@@ -1,0 +1,187 @@
+.register-box {
+    box-shadow: 1px 8px 17px #0268ff30;
+    width: 50%;
+    padding: 20px 20px 20px 20px;
+    border-radius: 10px;
+    background: white;
+    margin-top:49px;
+    margin-bottom:16px;
+  }
+  
+  .register-fle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* margin-top: 86px; */
+  }
+  
+  .register-box h3 {
+    font-size: 28px;
+    text-align: center;
+    font-weight: 600;
+  }
+  
+  /* .backsground { */
+   
+    /* opacity: 0.7; */
+    /* background-repeat: no-repeat;
+    background-attachment: fixed;
+} */
+
+  .field-1 {
+    padding: 14px 10px 14px 5px;
+    border: 1px solid lightgrey;
+    outline: none;
+    border-radius: 5px;
+    width: 98%;
+    margin-top: 24px;
+    margin-left: 20px;
+    font-family: 'Poppins', sans-serif !important;
+  }
+  
+  .register-box p {
+    font-size: 14px;
+    text-align: center;
+    font-weight: 400;
+    color: #bbbbbb;
+    margin-top: 8px;
+  }
+  
+  #vehicle1 {
+    display: block;
+    margin-left: 42px;
+    margin-top: 20px;
+    color: black;
+  }
+  
+  .checks
+  {
+      box-shadow:unset !important;
+      padding:unset !important;
+     border-radius: unset !important;
+     display: flex;
+     align-items: center;
+     gap: 10px;
+  }
+  
+  .checks label {
+    margin-top: 20px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #6e6e6e;
+    font-family: 'Poppins', sans-serif !important;
+  }
+  
+  .regi-btn
+  {
+    text-align: center;
+  }
+  
+  .regi-btn button {
+    border: 1px solid #0909cc;
+    color: #0909cc;
+    font-size: 15px;
+    text-decoration: none;
+    margin-top: 30px;
+    padding: 14px 110px;
+    display: inline-block;
+    border-radius: 28px;
+    font-weight: 600;
+    transition: 0.6s;
+    margin-bottom: 26px;
+  }
+  
+  .regi-btn a:hover {
+    background: #0909cc;
+    transition: 0.6s;
+    color: white;
+  }
+  
+  .log-btn {
+    border: 2px solid #0909cc;
+    padding: 10px 42px;
+    border-radius: 30px;
+    text-decoration: none;
+    color: #0909cc;
+    font-weight: 600;
+    transition: 0.6s;
+  }
+  
+  .log-btn:hover
+  {
+    background:#0909cc;
+    transition: 0.6s;
+    border:2px solid #0909cc;
+    color:white;
+  }
+
+
+  .logs-1 {
+    box-shadow: unset !important;
+    padding: unset !important;
+    border-radius: unset !important;
+    margin-top: 20px;
+}
+
+  .labes {
+    margin-left: 30px;
+    font-size: 15px;
+    font-weight: 500;
+    display: block;
+}
+
+.field-11 {
+  padding: 14px 10px 14px 14px;
+  border: 1px solid lightgrey;
+  outline: none;
+  border-radius: 5px;
+  width: 78%;
+  margin-top: 10px;
+  margin-left: 28px;
+
+}
+
+.log-para {
+  font-size: 13px !important;
+
+}
+
+.regi-1 {
+  color: red;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  margin-top: 10px !important;
+  display: block;
+  text-align: center;
+}
+
+.forg a{
+  color: red;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.forg {
+  text-align: left;
+  display: flex;
+  justify-content: end;
+  margin-right: 43px;
+  margin-top: 8px;
+}
+
+.regi-btn a {
+  border: 1px solid #0909cc;
+  color: #0909cc;
+  font-size: 15px;
+  text-decoration: none;
+  margin-top: 50px !important;
+  padding: 14px 132px !important;
+  display: inline-block;
+  border-radius: 28px;
+  font-weight: 600;
+  transition: 0.6s;
+  margin-bottom: 10px !important;
+}
+

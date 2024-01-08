@@ -1,0 +1,143 @@
+
+.verify-box{
+    background:white;
+    padding:30px 10px 30px 10px;
+    width:470px;
+    margin:0 auto;
+    margin-top:70px !important;
+    border-radius: 10px;
+    box-shadow: 1px 8px 17px #0268ff30;
+}
+
+.verify-box h2 {
+  font-size: 26px;
+  color: #000000;
+  /* padding: 40px 0px 0px 30px; */
+  font-weight: 600;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.verify-box p {
+  font-size: 13px;
+  color: #474747b0;
+  padding-top: 8px;
+  font-weight: 400;
+  padding-bottom: 20px;
+  text-align: center;
+  line-height: 20px;
+}
+
+.otpes-flex {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-content: center;
+    margin-top:14px;
+}
+
+.otp-boxes-1 {
+    border: 1px solid #b5b5b5;
+    border-radius: 6px;
+    width: 65px !important;
+    height: 65px !important;
+    text-align: center;
+    font-size: 27px;
+    background: rgb(255, 255, 255);
+}
+
+
+.send {
+    font-size: 16px;
+    color: #B30C00;
+    padding: 10px 0px 18px 0px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 24px;
+    display: block;
+}
+
+.center-1 {
+    padding-left: 30px;
+    padding-bottom: 20px;
+    padding-top: 10px !important;
+}
+
+.clr-1
+{
+    color:black;
+    font-weight: 600;
+}
+
+.clr-2
+{
+    color:#474747b0;
+    font-weight: 400 !important;
+}
+
+.pd-2
+{
+    padding-top:20px;
+}
+.form-group.pos {
+  position: relative;
+}
+
+.form-group.pos .iei {
+  position: absolute;
+  right: 18%;
+  top: 66%;
+  color: #7d7d7d;
+}
+.mt-110
+{
+  margin-top:14px;
+}
+
+
+.field-12 {
+  padding: 14px 10px 14px 14px;
+  border: 1px solid lightgrey;
+  outline: none;
+  border-radius: 5px;
+  width: 78%;
+  margin-top: 5px;
+  margin-left: 28px;
+}
+
+.send-1 {
+    font-size: 16px;
+    color: #0909cc;
+    padding: 0px 0px 0px 0px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 24px;
+    display: block;
+}
+
+.center-1 {
+  padding-left: 30px;
+  padding-bottom: 20px;
+  padding-top: 10px !important;
+}
+
+.form-group label {
+  text-align: left;
+  font-weight: 500;
+  color: #000000;
+  display: block;
+  margin-bottom: 8px;
+  font-size: 16px;
+  padding-top: 0px;
+  margin-left: 29px;
+}
+
+.sign-in-btn {
+  padding: 16px 220px 16px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid #cacaca;
+  border-radius: 40px;
+}
