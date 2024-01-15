@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,createContext,useContext } from "react";
 // import "./discuss.css";
 import Footer from "../Footer/footer";
 import Toggleside from '../sidetoggle/sidetoggle'
@@ -7,38 +7,54 @@ import Button from 'react-bootstrap/Button';
 import { Link, useNavigate, useLocation, json } from "react-router-dom";
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
+import Swal from "sweetalert2";
 import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
 import { TroubleshootOutlined } from "@mui/icons-material";
 import { CommentSection } from "react-comments-section";
 import "react-comments-section/dist/index.css";
+import Navbars from "../navbar/navbars";
+import { GlobalInfo } from "../Allrouter";
 
 
-function Discuss() {
+
+
+
+
+
+function Discuss( {isVisible} ) {
 
   const [show, setShow] = useState(false);
   const [showevent,setShowevent] = useState(false);
+  const [showshare, setShowshare] = useState(false);
   const [setpostshow, setSetpostshow] = useState(false);
   const[passicon,setpassicon] =useState(true)
   const[showemailmodel,setShowemailmodel]=useState(false)
-  const[filefromdata,setFileformdata]=useState([])
+  const[filefromdata,setFileformdata]=useState()
   const [eventprofile,seteventprofile]=useState()
-  const [commentsec,setCommentsec] =useState(false)
+  const [commentsec,setCommentsec] =useState(true)
   const[eventadd,setEventadd] = useState(true)
   const [data,setData] = useState([]);
   const [postdiscuss, setpostDiscuss] = useState([])
   const [toppostdiscuss,setToppostdiscuss] =useState([])
   const [updatepost,setUpdatepost] =useState()
+  // const [currentpost,setcurrentpost]=useState()
+  const [id, setId] = useState();
+  const [eventDisplay, setEventDisplay] = useState([])
+  const [disabledSubmit, setDisabledSubmit] = useState(false)
+  
 
-
- 
 
 
   const navigate = useNavigate()
   const location = useLocation()
   
   const token = localStorage.getItem("authtoken");
+
+  const navcolor=useContext(GlobalInfo)
+  console.log("appcolor",navcolor.appcolor)
 
 
   const headers = {
@@ -57,6 +73,9 @@ function Discuss() {
     console.log("iiiii",resp.data.data)
     setpostDiscuss(resp.data.data.posts)
     setToppostdiscuss(resp.data.data.top_posts)
+    setEventDisplay(resp.data.data.events)
+    // setcurrent(1)
+
   }
 
 
@@ -75,18 +94,25 @@ function Discuss() {
   }
 
   const[count,setCount]=useState(1456);
-
-
-  useEffect(()=>{
-      //  handlelike()
-    // handledislike()
-  },[])
-
-
- 
+   
 
   const handlelike= async(post_id) =>
   {
+    if(token == null)
+    {
+      Swal.fire({
+        title: 'please login!',
+        showConfirmButton: false, // Hide the confirm button
+        timer: 3000,
+      })
+      setTimeout(() => {
+        const parameterValue = -1; // Replace this with the actual value of your parameter
+        const path = '/auth/login';
+        navigate(path, { state: { parameterValue } })
+       }, 2000); 
+
+    }else
+    {
       try{
        const statuslike = 1
       const status= statuslike
@@ -97,8 +123,18 @@ function Discuss() {
       }
       catch(errors)
       {
-        console.log(errors)
+        toast(errors.response.data.message, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          type: 'error'
+        })
       }
+    }
 
      
   }
@@ -107,6 +143,24 @@ function Discuss() {
 
   const handledislike= async(post_id) =>
   {
+    setDisabledSubmit(true)
+    if(token == null)
+    {
+      Swal.fire({
+        title: 'please login!',
+        showConfirmButton: false, // Hide the confirm button
+        timer: 3000,
+      })
+     
+    setTimeout(() => {
+    const parameterValue = -1; // Replace this with the actual value of your parameter
+    const path = '/auth/login';
+    navigate(path, { state: { parameterValue } })
+   }, 2000); 
+    }
+    else 
+    {
+    try{
       const statusDislike = 2
       const status= statusDislike 
      const itemlike={post_id,status}  
@@ -114,7 +168,22 @@ function Discuss() {
      console.warn("111111", itemlike)   
      console.warn("222222", resp)
      setUpdatepost(1)
-     
+    }
+    catch(error)
+    {
+      toast(error.response.data.message, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        type: 'error'
+      })
+    }
+     setDisabledSubmit(false)
+  }
   }
 
 
@@ -128,48 +197,50 @@ function Discuss() {
       comment: plainText
       };
 
+
     const itemcomments= JSON.stringify(itemcomment)
     // console.log("item1111111",itemcomments)
     const resp= await axios.post('/comment-post',itemcomment,{headers:headers})
     // console.log("comment api", resp)
+    
   }
 
-  
 
-  // const handlepost = () => {
-  //   setpostshow(true)
-  // }
+  const handleCommentId=(id)=>
+  {
+    console.warn("hhhhhhhhhhhhhh",id)
+    setId(id)
+    // setCommentsec(true)
+  }
+
+
+
 
 
   const initial = {
-    post_announcement_update: '',
+    // post_announcement_update: '',
     title: '',
     post_date: '',
     uploaded_file: null,
-    short_description: '',
+    meeting_link: '',
     long_description: '',
   }
 
   const validated = Yup.object().shape({
-    title: Yup.string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('Required'),
-    post_announcement_update: Yup.string().min(5, 'Too Short!').max(100, 'Too Long').required('Required'),
+    title: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('please enter title'),
+    // post_announcement_update: Yup.string().min(5, 'Too Short!').max(100, 'Too Long').required('Please enter Post'),
     post_date: Yup.date().required('Date is required').nullable(),
     // uploaded_file: Yup.mixed().required('Image is required'),
-    uploaded_file: Yup.mixed()
-        .required('File is required')
-        .test('fileSize', 'File size is too large', (value) => {
+    uploaded_file: Yup.mixed().required('File is required').test('fileSize', 'File size is too large', (value) => {
           // You can add your custom file size validation logic here
           return value && value.size <= 10485760; // 10 MB
         }),
-    short_description: Yup.string().min(5, 'Too Short!').max(1000, 'Too Long').required('Required'),
+    meeting_link: Yup.string().min(5, 'Too Short!').max(1000, 'Too Long').required('Required'),
     long_description: Yup.string().min(10, 'Too Short!').max(1000, 'Too Long').required('Required'),
   });
 
   const eventsubmit = async (values, {resetForm}) => {
-    // alert(JSON.stringify(values,null,2))
+    setDisabledSubmit(true)
     const tokenlogin = localStorage.getItem("authtoken")
     // console.warn("tok !!!!!", tokenlogin)
     const itemevent = values
@@ -181,14 +252,16 @@ function Discuss() {
     }
 
     try {
+ 
       let frms=new FormData()
-      frms.append('post_announcement_update', values.post_announcement_updat)
+      // frms.append('post_announcement_update', values.post_announcement_updat)
       frms.append('title', values.title)
       frms.append('post_date',values.post_date)
       frms.append('uploaded_file',eventprofile)
-      frms.append('short_description',values.short_description)
+      frms.append('meeting_link',values.meeting_link)
       frms.append('long_description',values.long_description)
       const respon = await axios.post("/add-event", frms, { headers: headers });
+      console.log("event", respon.data)
       toast(respon.data.message, {
         position: "top-right",
         autoClose: 2000,
@@ -198,11 +271,11 @@ function Discuss() {
         draggable: true,
         progress: undefined,
       })
-      resetForm()
+    
     }
     catch (errors) {
       // console.warn("xajnxjsanxja", errors.response)
-
+    
       toast(errors.response.data.message, {
         position: "top-right",
         autoClose: 2000,
@@ -213,9 +286,14 @@ function Discuss() {
         progress: undefined,
         type: 'error'
       })
+     
     }
-
+    setDisabledSubmit(false)
+    setShowevent(false)
     resetForm()
+    setTimeout(() => {
+      window.location.reload()
+     }, 1000);
   }
 
   const formik = useFormik({
@@ -312,7 +390,7 @@ function Discuss() {
    }
   }
   
-  // post event formik area
+  // post  formik area
 
   const initialpostvalue={
     title:'',
@@ -331,12 +409,17 @@ function Discuss() {
     title: Yup.string()
       .min(2, 'Too Short!')
       .required('Required'),
-      // image: Yup.mixed().required('Image is required'),
-    // image: Yup.string().required('Image is required'),
+      image: Yup.mixed().required('File is required'),
+      // .test('fileSize', 'File size is too large', (value) => {
+        // You can add your custom file size validation logic here
+        // return value && value.size <= 10485760; // 10 MB
+      // }),
+       vip: Yup.string().required('please enter '),
       description: Yup.string().min(5, 'Too Short!').max(1000, 'Too Long').required('Required'),
   });
   const submitpost=async(value, { resetForm })=>
   {
+    setDisabledSubmit(true)
     
      try{
      const item=value;
@@ -345,11 +428,12 @@ function Discuss() {
      frm.append('image', filefromdata)
      frm.append('title', value.title)
      frm.append('description', value.description)
+     frm.append('vip',value.vip)
 
 
     //  console.log("fun" , frm)
       const resp= await axios.post('/create-post',frm,{headers:headerspost})
-      // console.log("<<<<<<",resp)
+      console.log("<<<<<<",resp)
       toast(resp.data.message, {
        position: "top-right",
        autoClose: 2000,
@@ -376,6 +460,10 @@ function Discuss() {
 
     }
  resetForm();
+ setDisabledSubmit(false)
+ setTimeout(() => {
+  window.location.reload()
+ }, 1000);
   } 
 
   const fromikpost=useFormik({
@@ -392,6 +480,8 @@ useEffect(()=>{
   postDiscuss()
 },[updatepost])
 
+console.warn("vvvvv", isVisible)
+
   return (
     <>
       <ToastContainer
@@ -405,6 +495,7 @@ useEffect(()=>{
         draggable
         pauseOnHover
       />
+      {/* < Navbars style={{backgroundColor:`${navcolor.appcolor}`}}/> */}
       <Toggleside />
       <div className="small-container">
          
@@ -466,28 +557,34 @@ useEffect(()=>{
               />
               <div className="mainsflexings">
                 <div className="like">
-                  <i onClick={(e)=>handlelike(value.id)} className={token==null  || value.you_like_post == 1 ? "fa-solid fa-thumbs-up thumbcolor" : "fa-solid fa-thumbs-up"} ></i>
+                  <i onClick={(e)=>handlelike(value.id)} className={token &&  value.you_like_post == 1 ? "fa-solid fa-thumbs-up thumbcolor" : "fa-solid fa-thumbs-up"} ></i>
+                  
+                  
+                  
                   <h4>{value.you_like_post}</h4>
                 </div>
                 <div className="like">
-                  <i onClick={(e)=>handledislike(value.id)} className={token==null  || value.you_dislike_post == 1 ? "fa-solid fa-thumbs-down thumbcolor" : "fa-solid fa-thumbs-down"}></i>
+                  <i  onClick={(e)=>handledislike(value.id)} className={token &&  value.you_dislike_post == 1 ? "fa-solid fa-thumbs-down thumbcolor" : "fa-solid fa-thumbs-down"}></i>
+                  
+                 
+                  
+                  
                   <h4>{value.you_dislike_post}</h4>
                 </div>
                 <div className="like">
-                  <i className="fa-solid fa-comment" onClick={()=>setCommentsec(!commentsec)}></i>
-                  <h4>{value.post_like_count}</h4>
+                  <i className="fa-solid fa-comment" onClick={()=>handleCommentId(value.id)}></i>
+                  <h4>{value.post_comments_count}</h4>
                 </div>
                 <div className="like">
-                  <a href="">
-                    <i className="fa-solid fa-share"></i>
-                  </a>
+                  {/* <a href=""> */}
+                    <i className="fa-solid fa-share" onClick={()=>setShowshare(true)}></i>
+                  {/* </a> */}
                 </div>
                
               </div>
               {data}
-              {token && commentsec ?  <>
-                               
-                    <CommentSection 
+              {token && (value.id === id) ?  <>            
+                <CommentSection
                      currentUser=
                      {{
                        currentUserId: value.id,
@@ -499,24 +596,56 @@ useEffect(()=>{
                     //  logIn={{
                     //    loginLink: "http://localhost:3001/",
                     //    signupLink: "http://localhost:3001/"
-                    //  }}
-                     customImg={process.env.PUBLIC_URL + "/imagesim-2.jpg"}
+                    //  }} 
+                     customImg={value.user_avator}
                      inputStyle={{ border: "1px solid rgb(208 208 208)" }}
                      formStyle={{ backgroundColor: "white" }}
-                     submitBtnStyle={{ backgroundColor: "blue", padding: "7px 15px",  position: 'relative', left: '24px' }}
+                     submitBtnStyle={{ backgroundColor: "blue", padding: "7px 15px",  position: 'relative', left: '-1px;' }}
                      cancelBtnStyle={{ border: "1px solid gray", backgroundColor: "gray", color: "white", padding: "7px 15px"}}
                      replyInputStyle={{ borderBottom: "1px solid black", color: "black" }}
                      onSubmitAction={(data) =>commenthandleapi(data)}
                      currentData={(data) => {
                       console.log('current data', data);
                     }}
-                              />
+                    />
                                
 
               </> : null}
             </div>
             ))}
           </div>
+
+        {/* share model  */}
+    
+        {token? 
+        <Modal
+              show={showshare}
+              onHide={() => setShowshare(false)}
+              backdrop="static"
+              keyboard={false}
+              centered
+            >
+              <Modal.Header closeButton>
+              </Modal.Header>
+              <Modal.Body>
+                <div className="content-post" style={{display:'flex'}}>
+                    <form  className="for">
+                    <input 
+                    type="text"
+                    placeholder="https://www.google.co.in/" 
+                    name="title"
+                    className="post-form"
+                    />
+               
+                     <button  className="postes">Copy Link</button>
+                    </form>
+                    </div>
+              </Modal.Body>
+        </Modal>
+        : null
+        }
+       
+
 
 
 
@@ -527,21 +656,23 @@ useEffect(()=>{
               <div className="upper-two-btn">
                   <button type="button" className="unactive" onClick={()=>setShowevent(true)}>Add Events</button>
                   <button className="unactive"  onClick={() => setShow(true)}  >add post</button>
+                  
+
                 </div>
                 
                    <h4 className="event-list">Events Listing</h4>
-                   
-                   <div className="cards-1">
-                       <img src="images/truck-119.jpg" alt="zyx"/> 
-                       <h4>Event-1</h4>
-                       <p>It is a long established fact that a reader will be distracted by the readable content of a
-                           page when looking at its layout.</p>
+                   {eventDisplay.map((value,index)=>(
+                   <div className="cards-1" key={index}>
+                       <img src={value.uploaded_file} alt="zyx"/> 
+                       <h4>{value.title}</h4>
+                       <p>{value.long_description}</p>
                    
                        <div className="two-btn-flex">
                            <a href="" className="add-to-cl">Add to Calendar</a>
                            <a href="https://meet.google.com/" className="joins">Join Now</a>
                        </div>              
                    </div> 
+                   ))}
 
                 </div>
                
@@ -577,12 +708,14 @@ useEffect(()=>{
 
 
                     <label className="pst-lab">Choose Image / Video</label>
-                    <input type="file" 
-                    placeholder="upload image" 
+                    <input type="file"  
+                       name='image'
+                       onChange={(e) => {
+                       fromikpost.setFieldTouched('image');
+                       fromikpost.setFieldValue('image', e.currentTarget.files[0]);
+                       setFileformdata(e.currentTarget.files[0])
+                     }}
                     className="post-form"
-                    name='image'
-                    value={fromikpost.values.image}
-                    onChange={(e)=>setFileformdata(e.target.files[0])}
                     />
                    
                     {fromikpost.touched.image && fromikpost.errors.image ? <div className='text-danger'>{fromikpost.errors.image}</div> : null}
@@ -596,6 +729,8 @@ useEffect(()=>{
                      onChange={fromikpost.handleChange}
                      className="post-form" 
                      />
+                    {fromikpost.touched.vip && fromikpost.errors.vip ? <div className='text-danger'>{fromikpost.errors.vip}</div> : null}
+
                
                     <label className="pst-lab">Description</label>
                     <textarea 
@@ -610,7 +745,17 @@ useEffect(()=>{
 
                     
                
-                     <button type='submit' className="postes">Post Now</button>
+                     {/* <button type='submit' className="postes">Post Now</button> */}
+                     <button type="submit" disabled={disabledSubmit} className="postes btn-subm" onClick={() => setShow(true)} >
+                       {
+                          disabledSubmit ? (
+                            <div>
+                              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                              <span className="sr-only"></span>  Post Now
+                            </div>
+                          ) : 'Post Now'
+                        }
+                </button>
                     </form>
                     </div>
               </Modal.Body>
@@ -630,22 +775,11 @@ useEffect(()=>{
                 </div>
               </Modal.Header>
               <Modal.Body>
-
-                {/* <div className="pop-up-content-wrap">
-                  
-                  <textarea type="text" placeholder="comment on post" className="input-field"/>
-                  <div className="discu-btn mty-1">
-                    <a href="#">Comment</a>
-                  </div>
-
-                </div> */}
-
-
                  <div className="content-event">  
                   <form className="for" onSubmit={formik.handleSubmit}>
 
 
-                    {/* <label className="pst-lab">Post, Announcement & Updates</label>
+                     {/* <label className="pst-lab">Post, Announcement </label>
                     <input
                       type="text"
                       name='post_announcement_update'
@@ -654,7 +788,7 @@ useEffect(()=>{
                       placeholder="Post, Announcement & Updates"
                       className="post-form"
                     />
-                    {formik.touched.post_announcement_update && formik.errors.post_announcement_update ? <div className='text-danger'>{formik.errors.post_announcement_update}</div> : null} */}
+                    {formik.touched.post_announcement_update && formik.errors.post_announcement_update ? <div className='text-danger'>{formik.errors.post_announcement_update}</div> : null}  */}
 
 
                     <label className="pst-lab">Add Title</label>
@@ -698,6 +832,7 @@ useEffect(()=>{
                         onChange={(e) => {
                           formik.setFieldTouched('uploaded_file');
                           formik.setFieldValue('uploaded_file', e.currentTarget.files[0]);
+                          seteventprofile(e.currentTarget.files[0]);
                         }}
                         className="post-form"
                       />
@@ -708,17 +843,17 @@ useEffect(()=>{
 
 
 
-                    <label className="pst-lab">Short Description</label>
-                    <textarea
-                      name="short_description"
-                      value={formik.values.short_description}
+                    <label className="pst-lab">Meeting Link</label>
+                    <input
+                      name="meeting_link"
+                      value={formik.values.meeting_link}
                       onChange={formik.handleChange}
-                      placeholder="Enter Short Description"
+                      placeholder="Enter meeting Link"
                       className="post-form"
-                    ></textarea>
-                    {formik.touched.short_description && formik.errors.short_description ? <div className='text-danger'>{formik.errors.short_description}</div> : null}
+                    />
+                    {formik.touched.meeting_link && formik.errors.meeting_link ? <div className='text-danger'>{formik.errors.meeting_link}</div> : null}
 
-                    <label className="pst-lab">Long Description</label>
+                    <label className="pst-lab">Description</label>
                     <textarea
                       name="long_description"
                       value={formik.values.long_description}
@@ -728,7 +863,17 @@ useEffect(()=>{
                     ></textarea>
                     {formik.touched.long_description && formik.errors.long_description ? <div className='text-danger'>{formik.errors.long_description}</div> : null}
 
-                    <button type='submit' className="postes"> Post Now </button>
+                    {/* <button type='submit' className="postes"> Post Now </button> */}
+                    <button type="submit" disabled={disabledSubmit} className="postes btn-subm" onClick={()=>setShowevent(true)} >
+                       {
+                          disabledSubmit ? (
+                            <div>
+                              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                              <span className="sr-only"></span>  Add Events
+                            </div>
+                          ) : 'Add Events'
+                        }
+                </button>
 
                   </form>
                   </div>

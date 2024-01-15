@@ -62,11 +62,12 @@ function Testmonial() {
               modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay, EffectFade]}
               spaceBetween={10}
               slidesPerView={1}
-              navigation={{  
-                nextEl: '.right-arrow', 
-                prevEl: '.left-arrow',
-              
-              }}
+                navigation={{  
+                  nextEl: '.right-arrow', 
+                  prevEl: '.left-arrow',
+          
+                }}
+              // navigation={true}
               effect="fade"
               fadeEffect={{ crossFade: true }}
               mousewheel
@@ -80,7 +81,7 @@ function Testmonial() {
                 
                 <div id="testim-content" className="cont">
                 <div className="active">
-              <div className="imgage"><img  src={`${process.env.REACT_APP_IMAGE_MODE}images/profile.jpg`}  alt=""/></div>
+              <div className="imgage"><img  src='images/profile.jpg'  alt=""/></div>
               <h2>Ankit Gupta</h2>
               <p style={{marginBottom:"40px"}} >Your climate-controlled storage kept my inventory in perfect condition, and your flexible retrieval system made getting products out a breeze. You're a true partner.</p>
             </div>
@@ -89,7 +90,7 @@ function Testmonial() {
               <SwiperSlide>
                 <div id="testim-content" className="cont">
                   <div className="active">
-                    <div className="imgage"><img src={`${process.env.REACT_APP_IMAGE_MODE}image/im-1.jpg`}  alt="xyz" /></div>
+                    <div className="imgage"><img src='image/im-1.jpg'  alt="xyz" /></div>
                     <h2>Lorem P. Ipsum</h2>
                     <p style={{marginBottom:"40px"}} >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
                       dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
@@ -99,7 +100,7 @@ function Testmonial() {
               <SwiperSlide>
                 <div id="testim-content" className="cont">
                   <div className="active">
-                    <div className="imgage"><img  src={`${process.env.REACT_APP_IMAGE_MODE}image/im-1.jpg`}  alt="abc" /></div>
+                    <div className="imgage"><img  src='image/im-1.jpg' alt="abc" /></div>
                     <h2>Lorem P. Ipsum</h2>
                     <p style={{marginBottom:"40px"}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
                       dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>

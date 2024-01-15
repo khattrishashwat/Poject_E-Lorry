@@ -15,6 +15,8 @@ import 'react-toastify/dist/ReactToastify.css';
 function Login() {
 
      const[islogin, setlogin] =useState(true)
+     const [disabledSubmit, setDisabledSubmit] = useState(false)
+
      const navigation=useNavigate()
 
      const initialize={
@@ -130,6 +132,7 @@ const submitlog = async(values) =>
   }
   try
   {
+    setDisabledSubmit(true)
     const itemlog=values
     const itemslog=JSON.stringify(itemlog)
     const resp= await axios.post("/signin",`${itemslog}`, { headers: headers } )
@@ -148,11 +151,24 @@ const submitlog = async(values) =>
       draggable: true,
       progress: undefined,
   })
+  setDisabledSubmit(false)
+
+  const parameterValue = -1; 
+  // const path = '/'; 
+  // navigation(-1, {state : tokenele} )
+  if (parameterValue === -1 ) {
+    navigation(parameterValue, { state: tokenele });
+  }
+  else{
+    navigation('/', {state : tokenele} )
+  }
+
 
 
   setTimeout(() => {
-    navigation('/',{state : tokenele} )
-   }, 2000);
+    // navigation(-1, {state : tokenele} )
+    window.location.reload()
+   }, 1000);
   }
   catch(errors)
   {
@@ -167,6 +183,7 @@ const submitlog = async(values) =>
       progress: undefined,
       type: 'error'
   })
+  setDisabledSubmit(false)
   }
 }
 
@@ -198,7 +215,7 @@ const submitlog = async(values) =>
           <div className="register-fle">
             <div className="register-box">
               <h3>Login</h3>
-              <p class="log-para">Only eLorry Authorised Personnel are allowed to access this section.</p>
+              <p className="log-para">Only eLorry Authorised Personnel are allowed to access this section.</p>
               <form className='logs-1' onSubmit={formiklogin.handleSubmit}>
                <div className="logs-1"> 
                 <label className="labes">
@@ -218,7 +235,16 @@ const submitlog = async(values) =>
 
               {/* <div className="forg">  <Link to='/auth/forget'>Forgot Password ?</Link></div> */}
               <div className="regi-btn">
-                <button type='submit' className="about-btn-1">Login</button>
+                <button type='submit' disabled={disabledSubmit} className="about-btn-1">
+                {
+                          disabledSubmit ? (
+                            <div>
+                              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                              <span className="sr-only"></span>  Logging In
+                            </div>
+                          ) : 'Login'
+                        }
+                  </button>
               </div>
               </form>
               {/* <div className="regis-cent"><span className="regi-1" onClick={() => setlogin(!islogin)}>Register </span>

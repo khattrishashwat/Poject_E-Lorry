@@ -25,7 +25,7 @@ function Announcement()
  const newsDetail= async()=>
  {
     const respo= await axios.get("/news-announcements",{headers:headers})
-    // console.log("========================>",respo.data.data)
+    console.log("========================>",respo.data.data)
     setDataitem(respo.data.data)
  }
   
@@ -58,7 +58,9 @@ function Announcement()
               <div className="ps-0 pt-2 col-md-8">
                 <p>{value.content}</p>
               </div>
+              
             </div>
+            
             <hr />
             </div>
              )

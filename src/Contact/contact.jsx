@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React,{useEffect,useState} from "react";
 import Footer from "../Footer/footer";
 // import "./contact.css";
 import Toggleside from "../sidetoggle/sidetoggle";
@@ -11,6 +11,8 @@ import * as Yup from "yup"
 import Swal from "sweetalert2";
 
 function Contact() {
+
+  const [disabledSubmit, setDisabledSubmit] = useState(false)
 
   useEffect(()=>{
     document.title = 'Contact Page';
@@ -42,6 +44,7 @@ function Contact() {
 
 
   const submitform = async (values, { resetForm }) => {
+    setDisabledSubmit(true)
     // alert(JSON.stringify(values,null,2))
     const itemcon = values
     const itemscon = JSON.stringify(itemcon)
@@ -72,7 +75,7 @@ function Contact() {
         })
       }, 2000);
 
-
+      setDisabledSubmit(false)
     }
     catch (errors) {
       console.warn("contact ####", errors.response.data.message)
@@ -86,6 +89,7 @@ function Contact() {
         progress: undefined,
         type: 'error'
       })
+      setDisabledSubmit(false)
     }
     resetForm();
   }
@@ -229,8 +233,15 @@ function Contact() {
 
               </div>
 
-              <button type='submit' className="about-btn">
-                Submit &nbsp;&nbsp;<i className="fa-solid fa-arrow-right"></i>
+              <button type='submit' disabled={disabledSubmit} className="about-btn">
+                {
+                  disabledSubmit ? (
+                    <div>
+                      <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                      <span className="sr-only"></span> Submit &nbsp;&nbsp;<i className="fa-solid fa-arrow-right"></i>
+                    </div>
+                  ) : 'Submit'
+                }
               </button>
             </form>
           </div>

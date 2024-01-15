@@ -61,7 +61,7 @@ function zetmarket() {
 
       <div className="gri-1">
         <div className="hovicon effect-4 sub-b">
-          <img src={`${process.env.REACT_APP_IMAGE_MODE}images/ev-sale-01.png`} className="circle-1"/>
+          <img src='images/ev-sale-01.png' className="circle-1"/>
           <h2 className="goals">15 Mt</h2>
           <p>Annual savings of CO2 emissions</p>
         </div>
@@ -69,7 +69,7 @@ function zetmarket() {
 
       <div className="gri-1">
         <div className="hovicon effect-4 sub-b">
-          <img  src={`${process.env.REACT_APP_IMAGE_MODE}images/ev-sale-02.png`}  className="circle-1" />
+          <img  src='images/ev-sale-02.png'  className="circle-1" />
           <h2 className="goals">6900 mil. ltrs </h2>
           <p>Annual savings of fuels</p>
         </div>
@@ -77,7 +77,7 @@ function zetmarket() {
 
       <div className="gri-1">
         <div className="hovicon effect-4 sub-b">
-          <img  src={`${process.env.REACT_APP_IMAGE_MODE}images/ev-sale-03.png`} className="circle-1" />
+          <img  src='images/ev-sale-03.png' className="circle-1" />
           <h2 className="goals">INR 51800 Cr.</h2>
           <p>Annual savings fuel cost</p>
         </div>
@@ -85,7 +85,7 @@ function zetmarket() {
 
       <div className="gri-1">
         <div className="hovicon effect-4 sub-b">
-          <img  src={`${process.env.REACT_APP_IMAGE_MODE}images/ev-sale-04.png`} className="circle-1" />
+          <img  src='images/ev-sale-04.png' className="circle-1" />
           <h2 className="goals">INR 11 lakhs </h2>
           <p>Annual savings in operating costs of MGV and HGV.</p>
         </div>

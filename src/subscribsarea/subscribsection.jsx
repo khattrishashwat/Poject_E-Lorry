@@ -1,12 +1,14 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { useFormik } from 'formik'
 import *  as yup from 'yup'
 import axios from 'axios'
 import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function Subscribsection() {
+  const [disabledSubmit, setDisabledSubmit] = useState(false)
 
   const initalize=
   {
@@ -15,7 +17,7 @@ function Subscribsection() {
 
   const submitemail= async(value,{resetForm})=>
   {
-    
+    setDisabledSubmit(true)
    
       const itemlog = value
       const itemslog = JSON.stringify(itemlog)
@@ -37,11 +39,21 @@ function Subscribsection() {
           draggable: true,
           progress: undefined,
         })
+        setDisabledSubmit(false)
   
       }
       catch(errors)
       {
-        console.warn("chdcschacha",)
+        toast(errors.response.data.message, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          type: 'error'
+        })
       }
   
     resetForm()
@@ -49,7 +61,7 @@ function Subscribsection() {
 
 
   const validation= yup.object().shape({
-    email:yup.string().email('Invalid email').required('required')
+    email:yup.string().email('Invalid email').required('enter email')
   })
 
   const formik=useFormik({
@@ -88,12 +100,22 @@ function Subscribsection() {
           value={formik.values.email}
           onChange={formik.handleChange}
           placeholder="Enter a Valid Email Address" 
-          className="subs" />
-              {formik.touched.email && formik.errors.email ? <div className='text-danger'>{formik.errors.email}</div> : null}  
-           
-          <input type='submit'  className="sub-btns"/>
+          className="subs" />           
+          <button type='submit' disabled={disabledSubmit}  className="sub-btns">
+
+          {
+                          disabledSubmit ? (
+                            <div>
+                              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                              <span className="sr-only"></span>  Submit
+                            </div>
+                          ) : 'Submit'
+                        }
+                        </button>
          
         </div>
+        {formik.touched.email && formik.errors.email ? <div className='text-danger text-subs'>{formik.errors.email}</div> : null}  
+
         </form>
        
       </div>

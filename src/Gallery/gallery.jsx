@@ -84,26 +84,24 @@ function Gallery()
                              {value.type === "image" && (
                                 <div>  
                               <div className="swiper-slide" >
-                                <a
-                                  href="/imagesimages.jpg"
+                                <div className="ttemp"
                                   data-fancybox="gallery"
                                   title="Event-1"
                                   style={{ width: "211px"}}
                                 >
                                   <div
                                     className="image"
-                                    style={{
-                                      backgroundImage: `url(${value.filename_url})`,
-                                      width: "211px",
-                                      height: "171px",
-                                      
-                                    }}
+                                    // style={{
+                                    //   backgroundImage: `url(${value.filename_url})`,
+                                    // }}
                                   >
+
+                                    <img src={value.filename_url} alt="imgx-1" width='207px' height='200px' />
                                     <div className="overlay">
                                       <em className="mdi mdi-magnify-plus"></em>
                                     </div>
                                   </div>
-                                </a>
+                                </div>
                                 <span className="Captioni">Event-1</span>
                               </div>
 

@@ -122,7 +122,7 @@ function Zetpolicy()
 
 
                     </div>
-                    <img src="/imagesPolicy-1.png" className="poli"  alt="zetp34" />
+                    <img src="/e_lorry/web/images/Policy-1.png" className="poli"  alt="zetp34" />
                   </div>
                 </div>
               </div>
@@ -156,44 +156,7 @@ function Zetpolicy()
                 <div className="content-block-extra-inv-s event-block-extra-s myrs">
 
                   <ul>
-                    <li className="m-bot-new">One of the most common adoption policies for electric vehicles is purchase
-                      subsidies,
-                      which lower the initial cost of ownership at the expense of high costs on the government.
-                      Though the upfront cost of an electric vehicle is much more than that of an internal combustion
-                      vehicle, the operational and maintenance cost of an electric vehicle is much less than the latter.
-                      In this way, by implementing policies that further cut operational costs in addition to the
-                      purchase
-                      incentive, governments can further persuade people to buy electric vehicles. For ZETs, the
-                      government
-                      is yet to announce favorable policies.</li>
-
-                    <li className="m-bot-new">In 2017, the Government of India passed a regulation defining the first-ever
-                      fuel consumption
-                      standards
-                      for heavy-duty vehicles (HDVs), which include HDT's and buses; it took effect on April 1, 2023.
-                    </li>
-
-                    <li className="m-bot-new">With supportive polices ZETs can achieve an 85% sales penetration by 2050.
-                      With cost
-                      competitiveness,
-                      and technology maturity, nearly 9 in 10 trucks sold in 2050 can be ZETs. Demand-side policies to
-                      increase
-                      consumer demand, such as purchase subsidies, feebates, interest subvention, scrappage -
-                      incentives, zero-emissions zones, and fleet purchase requirements.
-                      <br />
-                      <a href="https://www.niti.gov.in/sites/default/files/2023-02/ZETReport09092022.pdf">Please access
-                        the report here</a>
-                    </li>
-
-
-
-                    <li className="m-bot-new">Supply-side policies will encourage traditional OEMs to innovate and start-ups
-                      to enter ZET
-                      manufacturing,
-                      such as original equipment manufacturer (OEM) ZET credit schemes, ZET production targets, air
-                      quality regulations,
-                      and fuel efficiency standards that promote ZETs and improve air quality.</li>
-
+                  <div dangerouslySetInnerHTML={{ __html: parseHTML(policeData.another_section) }} />
                   </ul>
                 </div>
               </div>
@@ -203,7 +166,7 @@ function Zetpolicy()
 
           </div>
 
-          <img src="/imagesPolicy-1.png" className="poli-11"/>
+          <img src="/e_lorry/web/images/Policy-1.png" className="poli-11"/>
         </div>
 
 

@@ -1,9 +1,10 @@
-import React, { Suspense } from 'react'
+import React, { Suspense , createContext} from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbarcontent from './navbar/navbars'
 import Loaderfile from './loader/loader'
 const Home = React.lazy(() => import('./Home/home'))
 const ComingEvent = React.lazy(() => import('./Event/event'))
+const UpcomingEvent = React.lazy(() => import('./Event/Upcomingevent'))
 const Contact = React.lazy(() => import('./Contact/contact'))
 const Gallery = React.lazy(() => import('./Gallery/gallery'))
 const Searchpage = React.lazy(() => import('./Search/search'))
@@ -31,22 +32,24 @@ const Logoutpage = React.lazy(() => import('./Auth/profile/logout'));
 // import Projectitem from './Projectcontent/project'
 // import Temp from './temp';
 
+export const GlobalInfo = createContext();
 
 
 function Allrouter() {
+
   return (
     <>
       {/* <Router> */}
-
-      <Router basename='/e_lorry/web'>
-        <Navbarcontent />
-        {/* <Suspense fallback={<loaderfile />}> */}
+      <GlobalInfo.Provider value={{appcolor:"red"}}>
+      <Router basename='/e_lorry/web/'>
+        <Navbarcontent /> 
         <Suspense fallback={<Loaderfile />}>
           <Routes>
             <Route path="*" element={<h1 h="55vh">Page not found</h1>} />
             <Route path='/' element={<Home />} />
             <Route path='/newEvent' element={<ComingEvent />} />
             <Route path='/annoucement' element={<Announcement />} />
+            <Route path="/upcomingEvent" element={<UpcomingEvent />} />
             <Route path='/auth/login' element={<Login />} />
             <Route path='/auth/forget' element={<Forgetpassword />} />
             <Route path='/auth/verify' element={<Verifyotp />} />
@@ -73,6 +76,7 @@ function Allrouter() {
           </Routes>
         </Suspense>
       </Router>
+      </GlobalInfo.Provider>
     </>
   )
 }

@@ -1,6 +1,10 @@
 import React from "react";
 import Carousel from "react-material-ui-carousel";
 import { AiOutlineArrowRight, AiOutlineArrowLeft } from "react-icons/ai";
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+// import 'react-responsive-carousel/lib/styles/main.min.css';
+
+
 
 // import "./sliders.css";
 export default function Slider() {
@@ -20,11 +24,18 @@ export default function Slider() {
  
 
      const customIndicatorStyle = {
-      // diplay:'flex',
-      width: "100%",
-      marginTop: "-10px",
-      textAlign: "center",
+            diplay:'flex',
+            width: "100%",
+            marginTop: "3px",
+            textAlign: "center",
+            position:'absolute',
+            bottom: '30px',
+            zIndex: '9999',
+        
+    
     };
+
+
 
   return (
     <>
@@ -37,8 +48,7 @@ export default function Slider() {
         swipe="mouse"
         infiniteLoop={true}
         interval={3000}
-        indicatorContainerProps={{ style: customIndicatorStyle }} 
-
+        indicatorContainerProps={{ style: customIndicatorStyle }}
         
       >
         {/* {slideritemUrl.map((value,index) => (
@@ -80,7 +90,7 @@ export default function Slider() {
           </div>
         ))} 
 
-{/* <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel">
+ {/* <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel">
 <div className="carousel-inner">
         <div className="carousel-item active">
           <img src="images/tru.jpg" className="d-block w-100" alt="..." />
@@ -98,11 +108,12 @@ export default function Slider() {
           <h5>Clean, Quiet, and Powerful: Electric Trucks for Modern Transportation</h5>
         </div>
       </div>
-      </div> */}
-      
+      </div>  */}
+       
 
       </Carousel>
-
+     
+     
     </>
   );
 }

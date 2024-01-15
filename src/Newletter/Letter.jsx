@@ -5,6 +5,7 @@ import * as yup from 'yup'
 import axios from 'axios'
 import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Letter() {
 
@@ -13,13 +14,30 @@ function Letter() {
     document.title = 'NewLetter Page';
   },[])
 
+
+  const downloadPdf = async () => {
+    try {
+      const response = await axios.get('your-pdf-api-endpoint', {
+        responseType: 'blob', // Set the response type to blob
+      });
+
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = 'example.pdf'; 
+      link.click();
+    } catch (error) {
+      console.error('Error downloading PDF:', error);
+    }
+  };
+
   const initalize=
   {
     email:''
   }
 
   const validattion= yup.object().shape({
-    email:yup.string().email('Invalid email').required('required')
+    email:yup.string().email('Invalid email').required('Please enter valid email')
   })
 
 
