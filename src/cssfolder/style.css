@@ -7069,3 +7069,91 @@ transition: all .3s ease-in-out; */
   margin-top: 22px;
   margin-left: 17px;
 }
+
+.upcs {
+  font-size: 18px;
+  text-align: center;
+  padding-top: 110px;
+  font-weight: 500;
+  color: #555555;
+}
+.media-list {
+  padding-left: 0;
+  list-style: none;
+  background: #fff;
+  height: 300px;
+  padding-top: 20px;
+  box-shadow: 2px 7px 16px 12px #1145e91a;
+  border-radius: 10px;
+  
+}
+
+.text-subs{
+  margin-left: 700px !important;
+  margin-top: 15px;
+  color: #f1ff09 !important;
+}
+
+.text-toggle{
+     margin-top: -17px;
+    margin-bottom: 27px;
+}
+
+.btn-subm
+{
+  background: #0014c7;
+    color: #fff;
+    cursor: pointer;
+    border: none;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 0px;
+}
+
+.part-grid-1 img
+{
+  size:20px;
+}
+
+.rowees {
+  display: flex;
+  align-items: center;
+  gap: 0px;
+}
+
+
+.m-bot-new-1 {
+  margin-top: 24px;
+  /* / list-style-type: disc !important; / */
+}
+.myrs ul li {
+  list-style-type: disclosure-closed !important;
+  margin-bottom: 50px;
+  margin-left: 20px;
+}
+.image-containers {
+  position: relative;
+  width: 211px;
+  height: 171px;
+ 
+}
+
+.overlays {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  padding-top: 20px; /* Adjust as needed to center the magnify icon */
+  z-index: 2;
+}
+
+.mdi.mdi-magnify-pluss {
+  font-size: 24px; /* Adjust the size of the magnify icon */
+  cursor: pointer;
+  color: white; /* Adjust the color of the icon */
+  background-color: "red"; /* Semi-transparent background color */
+  padding: 50px; /* Adjust as needed for padding around the icon */
+  border-radius: 50%; /* Make it a circle */
+  z-index: 3;
+}

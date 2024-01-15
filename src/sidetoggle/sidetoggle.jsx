@@ -7,17 +7,35 @@ import axios from "axios";
 
 function Sidetoggle() {
   const [toggle, setToggle] = useState(false);
+  const [disabledSubmit, setDisabledSubmit] = useState(false)
 
   const initi=
   {
     email:'',
   }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const submitemail=async(value,{resetForm})=>
   {
+    setDisabledSubmit(true)
     // console.warn(value)
     const itemlog = value
     const itemslog = JSON.stringify(itemlog)
     console.warn("Email : ",itemslog)
+    if (!emailRegex.test(value.email)) {
+                
+      toast("Entered email is invalid", {
+       position: "top-right",
+       autoClose: 2000,
+       hideProgressBar: false,
+       closeOnClick: true,
+       pauseOnHover: true,
+       draggable: true,
+       progress: undefined,
+       type: 'error'
+     })
+     setDisabledSubmit(false)
+      return;
+}
     const headers = {
       "Content-Type": "application/json",
       "Accept": "application/json",
@@ -35,25 +53,37 @@ function Sidetoggle() {
         draggable: true,
         progress: undefined,
       })
-
+      
     }
     catch(errors)
     {
-      console.warn("chdcschacha",)
+      toast(errors.response.data.message, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        type: 'error'
+      })
+      
+    }finally{
+      setDisabledSubmit(false)
     }
 
 
     resetForm();
   }
   const validation= yup.object().shape({
-    email:yup.string().email('Invalid email').required('required')
+    email:yup.string().email('Invalid email').required('Mail Required')
   })
 
   const formik = useFormik(
     {
       initialValues:initi,
       onSubmit:submitemail,
-      validationSchema:validation,
+      // validationSchema:validation,
     }
   )
 
@@ -72,7 +102,7 @@ function Sidetoggle() {
         pauseOnHover
       />
       <div className={`sidebar-contact ${toggle ? "active" : ""}`}>
-        <div className="toggle" onClick={() => setToggle(!toggle)}> <img src={`${process.env.REACT_APP_IMAGE_MODE}images/newsletter-1.png`}   style={{ marginTop: '0px' }} alt="toggle21"/></div>
+        <div className="toggle" onClick={() => setToggle(!toggle)}> <img src='/e_lorry/web/images/newsletter-1.png'  style={{ marginTop: '0px' }} alt="toggle21"/></div>
         {toggle && (
           <div>
             <h2>Join Our Newsletter</h2>
@@ -88,9 +118,18 @@ function Sidetoggle() {
                 onChange={formik.handleChange} 
                 placeholder="Enter Your Email" 
                 />
-              {formik.touched.email && formik.errors.email ? <div className='text-danger'>{formik.errors.email}</div> : null}  
+              {formik.touched.email && formik.errors.email ? <div className='text-danger text-toggle'>{formik.errors.email}</div> : null}  
 
-                <input type="submit"/>
+                <button type="submit" disabled={disabledSubmit} className="btn-subm" style={{backgroundColor:"#1F39A7" ,borderRadius:"30px",width:"100%",height:"5vh"}}>
+                {
+                          disabledSubmit ? (
+                            <div>
+                              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                              <span className="sr-only"></span>  Submit
+                            </div>
+                          ) : 'Submit'
+                        }
+                </button>
               </form>
             </div>
           </div>

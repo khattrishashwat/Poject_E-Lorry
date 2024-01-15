@@ -1,17 +1,57 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Footer from '../Footer/footer'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import axios from 'axios'
 import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Letter() {
 
-
+  const [downloadfile,setDownloadFile] =useState([])
   useEffect(()=>{
     document.title = 'NewLetter Page';
+    downloadPdf()
   },[])
+const token = localStorage.getItem("authtoken")
+  const headers={
+    "Content-Type":"application/json",
+    "Accept":"application/json",
+    "Authorization" : `Bearer ${token}`,
+  }
+
+
+  const downloadPdf = async () => {
+    try {
+      const response = await axios.get('/newsletter',{headers:headers})
+        
+      console.log(response,"newLetter")
+      if(token){
+      setDownloadFile(response.data.data)
+      }else{
+        toast("Please login to download the Newsletters", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          type: 'error',
+        });
+      }
+      
+      // const blob = new Blob([response.data], { type: 'application/pdf' });
+      // const link = document.createElement('a');
+      // link.href = window.URL.createObjectURL(blob);
+      // link.download = 'example.pdf'; 
+      // link.click();
+    } catch (error) {
+      console.error('Error downloading PDF:', error);
+    }
+  };
+
 
   const initalize=
   {
@@ -19,16 +59,31 @@ function Letter() {
   }
 
   const validattion= yup.object().shape({
-    email:yup.string().email('Invalid email').required('required')
+    email:yup.string().email('Invalid email').required('Please enter valid email')
   })
 
-
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const submitfrom= async(value,{resetForm}) =>
   {
    
     const itemlog = value
     const itemslog = JSON.stringify(itemlog)
     console.warn("Email : ",itemslog)
+    if (!emailRegex.test(value.email)) {
+                
+      toast("Entered email is invalid", {
+       position: "top-right",
+       autoClose: 2000,
+       hideProgressBar: false,
+       closeOnClick: true,
+       pauseOnHover: true,
+       draggable: true,
+       progress: undefined,
+       type: 'error'
+     })
+    
+      return;
+}
     const headers = {
       "Content-Type": "application/json",
       "Accept": "application/json",
@@ -60,12 +115,27 @@ function Letter() {
     {
       initialValues:initalize,
       onSubmit:submitfrom,
-      validationSchema:validattion,
+      // validationSchema:validattion,
     }
   )
+  function formatDate(dateString) {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
+    return formattedDate.replace(/\//g, '-'); // Replace slashes with dashes
+  }
 
 
-
+  const downloadFile = (filename, url,event) => {
+    // Use the provided filename and URL to initiate the download
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    event.preventDefault();
+    // Simulate a click on the anchor tag
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
   return (
     <>
        <ToastContainer
@@ -102,7 +172,7 @@ function Letter() {
               placeholder="Enter Email" 
               className="subs-email" 
                />
-              <i className="fa-solid fa-envelope ft"></i>
+              <i className="fa-solid fa-envelope ft" style={{marginTop:"0.5rem"}}></i>
               {formik.touched.email && formik.errors.email ? <div className='text-danger'>{formik.errors.email}</div> : null}  
 
             <div className="subs-btn-cent">
@@ -110,11 +180,19 @@ function Letter() {
             </div>
 
             <div className="download-btn-grid">
-              <a href="" className="download-btn-1">News letter for 21/12/23 &nbsp;&nbsp;<i className="fa-solid fa-download"></i></a>
-              <a href="" className="download-btn-1">News letter for 21/12/23 &nbsp;&nbsp;<i className="fa-solid fa-download"></i></a>
-              <a href="" className="download-btn-1">News letter for 21/12/23 &nbsp;&nbsp;<i className="fa-solid fa-download"></i></a>
-              <a href="" className="download-btn-1">News letter for 21/12/23 &nbsp;&nbsp;<i className="fa-solid fa-download"></i></a>
-           </div>
+        {downloadfile?.map((file, index) => (
+          <div
+            key={index}
+            // href="#"
+            // className="download-btn-1"
+            onClick={(event) => downloadFile(file.title, file.filename_url,event)}
+          >
+            {/* {`Newsletter for ${file.title} `} */}
+            <span className="download-btn-1">{`Newsletter for ${formatDate(file.created_at)} `} &nbsp;&nbsp;<i className="fa-solid fa-download"></i></span>
+            
+          </div>
+        ))}
+      </div>
 
 
             </div>

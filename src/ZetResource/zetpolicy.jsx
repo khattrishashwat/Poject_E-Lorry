@@ -122,7 +122,7 @@ function Zetpolicy()
 
 
                     </div>
-                    <img src="/imagesPolicy-1.png" className="poli"  alt="zetp34" />
+                    <img src="/e_lorry/web/images/Policy-1.png" className="poli"  alt="zetp34"  />
                   </div>
                 </div>
               </div>
@@ -203,7 +203,7 @@ function Zetpolicy()
 
           </div>
 
-          <img src="/imagesPolicy-1.png" className="poli-11"/>
+          <img src="/e_lorry/web/images/Policy-1.png" className="poli-11"/>
         </div>
 
 

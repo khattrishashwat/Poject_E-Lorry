@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React,{useEffect,useState} from "react";
 import Footer from "../Footer/footer";
 // import "./contact.css";
 import Toggleside from "../sidetoggle/sidetoggle";
@@ -11,6 +11,8 @@ import * as Yup from "yup"
 import Swal from "sweetalert2";
 
 function Contact() {
+
+  const [disabledSubmit, setDisabledSubmit] = useState(false)
 
   useEffect(()=>{
     document.title = 'Contact Page';
@@ -42,9 +44,43 @@ function Contact() {
 
 
   const submitform = async (values, { resetForm }) => {
+    setDisabledSubmit(true)
     // alert(JSON.stringify(values,null,2))
     const itemcon = values
     const itemscon = JSON.stringify(itemcon)
+    const requiredFields = ['name', 'phone', 'email', 'partner', 'comment'];
+
+    for (const field of requiredFields) {
+      if (!values[field].trim()) {
+        toast(`Please enter ${field}`, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          type: 'error'
+        });
+        setDisabledSubmit(false);
+        return; // Stop execution if any field is empty or just spaces
+      }
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(values.email)) {
+    toast("Entered email is invalid", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      type: 'error'
+    });
+    setDisabledSubmit(false);
+    return;
+  }
     const headers = {
       "Content-Type": "application/json",
       "Accept": "application/json",
@@ -72,7 +108,7 @@ function Contact() {
         })
       }, 2000);
 
-
+      setDisabledSubmit(false)
     }
     catch (errors) {
       console.warn("contact ####", errors.response.data.message)
@@ -86,6 +122,7 @@ function Contact() {
         progress: undefined,
         type: 'error'
       })
+      setDisabledSubmit(false)
     }
     resetForm();
   }
@@ -93,7 +130,7 @@ function Contact() {
   const formik = useFormik({
     initialValues: initails,
     onSubmit: submitform,
-    validationSchema: validate,
+    // validationSchema: validate,
 
   })
 
@@ -177,7 +214,7 @@ function Contact() {
                   name="name"
                   value={formik.values.name}
                   onChange={formik.handleChange}
-                  placeholder="Your name"
+                  placeholder="Your name*"
                 />
                 {formik.touched.name && formik.errors.name ? <div className='text-danger'>{formik.errors.name}</div> : null}
 
@@ -190,7 +227,7 @@ function Contact() {
                   name="phone"
                   value={formik.values.phone}
                   onChange={formik.handleChange}
-                  placeholder="Phone number"
+                  placeholder="Phone number*"
                 />
                 {formik.touched.phone && formik.errors.phone ? <div className='text-danger'>{formik.errors.phone}</div> : null}
 
@@ -203,7 +240,7 @@ function Contact() {
                   name="email"
                   value={formik.values.email}
                   onChange={formik.handleChange}
-                  placeholder="Your email"
+                  placeholder="Your email*"
                 />
                 {formik.touched.email && formik.errors.email ? <div className='text-danger'>{formik.errors.email}</div> : null}
 
@@ -212,7 +249,7 @@ function Contact() {
               <div className="form-data">
                 <select name="partner" id="" value={formik.values.partner} onChange={formik.handleChange}>
                   <option value="" selected disabled>
-                    Any Partnership
+                    Any Partnership*
                   </option>
                   <option value="Yes">Yes</option>
                   <option value="No">No</option>
@@ -229,8 +266,15 @@ function Contact() {
 
               </div>
 
-              <button type='submit' className="about-btn">
-                Submit &nbsp;&nbsp;<i className="fa-solid fa-arrow-right"></i>
+              <button type='submit' disabled={disabledSubmit} className="about-btn">
+                {
+                  disabledSubmit ? (
+                    <div>
+                      <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                      <span className="sr-only"></span> Submit &nbsp;&nbsp;<i className="fa-solid fa-arrow-right"></i>
+                    </div>
+                  ) : 'Submit'
+                }
               </button>
             </form>
           </div>

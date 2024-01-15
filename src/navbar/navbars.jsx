@@ -10,6 +10,7 @@ import { Button } from "@mui/material";
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import axios from "axios";
 // import "./navbar.css";
+import Toggleside from '../sidetoggle/sidetoggle'
 
 
 function Navbars(props) {
@@ -94,13 +95,14 @@ function Navbars(props) {
 
   return (
     <>
+      <Toggleside />
 
       <header>
         <nav>
           {sidernav ? (
             <div className="nav-area">
               <div className="logo">
-                <Link to="/"> <img  src={`${process.env.REACT_APP_IMAGE_MODE}images/e-Lorry.png`} alt="navimg1"/></Link>
+                <Link to="/"> <img src="/e_lorry/web/images/e-Lorry.png" alt="navimg1"/></Link>
               </div>
               <div className="abc">
                 <ul>
@@ -138,7 +140,7 @@ function Navbars(props) {
                   <img src={profileupdate.avator} alt="zyx" className="imgprofile" /> 
   
                   <div className="dropdown leftings">
-                      <Link to='/profileaccount'>My Account</Link>
+                      <Link to='/profileSetting'>My Account</Link>
                       <Link to='/resetpassword'>Change Password</Link>
                       <Link to="/logout">Logout</Link>                     
                   </div>

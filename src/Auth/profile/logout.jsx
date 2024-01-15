@@ -43,7 +43,7 @@ function Logout() {
                 <div className="logout-btn-flex">
                     {/* <button onClick={logouthandel} className="logout-btn">Yes</button> */}
                     <Link to='/'  className="logout-btn" state={{ parameterValue }}>yes</Link>
-                    <Link to="/profileaccount" className="logout-btn">No</Link>
+                    <Link to="/profileSetting" className="logout-btn">No</Link>
                 </div>
             </div>
         </div>

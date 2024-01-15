@@ -26,7 +26,7 @@ const Profilepage = React.lazy(() => import('./Auth/profile/profile'))
 const Profileaccount = React.lazy(() => import('./Auth/profile/Userprofil'))
 const Profilepass = React.lazy(() => import('./Auth/profile/Resetpass'))
 const Logoutpage = React.lazy(() => import('./Auth/profile/logout'));
-
+const UpcomingEvent = React.lazy(() => import('./Event/Upcomingevent'))
 // import DiscussLogin from './Discussiongroup/discussLogin';
 // import Projectitem from './Projectcontent/project'
 // import Temp from './temp';
@@ -38,7 +38,7 @@ function Allrouter() {
     <>
       {/* <Router> */}
 
-      <Router basename='/e_lorry/web'>
+      <Router basename='/e_lorry/web/'>
         <Navbarcontent />
         {/* <Suspense fallback={<loaderfile />}> */}
         <Suspense fallback={<Loaderfile />}>
@@ -47,6 +47,7 @@ function Allrouter() {
             <Route path='/' element={<Home />} />
             <Route path='/newEvent' element={<ComingEvent />} />
             <Route path='/annoucement' element={<Announcement />} />
+            <Route path="/upcomingEvent" element={<UpcomingEvent />} />
             <Route path='/auth/login' element={<Login />} />
             <Route path='/auth/forget' element={<Forgetpassword />} />
             <Route path='/auth/verify' element={<Verifyotp />} />

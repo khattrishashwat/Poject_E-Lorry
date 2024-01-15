@@ -15,6 +15,8 @@ import 'react-toastify/dist/ReactToastify.css';
 function Login() {
 
      const[islogin, setlogin] =useState(true)
+     const [disabledSubmit, setDisabledSubmit] = useState(false)
+
      const navigation=useNavigate()
 
      const initialize={
@@ -130,6 +132,7 @@ const submitlog = async(values) =>
   }
   try
   {
+    setDisabledSubmit(true)
     const itemlog=values
     const itemslog=JSON.stringify(itemlog)
     const resp= await axios.post("/signin",`${itemslog}`, { headers: headers } )
@@ -148,7 +151,7 @@ const submitlog = async(values) =>
       draggable: true,
       progress: undefined,
   })
-
+  setDisabledSubmit(false)
 
   setTimeout(() => {
     navigation('/',{state : tokenele} )
@@ -167,6 +170,7 @@ const submitlog = async(values) =>
       progress: undefined,
       type: 'error'
   })
+  setDisabledSubmit(false)
   }
 }
 
@@ -204,7 +208,7 @@ const submitlog = async(values) =>
                 <label className="labes">
                   <i className="fa-solid fa-envelope"></i>&nbsp;&nbsp;Email Address</label>
                   <input name='email' value={formiklogin.values.email} onChange={formiklogin.handleChange} onBlur={formiklogin.handleBlur} type="text"  placeholder="Enter Email"   className="field-11"   />
-                  {formiklogin.touched.email && formiklogin.errors.email ? <div className='text-danger'>{formiklogin.errors.email}</div> : null}  
+                  {formiklogin.touched.email && formiklogin.errors.email ? <div className='text-danger' style={{marginLeft:"2rem"}}>{formiklogin.errors.email}</div> : null}  
               </div> 
 
 
@@ -212,13 +216,22 @@ const submitlog = async(values) =>
                 <label className="labes">  <i className="fa-solid fa-lock"></i>&nbsp;&nbsp;Password</label>
                 <input name='password' value={formiklogin.values.password} onChange={formiklogin.handleChange} type="password"  placeholder="Enter Password"  className="field-11"  />
               
-              {formiklogin.touched.password && formiklogin.errors.password ? <div className='text-danger'>{formiklogin.errors.password}</div> : null}      
+              {formiklogin.touched.password && formiklogin.errors.password ? <div className='text-danger' style={{marginLeft:"2rem"}}>{formiklogin.errors.password}</div> : null}      
               </div>
 
 
               {/* <div className="forg">  <Link to='/auth/forget'>Forgot Password ?</Link></div> */}
               <div className="regi-btn">
-                <button type='submit' className="about-btn-1">Login</button>
+                <button type='submit' disabled={disabledSubmit} className="about-btn-1">
+                {
+                          disabledSubmit ? (
+                            <div>
+                              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                              <span className="sr-only"></span>  Logging In
+                            </div>
+                          ) : 'Login'
+                        }
+                  </button>
               </div>
               </form>
               {/* <div className="regis-cent"><span className="regi-1" onClick={() => setlogin(!islogin)}>Register </span>

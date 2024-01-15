@@ -582,11 +582,12 @@ nav .nav-area ul li a:hover {
 .line-1 {
     height: 2.5px;
     width: 64px;
-    background: black;
-    margin-top: 6px;
+    background:#0909cc;;
+    /* margin-top: 6px; */
     display: block;
     border-radius: 20px;
-    margin: 0 auto;
+    margin: 6px auto;
+   
 }
 
 .stake-main-parent-grid {
@@ -787,6 +788,7 @@ nav .nav-area ul li a:hover {
 	position:relative;
 	animation: fadeIn 1s ease-in both;
 	animation-delay: 6s;	
+    margin-left: 56px;
 }
 
 /*********Circle-around************/
@@ -1311,12 +1313,12 @@ transform: rotate(360deg);
     
  .about-btn-1 {
  
-border: 1px solid #0909cc; 
+/* border: 1px solid #0909cc;  */
 color: #0909cc;
 font-size: 15px;
 text-decoration: none;
-margin-top: 23px;
-padding: 14px 110px;
+margin-top: 55px;
+/* padding: 14px 110px; */
 display: inline-block;
 border-radius: 28px;
 font-weight: 600;

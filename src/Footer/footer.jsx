@@ -41,7 +41,7 @@ function footer() {
 
       <div className="footer">
         <div className="small-container">
-          <img src={`${process.env.REACT_APP_IMAGE_MODE}images/e-Lorry.png`} alt="foot1"/>
+          <img src='/e_lorry/web/images/e-Lorry.png' alt="foot1"/>
 
           <div className="footer-bar">
             <ul>

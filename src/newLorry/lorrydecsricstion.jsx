@@ -177,7 +177,7 @@ function Lorrydecsricstion() {
       <div className="new-new-at">
 
         <div className="new-new-1">
-          <img src={`${process.env.REACT_APP_IMAGE_MODE}images/messages.png`}  alt="newimg1" />
+          <img src='images/messages.png'  alt="newimg1" />
           <h4>News And Announcement</h4>
           <p>Know about the recent news and announcements related to electric trucks.</p>
 
@@ -187,7 +187,7 @@ function Lorrydecsricstion() {
 
 
         <div className="new-new-1">
-          <img  src={`${process.env.REACT_APP_IMAGE_MODE}images/dislike.png`}  className="dislike" alt="newimg2"/>
+          <img  src='images/dislike.png' className="dislike" alt="newimg2"/>
           <h4>Events</h4>
           <p>Discover the past and future events related to electric truck ecosystem. </p>
           

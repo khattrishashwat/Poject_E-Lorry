@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react'
 import Footer from '../Footer/footer'
 import axios from 'axios'
-
+import technoimage from '../techno.png'
 function ZetTechnology() 
 {
 
@@ -22,19 +22,25 @@ function ZetTechnology()
   {
     // console.warn("technology api")
     const resp= await axios.get("/zet-technologies",{headers:headers})
-    // console.log("33333",resp.data.data)
+    console.log("33333",resp.data.data)
     setTechnologydata(resp.data.data)
   }
+  
+  
+
   const parseHTML = (htmlString) => {
     const parser = new DOMParser();
-  const doc = parser.parseFromString(htmlString, 'text/html');
-
-  // Extract content inside <p> tags
-  const pTags = doc.querySelectorAll('p');
-  const extractedContent = Array.from(pTags).map((p) => p.innerHTML).join('');
-
-  return extractedContent;
+    const doc = parser.parseFromString(htmlString, 'text/html');
+  
+    const ulItems = doc.querySelectorAll('li ui');
+    ulItems.forEach((li) => {
+      const text = li.textContent;
+      li.textContent = text.replace(/&ndash;/g, '–');
+    });
+  
+    return doc.body.innerHTML;
   };
+
 
   return (
     <>
@@ -54,13 +60,13 @@ function ZetTechnology()
               <div className="newsdetails-main-s">
                 <div className="news-dtls-box enevt-dtls-box">
                   <div className="news-content-inv-s posse">
-                    <div className="content-block-extra-inv-s event-block-extra-s">
+                    <div className="content-block-extra-inv-s event-block-extra-s myrs">
 
                    
-                     <div dangerouslySetInnerHTML={{ __html: parseHTML(technologyData.page_content) }} />
+                     <div class="m-bot-new-1" style={{marginLeft: '40px'}} dangerouslySetInnerHTML={{ __html: parseHTML(technologyData.page_content) }} />
 
                     </div>
-                    <img src="/imagestechno.png" className="poli-1" />
+                    <img src={technoimage} className="poli-1" />
                   </div>
                 </div>
                 </div>
@@ -77,12 +83,12 @@ function ZetTechnology()
 
         <div className="techno-main-parent-grid">
           <div className="techno-grid-1">
-            <img src={technologyData.image} />
+            <img src={technologyData.image} style={{width:'1132px'}} />
           </div>
-          <div className="techno-grid-2">
+          {/* <div className="techno-grid-2">
               <div dangerouslySetInnerHTML={{ __html: parseHTML(technologyData.image_text) }} />
             <p className="techno-para"></p>
-          </div>
+          </div> */}
         </div></div>
 
 

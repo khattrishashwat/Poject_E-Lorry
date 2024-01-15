@@ -451,6 +451,41 @@ font-weight: 500;
     transition:0.6s;
 }
 
+
+.box-center-pro a {
+    border: none;
+    /* display: block; */
+    text-align: center;
+    /* cursor: pointer; */
+    /* text-transform: uppercase; */
+    /* outline: none; */
+    /* overflow: hidden; */
+    /* position: relative; */
+    color: #fff;
+    font-weight: 500;
+    font-size: 16px;
+    background: #0909cc;
+    padding: 17px 48px;
+    margin: 0 auto;
+    box-shadow: 3px 2px 14px lightgrey;
+    text-decoration: none;
+    border-radius: 43px;
+    /* text-align: center; */
+    /* width: 34%; */
+    transition:0.6s;
+}
+
+
+
+.box-center-pro a:hover
+{
+	background:#0909cc;
+	transition:0.6s;
+    color: #ffffff;
+
+}
+
+
 .box-center-pro button:hover
 {
 	background:#0909cc;
@@ -462,7 +497,7 @@ font-weight: 500;
   .box-center-pro {
     text-align: center;
     /* margin-top: 70px; */
-    margin-top: 19px;
+    margin-top: 35px;
 
 }
 

@@ -13,6 +13,8 @@ function Resetpass() {
   const [passdisplay, setPasswordDisplay] = useState(true)
   const [passdisplays, setPasswordDisplays] = useState(true)
   const [passdisplayc, setPasswordDisplayc] = useState(true)
+  const [disabledSubmit, setDisabledSubmit] = useState(false)
+
 
 useEffect(()=>{
   document.title = 'Reset-Password Page';
@@ -44,6 +46,7 @@ useEffect(()=>{
   }
 
   const datasubmit = async (value, { resetForm }) => {
+    setDisabledSubmit(true)
     try {
       const items = value;
       const item = JSON.stringify(items)
@@ -59,8 +62,7 @@ useEffect(()=>{
         progress: undefined,
 
       })
-
-
+      setDisabledSubmit(false)
     }
     catch (errors) {
       toast(errors.response.data.message, {
@@ -73,7 +75,7 @@ useEffect(()=>{
         progress: undefined,
         type: 'error'
       })
-
+      setDisabledSubmit(false)
     }
     resetForm();
   }
@@ -168,7 +170,20 @@ useEffect(()=>{
                   </div>
 
                   <div className="box-center-pro">
-                    <button type='submit' >Update Password</button>
+                    {/* <button type='submit' >Update Password</button> */}
+
+                    <button type='submit' disabled={disabledSubmit}  >
+
+                       {
+                          disabledSubmit ? (
+                            <div>
+                              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                              <span className="sr-only"></span>  Update Password
+                            </div>
+                          ) : 'Update Password'
+                        }
+                        </button>
+
                   </div>
                 </form>
               </div>

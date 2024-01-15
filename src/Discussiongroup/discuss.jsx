@@ -9,10 +9,13 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
 import { TroubleshootOutlined } from "@mui/icons-material";
 import { CommentSection } from "react-comments-section";
 import "react-comments-section/dist/index.css";
+
+
 
 
 function Discuss() {
@@ -22,7 +25,7 @@ function Discuss() {
   const [setpostshow, setSetpostshow] = useState(false);
   const[passicon,setpassicon] =useState(true)
   const[showemailmodel,setShowemailmodel]=useState(false)
-  const[filefromdata,setFileformdata]=useState([])
+  const[filefromdata,setFileformdata]=useState()
   const [eventprofile,seteventprofile]=useState()
   const [commentsec,setCommentsec] =useState(false)
   const[eventadd,setEventadd] = useState(true)
@@ -30,9 +33,9 @@ function Discuss() {
   const [postdiscuss, setpostDiscuss] = useState([])
   const [toppostdiscuss,setToppostdiscuss] =useState([])
   const [updatepost,setUpdatepost] =useState()
+  const [id, setId] = useState();
+  const [disabledSubmit, setDisabledSubmit] = useState(false)
 
-
- 
 
 
   const navigate = useNavigate()
@@ -77,16 +80,31 @@ function Discuss() {
   const[count,setCount]=useState(1456);
 
 
-  useEffect(()=>{
-      //  handlelike()
-    // handledislike()
-  },[])
+
 
 
  
 
   const handlelike= async(post_id) =>
   {
+    if(token == null)
+    {
+      toast('please login', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        type: "error",
+      })
+      
+  setTimeout(() => {
+    navigate('/auth/login',)
+   }, 2000); 
+
+    }
       try{
        const statuslike = 1
       const status= statuslike
@@ -97,7 +115,16 @@ function Discuss() {
       }
       catch(errors)
       {
-        console.log(errors)
+        toast(errors.response.data.message, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          type: 'error'
+        })
       }
 
      
@@ -107,6 +134,25 @@ function Discuss() {
 
   const handledislike= async(post_id) =>
   {
+    setDisabledSubmit(true)
+    if(token == null)
+    {
+      toast('please login', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      })
+      setDisabledSubmit(false)
+  setTimeout(() => {
+    navigate('/auth/login',)
+   }, 2000); 
+
+    }
+    try{
       const statusDislike = 2
       const status= statusDislike 
      const itemlike={post_id,status}  
@@ -114,7 +160,21 @@ function Discuss() {
      console.warn("111111", itemlike)   
      console.warn("222222", resp)
      setUpdatepost(1)
-     
+    }
+    catch(error)
+    {
+      toast(error.response.data.message, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        type: 'error'
+      })
+    }
+     setDisabledSubmit(false)
   }
 
 
@@ -128,17 +188,24 @@ function Discuss() {
       comment: plainText
       };
 
+
     const itemcomments= JSON.stringify(itemcomment)
     // console.log("item1111111",itemcomments)
     const resp= await axios.post('/comment-post',itemcomment,{headers:headers})
     // console.log("comment api", resp)
+    
   }
 
-  
 
-  // const handlepost = () => {
-  //   setpostshow(true)
-  // }
+  const handleCommentId=(id)=>
+  {
+    console.warn("hhhhhhhhhhhhhh",id)
+    setId(id)
+    // setCommentsec(true)
+  }
+
+
+
 
 
   const initial = {
@@ -151,16 +218,11 @@ function Discuss() {
   }
 
   const validated = Yup.object().shape({
-    title: Yup.string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('Required'),
+    title: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
     post_announcement_update: Yup.string().min(5, 'Too Short!').max(100, 'Too Long').required('Required'),
     post_date: Yup.date().required('Date is required').nullable(),
     // uploaded_file: Yup.mixed().required('Image is required'),
-    uploaded_file: Yup.mixed()
-        .required('File is required')
-        .test('fileSize', 'File size is too large', (value) => {
+    uploaded_file: Yup.mixed().required('File is required').test('fileSize', 'File size is too large', (value) => {
           // You can add your custom file size validation logic here
           return value && value.size <= 10485760; // 10 MB
         }),
@@ -189,6 +251,7 @@ function Discuss() {
       frms.append('short_description',values.short_description)
       frms.append('long_description',values.long_description)
       const respon = await axios.post("/add-event", frms, { headers: headers });
+      console.log("event", respon.data)
       toast(respon.data.message, {
         position: "top-right",
         autoClose: 2000,
@@ -198,7 +261,7 @@ function Discuss() {
         draggable: true,
         progress: undefined,
       })
-      resetForm()
+      
     }
     catch (errors) {
       // console.warn("xajnxjsanxja", errors.response)
@@ -312,7 +375,7 @@ function Discuss() {
    }
   }
   
-  // post event formik area
+  // post  formik area
 
   const initialpostvalue={
     title:'',
@@ -331,7 +394,11 @@ function Discuss() {
     title: Yup.string()
       .min(2, 'Too Short!')
       .required('Required'),
-      // image: Yup.mixed().required('Image is required'),
+      image: Yup.mixed().required('File is required'),
+      // .test('fileSize', 'File size is too large', (value) => {
+        // You can add your custom file size validation logic here
+        // return value && value.size <= 10485760; // 10 MB
+      // }),
     // image: Yup.string().required('Image is required'),
       description: Yup.string().min(5, 'Too Short!').max(1000, 'Too Long').required('Required'),
   });
@@ -349,7 +416,7 @@ function Discuss() {
 
     //  console.log("fun" , frm)
       const resp= await axios.post('/create-post',frm,{headers:headerspost})
-      // console.log("<<<<<<",resp)
+      console.log("<<<<<<",resp)
       toast(resp.data.message, {
        position: "top-right",
        autoClose: 2000,
@@ -466,28 +533,34 @@ useEffect(()=>{
               />
               <div className="mainsflexings">
                 <div className="like">
-                  <i onClick={(e)=>handlelike(value.id)} className={token==null  || value.you_like_post == 1 ? "fa-solid fa-thumbs-up thumbcolor" : "fa-solid fa-thumbs-up"} ></i>
+                  <i onClick={(e)=>handlelike(value.id)} className={token &&  value.you_like_post == 1 ? "fa-solid fa-thumbs-up thumbcolor" : "fa-solid fa-thumbs-up"} ></i>
+                  
+                  
+                  
                   <h4>{value.you_like_post}</h4>
                 </div>
                 <div className="like">
-                  <i onClick={(e)=>handledislike(value.id)} className={token==null  || value.you_dislike_post == 1 ? "fa-solid fa-thumbs-down thumbcolor" : "fa-solid fa-thumbs-down"}></i>
+                  <i  onClick={(e)=>handledislike(value.id)} className={token &&  value.you_dislike_post == 1 ? "fa-solid fa-thumbs-down thumbcolor" : "fa-solid fa-thumbs-down"}></i>
+                  
+                 
+                  
+                  
                   <h4>{value.you_dislike_post}</h4>
                 </div>
                 <div className="like">
-                  <i className="fa-solid fa-comment" onClick={()=>setCommentsec(!commentsec)}></i>
-                  <h4>{value.post_like_count}</h4>
+                  <i className="fa-solid fa-comment" onClick={()=>handleCommentId(value.id)}></i>
+                  <h4>{value.post_comments_count}</h4>
                 </div>
                 <div className="like">
-                  <a href="">
+                  {/* <a href=""> */}
                     <i className="fa-solid fa-share"></i>
-                  </a>
+                  {/* </a> */}
                 </div>
                
               </div>
               {data}
-              {token && commentsec ?  <>
-                               
-                    <CommentSection 
+              {token && (value.id === id) ?  <>            
+                    <CommentSection
                      currentUser=
                      {{
                        currentUserId: value.id,
@@ -503,14 +576,14 @@ useEffect(()=>{
                      customImg={process.env.PUBLIC_URL + "/imagesim-2.jpg"}
                      inputStyle={{ border: "1px solid rgb(208 208 208)" }}
                      formStyle={{ backgroundColor: "white" }}
-                     submitBtnStyle={{ backgroundColor: "blue", padding: "7px 15px",  position: 'relative', left: '24px' }}
+                     submitBtnStyle={{ backgroundColor: "blue", padding: "7px 15px",  position: 'relative', left: '18px' }}
                      cancelBtnStyle={{ border: "1px solid gray", backgroundColor: "gray", color: "white", padding: "7px 15px"}}
                      replyInputStyle={{ borderBottom: "1px solid black", color: "black" }}
                      onSubmitAction={(data) =>commenthandleapi(data)}
                      currentData={(data) => {
                       console.log('current data', data);
                     }}
-                              />
+                    />
                                
 
               </> : null}
@@ -577,12 +650,14 @@ useEffect(()=>{
 
 
                     <label className="pst-lab">Choose Image / Video</label>
-                    <input type="file" 
-                    placeholder="upload image" 
+                    <input type="file"  
+                       name='image'
+                       onChange={(e) => {
+                       fromikpost.setFieldTouched('image');
+                       fromikpost.setFieldValue('image', e.currentTarget.files[0]);
+                       setFileformdata(e.currentTarget.files[0])
+                     }}
                     className="post-form"
-                    name='image'
-                    value={fromikpost.values.image}
-                    onChange={(e)=>setFileformdata(e.target.files[0])}
                     />
                    
                     {fromikpost.touched.image && fromikpost.errors.image ? <div className='text-danger'>{fromikpost.errors.image}</div> : null}
@@ -645,7 +720,7 @@ useEffect(()=>{
                   <form className="for" onSubmit={formik.handleSubmit}>
 
 
-                    {/* <label className="pst-lab">Post, Announcement & Updates</label>
+                     <label className="pst-lab">Post, Announcement </label>
                     <input
                       type="text"
                       name='post_announcement_update'
@@ -654,7 +729,7 @@ useEffect(()=>{
                       placeholder="Post, Announcement & Updates"
                       className="post-form"
                     />
-                    {formik.touched.post_announcement_update && formik.errors.post_announcement_update ? <div className='text-danger'>{formik.errors.post_announcement_update}</div> : null} */}
+                    {formik.touched.post_announcement_update && formik.errors.post_announcement_update ? <div className='text-danger'>{formik.errors.post_announcement_update}</div> : null} 
 
 
                     <label className="pst-lab">Add Title</label>
@@ -698,6 +773,7 @@ useEffect(()=>{
                         onChange={(e) => {
                           formik.setFieldTouched('uploaded_file');
                           formik.setFieldValue('uploaded_file', e.currentTarget.files[0]);
+                          seteventprofile(e.currentTarget.files[0]);
                         }}
                         className="post-form"
                       />
@@ -708,17 +784,17 @@ useEffect(()=>{
 
 
 
-                    <label className="pst-lab">Short Description</label>
-                    <textarea
+                    <label className="pst-lab">Meeting Link</label>
+                    <input
                       name="short_description"
                       value={formik.values.short_description}
                       onChange={formik.handleChange}
                       placeholder="Enter Short Description"
                       className="post-form"
-                    ></textarea>
+                    />
                     {formik.touched.short_description && formik.errors.short_description ? <div className='text-danger'>{formik.errors.short_description}</div> : null}
 
-                    <label className="pst-lab">Long Description</label>
+                    <label className="pst-lab">Description</label>
                     <textarea
                       name="long_description"
                       value={formik.values.long_description}

@@ -2,7 +2,7 @@ import React, { useState,useEffect } from "react";
 // import "./event.css";
 import Footer from "../Footer/footer";
 import Toggleside from '../sidetoggle/sidetoggle'
-import { useNavigate } from "react-router-dom";
+import { useNavigate ,Link} from "react-router-dom";
 import axios from "axios";
 
 function Event() {
@@ -34,12 +34,12 @@ function Event() {
   const upcomingevent= async() =>
   {
     const resp= await axios.get("/events",{headers:headers})
-    // console.log("======+++++",resp.data.data.past)
+    console.log("======+++++",resp.data.data)
     setEventdata(resp.data.data.upcoming)
     setPasteventItem(resp.data.data.past)
   }
-
-
+console.log(eventdata,"eventdata")
+console.log(pasteventitem,"past ")
   return (
     <>
       <Toggleside />
@@ -62,21 +62,22 @@ function Event() {
                 {pasteventitem.map((value,index)=>(
                 <ul  key={index} className="media-list main-list">
                   <li className="media">
+                  <Link class="" to='/upcomingEvent' state={{ from: value?.id }}>
                       <img
                         className="media-object"
-                        src={process.env.PUBLIC_URL + "/image/about-1.png"}
+                        src={value.image}
                         alt="..."
                         style={{ height: "80px", width: "80px" }}
                       />
                       <div className="media-boddy">
                         <h4 className="media-heading">
-                          FDP on Improving Environmental Quality ...
+                         {value.title}
                         </h4>
                         <p className="by-author">
-                          International Faculty Development Programme ...
+                       {value.description}
                         </p>
                       </div>
-                    
+                      </Link>
                   </li>
                 </ul>
                 ))}
@@ -86,7 +87,7 @@ function Event() {
                 <h1 className="inner-h">Upcoming Events</h1>
                 <hr className="inner-hr" />
 
-               {eventdata.map((value,index)=>(
+               {/* {eventdata.map((value,index)=>(
                 <ul  key={index} className="media-list main-list">
                   <li className="media">
                    
@@ -107,7 +108,34 @@ function Event() {
                     
                   </li>
                 </ul>
-                ))}
+                ))} */}
+                {eventdata ? (
+                  eventdata.length > 0 ? (
+                    eventdata.map((value, index) => (
+                      <ul key={index} className="media-list main-list">
+                        <li className="media">
+                          <img
+                            className="media-object"
+                            src={value.image}
+                            alt="..."
+                            style={{ height: "80px", width: "80px" }}
+                          />
+                          <div className="media-boddy">
+                            <h4 className="media-heading">{value.title}</h4>
+                            <p className="by-author">{value.description}</p>
+                          </div>
+                        </li>
+                      </ul>
+                    ))
+                  ) : (
+                    <div class="media-list main-list">
+                    <h4 class="upcs">No Upcoming Events Yet</h4>
+                  </div>
+                  )
+                ) : (
+                  <p>Loading...</p>
+                )
+                }
               </div>
               
             </div>
