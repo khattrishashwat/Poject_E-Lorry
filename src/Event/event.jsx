@@ -44,8 +44,8 @@ function Event() {
     setEventdata(resp.data.data.upcoming)
     setPasteventItem(resp.data.data.past)
   }
-
-
+console.log(eventdata,"eventdata")
+console.log(pasteventitem,"past ")
   return (
     <>
       <Toggleside />
@@ -68,7 +68,7 @@ function Event() {
                 {pasteventitem.map((value,index)=>(
                 <ul  key={index} className="media-list main-list">
                   <li className="media">
-                  <Link className="" to='/upcomingEvent'>
+                  <Link class="" to='/upcomingEvent' state={{ from: value?.id }}>
                       <img
                         className="media-object"
                         src={value.image}
@@ -77,13 +77,13 @@ function Event() {
                       />
                       <div className="media-boddy">
                         <h4 className="media-heading">
-                          FDP on Improving Environmental Quality ...
+                         {value.title}
                         </h4>
                         <p className="by-author">
-                         {value.content}
+                       {value.description}
                         </p>
                       </div>
-                    </Link>
+                      </Link>
                   </li>
                 </ul>
                 ))}

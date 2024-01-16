@@ -1,20 +1,48 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Footer from '../Footer/footer'
+import { useLocation } from 'react-router-dom'
+import axios from 'axios'
 
 function Upcomingevent() {
+
+  const [eventDetails,setEventDetails]=useState({})
+  const location = useLocation()
+  // const { from } = location.state
+  console.log(location.state.from,"fromm")
+  const eventId =location.state.from
+  const headers={
+    "Content-Type":"application/json",
+    "Accept":"application/json",
+  }
+  useEffect(() => {
+    const fetchEventDetails = async () => {
+      try {
+        const response = await axios.get(`/event-detail?event_id=${eventId}`,{headers:headers});
+        console.log(response?.data, "eventDetails data");
+        setEventDetails(response?.data?.data)
+      } catch (e) {
+        console.error(e, "error from upcoming");
+      }
+    };
+  
+    fetchEventDetails();
+  
+  }, [eventId]);
+  
   return (
     <>
 
     <div className="innerhead">
       <div className="container mt-104">
-        <h2 className="innerhead-title"> Upcoming Event Detail</h2>
+        {/* <h2 className="innerhead-title"> Upcoming Event Detail</h2> */}
+        <h2 className="innerhead-title"> {eventDetails?.title}</h2>
       </div>
     </div>
 
 
-    <section className="middle-sec pt-5 pb-3">
-      <div className="small-container">
-        <div className="row rowees">
+    <section className="middle-sec pt-5 pb-3" >
+      <div className="small-container" >
+        <div className="row rowees ">
           <div className="col-lg-9 col-md-9 col-sm-9 col-xs-12">
             <h1 className="inner-h">FDP on NEP 2020 - Pedagogical Reforms...</h1>
             <hr className="inner-hr" />
@@ -25,11 +53,7 @@ function Upcomingevent() {
                 <div className="news-content-inv-s">
                   <div className="content-block-extra-inv-s event-block-extra-s">
                     <h3>Description</h3>
-                    <p>Latin words, combined with a handful of model sentence structures,
-                      toLatin words, combined with a handful of model sentence structures,
-                      toLatin words, combined with a handful of model sentence structures,
-                      toLatin words, combined with a handful of model sentence structures,
-                      toLatin words, combined with a handful of model sentence structures, to</p>
+                    <p>{eventDetails.long_description}</p>
 
 
                   </div>
@@ -51,42 +75,15 @@ function Upcomingevent() {
                     <a href="#">
                       <div className="widget-wrapper-news-inv">
                         <div className="detail-news-inv details-event-s">
-                          <h6>Latin words, combined with a handful of model sentence </h6>
-                          <p className=""><i className="fa fa-calendar" aria-hidden="true"></i>17 Jul 2023</p>
+                          <h6>{eventDetails?.post_announcement_update} </h6>
+                          <p className=""><i className="fa fa-calendar" aria-hidden="true"></i>{eventDetails?.post_date}</p>
                         </div>
                       </div>
                     </a>
                   </li>
-                  <li>
-                    <a href="#">
-                      <div className="widget-wrapper-news-inv">
-                        <div className="detail-news-inv details-event-s">
-                          <h6>Latin words, combined with a handful of model sentence </h6>
-                          <p className=""><i className="fa fa-calendar" aria-hidden="true"></i>18 Jul 2023</p>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <div className="widget-wrapper-news-inv">
-                        <div className="detail-news-inv details-event-s">
-                          <h6>Latin words, combined with a handful of model sentence</h6>
-                          <p className=""><i className="fa fa-calendar" aria-hidden="true"></i>19 Jul 2023</p>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <div className="widget-wrapper-news-inv">
-                        <div className="detail-news-inv details-event-s">
-                          <h6>Latin words, combined with a handful of model sentence</h6>
-                          <p className=""><i className="fa fa-calendar" aria-hidden="true"></i>22 Jul 2023</p>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
+                 
+                
+                 
 
                 </ul>
               </div>

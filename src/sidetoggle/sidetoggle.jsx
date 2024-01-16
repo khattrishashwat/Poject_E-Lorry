@@ -13,6 +13,7 @@ function Sidetoggle() {
   {
     email:'',
   }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const submitemail=async(value,{resetForm})=>
   {
     setDisabledSubmit(true)
@@ -20,6 +21,21 @@ function Sidetoggle() {
     const itemlog = value
     const itemslog = JSON.stringify(itemlog)
     console.warn("Email : ",itemslog)
+    if (!emailRegex.test(value.email)) {
+                
+      toast("Entered email is invalid", {
+       position: "top-right",
+       autoClose: 2000,
+       hideProgressBar: false,
+       closeOnClick: true,
+       pauseOnHover: true,
+       draggable: true,
+       progress: undefined,
+       type: 'error'
+     })
+     setDisabledSubmit(false)
+      return;
+}
     const headers = {
       "Content-Type": "application/json",
       "Accept": "application/json",
@@ -51,6 +67,8 @@ function Sidetoggle() {
         progress: undefined,
         type: 'error'
       })
+      
+    }finally{
       setDisabledSubmit(false)
     }
 
@@ -65,7 +83,7 @@ function Sidetoggle() {
     {
       initialValues:initi,
       onSubmit:submitemail,
-      validationSchema:validation,
+      // validationSchema:validation,
     }
   )
 
@@ -102,7 +120,7 @@ function Sidetoggle() {
                 />
               {formik.touched.email && formik.errors.email ? <div className='text-danger text-toggle'>{formik.errors.email}</div> : null}  
 
-                <button type="submit" disabled={disabledSubmit} className="btn-subm" >
+                <button type="submit" disabled={disabledSubmit} className="btn-subm" style={{backgroundColor:"#1F39A7" ,borderRadius:"30px",width:"100%",height:"5vh"}}>
                 {
                           disabledSubmit ? (
                             <div>

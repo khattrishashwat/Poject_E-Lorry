@@ -54,10 +54,11 @@ function zetmarket() {
         </div>
       </div> */}
 
-<div className="small-container">
-    <h2 className="stakes">Key ZET Statistics</h2>
-    <span className="line-1"></span>
-    <div className="main-parent-grid-2 mt-70">
+<div className="small-container" >
+  
+    <h2 className="stakes" style={{marginLeft:"3rem"}}>Key ZET Statistics</h2>
+    <span className="line-1" ></span>
+    <div className="main-parent-grid-2 mt-70" style={{display:"flex",alignItems:"center",gap:"4rem",justifyContent:"center"}}>
 
       <div className="gri-1">
         <div className="hovicon effect-4 sub-b">

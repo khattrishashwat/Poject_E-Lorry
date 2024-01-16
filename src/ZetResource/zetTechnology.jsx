@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react'
 import Footer from '../Footer/footer'
 import axios from 'axios'
-
+import technoimage from '../techno.png'
 function ZetTechnology() 
 {
 
@@ -63,10 +63,10 @@ function ZetTechnology()
                     <div className="content-block-extra-inv-s event-block-extra-s myrs">
 
                    
-                     <div className="m-bot-new-1" style={{marginLeft: '40px'}} dangerouslySetInnerHTML={{ __html: parseHTML(technologyData.page_content) }} />
+                     <div class="m-bot-new-1" style={{marginLeft: '40px'}} dangerouslySetInnerHTML={{ __html: parseHTML(technologyData.page_content) }} />
 
                     </div>
-                    <img src="/e-lorry/web/images/techno.png" className="poli-1" />
+                    <img src={technoimage} className="poli-1" />
                   </div>
                 </div>
                 </div>

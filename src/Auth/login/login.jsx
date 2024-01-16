@@ -221,7 +221,7 @@ const submitlog = async(values) =>
                 <label className="labes">
                   <i className="fa-solid fa-envelope"></i>&nbsp;&nbsp;Email Address</label>
                   <input name='email' value={formiklogin.values.email} onChange={formiklogin.handleChange} onBlur={formiklogin.handleBlur} type="text"  placeholder="Enter Email"   className="field-11"   />
-                  {formiklogin.touched.email && formiklogin.errors.email ? <div className='text-danger'>{formiklogin.errors.email}</div> : null}  
+                  {formiklogin.touched.email && formiklogin.errors.email ? <div className='text-danger' style={{marginLeft:"2rem"}}>{formiklogin.errors.email}</div> : null}  
               </div> 
 
 
@@ -229,7 +229,7 @@ const submitlog = async(values) =>
                 <label className="labes">  <i className="fa-solid fa-lock"></i>&nbsp;&nbsp;Password</label>
                 <input name='password' value={formiklogin.values.password} onChange={formiklogin.handleChange} type="password"  placeholder="Enter Password"  className="field-11"  />
               
-              {formiklogin.touched.password && formiklogin.errors.password ? <div className='text-danger'>{formiklogin.errors.password}</div> : null}      
+              {formiklogin.touched.password && formiklogin.errors.password ? <div className='text-danger' style={{marginLeft:"2rem"}}>{formiklogin.errors.password}</div> : null}      
               </div>
 
 

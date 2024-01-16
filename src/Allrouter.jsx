@@ -27,7 +27,7 @@ const Profilepage = React.lazy(() => import('./Auth/profile/profile'))
 const Profileaccount = React.lazy(() => import('./Auth/profile/Userprofil'))
 const Profilepass = React.lazy(() => import('./Auth/profile/Resetpass'))
 const Logoutpage = React.lazy(() => import('./Auth/profile/logout'));
-
+// const UpcomingEvent = React.lazy(() => import('./Event/Upcomingevent'))
 // import DiscussLogin from './Discussiongroup/discussLogin';
 // import Projectitem from './Projectcontent/project'
 // import Temp from './temp';

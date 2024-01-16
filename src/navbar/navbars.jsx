@@ -103,7 +103,7 @@ function Navbars(props) {
           {sidernav ? (
             <div className="nav-area">
               <div className="logo">
-                <Link to="/"> <img src="images/e-Lorry.png" alt="navimg1"/></Link>
+                <Link to="/"> <img src="/e_lorry/web/images/e-Lorry.png" alt="navimg1"/></Link>
               </div>
               <div className="abc">
                 <ul>

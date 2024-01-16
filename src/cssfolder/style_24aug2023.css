@@ -582,11 +582,12 @@ nav .nav-area ul li a:hover {
 .line-1 {
     height: 2.5px;
     width: 64px;
-    background: black;
-    margin-top: 6px;
+    background:#0909cc;;
+    /* margin-top: 6px; */
     display: block;
     border-radius: 20px;
-    margin: 0 auto;
+    margin: 6px auto;
+   
 }
 
 .stake-main-parent-grid {

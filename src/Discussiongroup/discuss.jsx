@@ -20,10 +20,6 @@ import { GlobalInfo } from "../Allrouter";
 
 
 
-
-
-
-
 function Discuss( {isVisible} ) {
 
   const [show, setShow] = useState(false);
