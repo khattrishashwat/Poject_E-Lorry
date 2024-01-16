@@ -65,9 +65,11 @@ console.log(pasteventitem,"past ")
                 <hr className="inner-hr" />
 
 
+                {/* {pasteventitem.map((value,index)=>( */}
+                <ul  className="media-list main-list">
                 {pasteventitem.map((value,index)=>(
-                <ul  key={index} className="media-list main-list">
-                  <li className="media">
+
+                  <li className="media"  key={index}>
                   <Link class="" to='/upcomingEvent' state={{ from: value?.id }}>
                       <img
                         className="media-object"
@@ -85,8 +87,9 @@ console.log(pasteventitem,"past ")
                       </div>
                       </Link>
                   </li>
+                  ))}
                 </ul>
-                ))}
+                
               </div>
 
               <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12 plate">
@@ -117,9 +120,11 @@ console.log(pasteventitem,"past ")
                 ))} */}
                 {eventdata ? (
                   eventdata.length > 0 ? (
-                    eventdata.map((value, index) => (
-                      <ul key={index} className="media-list main-list">
-                        <li className="media">
+                    // eventdata.map((value, index) => (
+                      <ul  className="media-list main-list">
+                    { eventdata.map((value, index) => (
+
+                        <li className="media" key={index}>
                           <img
                             className="media-object"
                             src={value.image}
@@ -131,8 +136,9 @@ console.log(pasteventitem,"past ")
                             <p className="by-author">{value.description}</p>
                           </div>
                         </li>
+                        ))}
                       </ul>
-                    ))
+                    
                   ) : (
                     <div className="media-list main-list">
                     <h4 className="upcs">No Upcoming Events Yet</h4>

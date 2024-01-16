@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 function Letter() {
 
   const [downloadfile,setDownloadFile] =useState([])
+  const [disabledSubmit, setDisabledSubmit] = useState(false)
   useEffect(()=>{
     document.title = 'NewLetter Page';
     downloadPdf()
@@ -82,7 +83,7 @@ const token = localStorage.getItem("authtoken")
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const submitfrom= async(value,{resetForm}) =>
   {
-   
+    setDisabledSubmit(true)
     const itemlog = value
     const itemslog = JSON.stringify(itemlog)
     console.warn("Email : ",itemslog)
@@ -98,7 +99,7 @@ const token = localStorage.getItem("authtoken")
        progress: undefined,
        type: 'error'
      })
-    
+     setDisabledSubmit(false)
       return;
 }
     const headers = {
@@ -106,6 +107,7 @@ const token = localStorage.getItem("authtoken")
       "Accept": "application/json",
     }
     try{
+      setDisabledSubmit(true)
       const respo=await axios.post("/subscribe-newsletter", `${itemslog}`,
       {headers:headers})
       console.warn("res###",respo)
@@ -118,11 +120,13 @@ const token = localStorage.getItem("authtoken")
         draggable: true,
         progress: undefined,
       })
-
+      setDisabledSubmit(false)
     }
     catch(errors)
     {
+      setDisabledSubmit(true)
       console.warn("chdcschacha",)
+      setDisabledSubmit(false)
     }
 
     resetForm()
@@ -193,7 +197,23 @@ const token = localStorage.getItem("authtoken")
               {formik.touched.email && formik.errors.email ? <div className='text-danger'>{formik.errors.email}</div> : null}  
 
             <div className="subs-btn-cent">
-              <button type='submit' className="subs-btn">Subscribe</button>
+
+
+
+              {/* <button type='submit' className="subs-btn">Subscribe</button> */}
+
+              <button type="submit" disabled={disabledSubmit} className="subs-btn"
+              >
+                {
+                          disabledSubmit ? (
+                            <div>
+                              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                              <span className="sr-only"></span>  Subscribe
+                            </div>
+                          ) : 'Subscribe'
+                        }
+                </button>
+
             </div>
 
             <div className="download-btn-grid">

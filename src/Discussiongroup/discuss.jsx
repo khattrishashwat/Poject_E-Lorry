@@ -40,6 +40,8 @@ function Discuss( {isVisible} ) {
   const [id, setId] = useState();
   const [eventDisplay, setEventDisplay] = useState([])
   const [disabledSubmit, setDisabledSubmit] = useState(false)
+  const [handleclick,sethandleclick] = useState(true)
+  const [isLoading, setLoading] = useState(false);
   
 
 
@@ -75,7 +77,16 @@ function Discuss( {isVisible} ) {
   }
 
 
-
+  const handleLinkClick = (link) => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+    const newTab = window.open(link, '_blank');
+    newTab.addEventListener('load', () => {
+      setLoading(false);
+    });
+  };
 
 
   const eventhandledata=()=>
@@ -231,14 +242,17 @@ function Discuss( {isVisible} ) {
           // You can add your custom file size validation logic here
           return value && value.size <= 10485760; // 10 MB
         }),
-    meeting_link: Yup.string().min(5, 'Too Short!').max(1000, 'Too Long').required('Required'),
-    long_description: Yup.string().min(10, 'Too Short!').max(1000, 'Too Long').required('Required'),
+    meeting_link: Yup.string().required('Plese enter link').test('is-https', 'URL must be HTTPS', (value) => {
+      if (!value) return true; // Allow empty values
+      return value.startsWith('https://');
+    }),
+    long_description: Yup.string().min(10, 'Too Short!').max(1000, 'Too Long').required('please enter description'),
   });
 
   const eventsubmit = async (values, {resetForm}) => {
     setDisabledSubmit(true)
     const tokenlogin = localStorage.getItem("authtoken")
-    // console.warn("tok !!!!!", tokenlogin)
+    // console.warn("event ",event)
     const itemevent = values
     const itemsevent = JSON.stringify(itemevent)
     const headers = {
@@ -553,14 +567,14 @@ console.warn("vvvvv", isVisible)
               />
               <div className="mainsflexings">
                 <div className="like">
-                  <i onClick={(e)=>handlelike(value.id)} className={token &&  value.you_like_post == 1 ? "fa-solid fa-thumbs-up thumbcolor" : "fa-solid fa-thumbs-up"} ></i>
+                  <i onClick={(e)=>handlelike(value.id)} className={token &&  value.you_like_post == 1 ? "fa-solid fa-thumbs-up thumbcolor  pointmu" : "fa-solid fa-thumbs-up pointmu"} ></i>
                   
                   
                   
                   <h4>{value.you_like_post}</h4>
                 </div>
                 <div className="like">
-                  <i  onClick={(e)=>handledislike(value.id)} className={token &&  value.you_dislike_post == 1 ? "fa-solid fa-thumbs-down thumbcolor" : "fa-solid fa-thumbs-down"}></i>
+                  <i  onClick={(e)=>handledislike(value.id)} className={token &&  value.you_dislike_post == 1 ? "fa-solid fa-thumbs-down thumbcolor pointmu" : "fa-solid fa-thumbs-down pointmu"}></i>
                   
                  
                   
@@ -568,12 +582,12 @@ console.warn("vvvvv", isVisible)
                   <h4>{value.you_dislike_post}</h4>
                 </div>
                 <div className="like">
-                  <i className="fa-solid fa-comment" onClick={()=>handleCommentId(value.id)}></i>
+                  <i className="fa-solid fa-comment pointmu" onClick={()=>handleCommentId(value.id)}  onDoubleClick={()=>sethandleclick(true)}></i>
                   <h4>{value.post_comments_count}</h4>
                 </div>
                 <div className="like">
                   {/* <a href=""> */}
-                    <i className="fa-solid fa-share" onClick={()=>setShowshare(true)}></i>
+                    <i className="fa-solid fa-share pointmu" onClick={()=>setShowshare(true)} ></i>
                   {/* </a> */}
                 </div>
                
@@ -589,10 +603,6 @@ console.warn("vvvvv", isVisible)
                        currentUserFullName: value.name
                      }}
                      commentData={data}
-                    //  logIn={{
-                    //    loginLink: "http://localhost:3001/",
-                    //    signupLink: "http://localhost:3001/"
-                    //  }} 
                      customImg={value.user_avator}
                      inputStyle={{ border: "1px solid rgb(208 208 208)" }}
                      formStyle={{ backgroundColor: "white" }}
@@ -664,8 +674,10 @@ console.warn("vvvvv", isVisible)
                        <p>{value.long_description}</p>
                    
                        <div className="two-btn-flex">
-                           <a href="" className="add-to-cl">Add to Calendar</a>
-                           <a href="https://meet.google.com/" className="joins">Join Now</a>
+                           <Link to="https://www.google.com/calendar/render?action=TEMPLATE&text=Your+Event+Title&dates=20240101T010000Z/20240101T020000Z&details=Event+Details&location=Event+Location" className="add-to-cl">Add to Calendar</Link>
+                           <Link to='/discuss' className="joins" onClick={()=>handleLinkClick(value.meeting_link)}>
+                           {isLoading ? 'Loading...' : 'Join Now'}
+                            </Link>
                        </div>              
                    </div> 
                    ))}
@@ -700,7 +712,7 @@ console.warn("vvvvv", isVisible)
                     onChange={fromikpost.handleChange}
                     className="post-form"
                     />
-                   {fromikpost.touched.title && fromikpost.errors.title ? <div className='text-danger'>{fromikpost.errors.title}</div> : null}
+                   {fromikpost.touched.title && fromikpost.errors.title ? <div className='text-danger testdanger'>{fromikpost.errors.title}</div> : null}
 
 
                     <label className="pst-lab">Choose Image / Video</label>
@@ -714,19 +726,32 @@ console.warn("vvvvv", isVisible)
                     className="post-form"
                     />
                    
-                    {fromikpost.touched.image && fromikpost.errors.image ? <div className='text-danger'>{fromikpost.errors.image}</div> : null}
+                    {fromikpost.touched.image && fromikpost.errors.image ? <div className='text-danger testdanger' >{fromikpost.errors.image}</div> : null}
 
 
                     <label className="pst-lab">Invite VIP Stakeholder</label>
-                    <input type="text"
+                    <input 
+                     type="text"
                      placeholder="e-lorry@gmail.com" 
                      name="vip"
                      value={fromikpost.values.vip}
                      onChange={fromikpost.handleChange}
                      className="post-form" 
                      />
-                    {fromikpost.touched.vip && fromikpost.errors.vip ? <div className='text-danger'>{fromikpost.errors.vip}</div> : null}
+                    {fromikpost.touched.vip && fromikpost.errors.vip ? <div className='text-danger testdanger'>{fromikpost.errors.vip}</div> : null}
 
+                   
+                    {/* <div>
+                    <strong>CC:</strong>
+                      <input
+                      name='emailAddress'
+                    value={formik.values.emailAddress &&
+                    formik.values.emailAddress.split(',').map((email, index) => (
+                    <span key={index}>{email.trim()}, </span>
+                   ))}
+                   />
+
+                   </div> */}
                
                     <label className="pst-lab">Description</label>
                     <textarea 
@@ -737,7 +762,7 @@ console.warn("vvvvv", isVisible)
                     onChange={fromikpost.handleChange}
 
                     /> 
-                    {fromikpost.touched.description && fromikpost.errors.description ? <div className='text-danger'>{fromikpost.errors.description}</div> : null}
+                    {fromikpost.touched.description && fromikpost.errors.description ? <div className='text-danger testdanger'>{fromikpost.errors.description}</div> : null}
 
                     
                
@@ -796,9 +821,9 @@ console.warn("vvvvv", isVisible)
                       placeholder="Write Title"
                       className="post-form"
                     />
-                    {formik.touched.title && formik.errors.title ? <div className='text-danger'>{formik.errors.title}</div> : null}
+                    {formik.touched.title && formik.errors.title ? <div className='text-danger testdanger'>{formik.errors.title}</div> : null}
 
-                    <label className="pst-lab">Post Date</label>
+                    <label className="pst-lab">Event Date</label>
                     <input
                       type="date"
                       name='post_date'
@@ -807,7 +832,7 @@ console.warn("vvvvv", isVisible)
                       placeholder="Write Title"
                       className="post-form"
                     />
-                    {formik.touched.post_date && formik.errors.post_date ? <div className='text-danger'>{formik.errors.post_date}</div> : null}
+                    {formik.touched.post_date && formik.errors.post_date ? <div className='text-danger testdanger'>{formik.errors.post_date}</div> : null}
 
 
                     {/* <label className="pst-lab">Choose File</label>
@@ -833,7 +858,7 @@ console.warn("vvvvv", isVisible)
                         className="post-form"
                       />
                       {formik.touched.uploaded_file && formik.errors.uploaded_file ? (
-                        <div className='text-danger'>{formik.errors.uploaded_file}</div>
+                        <div className='text-danger testdanger'>{formik.errors.uploaded_file}</div>
                       ) : null}
 
 
@@ -847,7 +872,7 @@ console.warn("vvvvv", isVisible)
                       placeholder="Enter meeting Link"
                       className="post-form"
                     />
-                    {formik.touched.meeting_link && formik.errors.meeting_link ? <div className='text-danger'>{formik.errors.meeting_link}</div> : null}
+                    {formik.touched.meeting_link && formik.errors.meeting_link ? <div className='text-danger testdanger'>{formik.errors.meeting_link}</div> : null}
 
                     <label className="pst-lab">Description</label>
                     <textarea
@@ -857,7 +882,7 @@ console.warn("vvvvv", isVisible)
                       placeholder="Enter Long Description"
                       className="post-form"
                     ></textarea>
-                    {formik.touched.long_description && formik.errors.long_description ? <div className='text-danger'>{formik.errors.long_description}</div> : null}
+                    {formik.touched.long_description && formik.errors.long_description ? <div className='text-danger testdanger'>{formik.errors.long_description}</div> : null}
 
                     {/* <button type='submit' className="postes"> Post Now </button> */}
                     <button type="submit" disabled={disabledSubmit} className="postes btn-subm" onClick={()=>setShowevent(true)} >

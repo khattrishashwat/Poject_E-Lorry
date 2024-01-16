@@ -271,7 +271,7 @@ function Contact() {
                   disabledSubmit ? (
                     <div>
                       <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                      <span className="sr-only"></span> Submit &nbsp;&nbsp;<i className="fa-solid fa-arrow-right"></i>
+                      <span className="sr-only"></span> Submit 
                     </div>
                   ) : 'Submit'
                 }

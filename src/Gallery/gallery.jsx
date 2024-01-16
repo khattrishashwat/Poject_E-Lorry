@@ -168,7 +168,7 @@ function Gallery()
             <div className="Galler-section-div">
               <div className="carousel-gallery">
                 <div className="swiper-container">
-                  {/* <div className="swiper-wrapper"> */}
+                  
                     {galleryevent ? (
 
                       <Swiper
@@ -272,7 +272,7 @@ function Gallery()
                         </Swiper>
                       </div>
                     )}
-                  {/* </div> */}
+                  
                 </div>
               </div>
             </div>

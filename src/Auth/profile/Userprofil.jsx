@@ -9,6 +9,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function Userprofil() {
     const [itemupdate, setitmeupdata] = useState([])
+    const [disabledSubmit, setDisabledSubmit] = useState(false)
+
     const intialvalue = {
         name: itemupdate.name,
         email: itemupdate.email,
@@ -31,6 +33,7 @@ function Userprofil() {
     }, [])
 
     const dataprofile = async () => {
+
         try {
             const resp = await axios.get("/view-profile", { headers: headers })
             // console.log("update responce",resp.data.data)
@@ -43,6 +46,8 @@ function Userprofil() {
     }
 
     const submitdata = async (value, { resetForm }) => {
+    setDisabledSubmit(true)
+
         // console.warn('formik button is working',value)
         try {
             const items = value;
@@ -75,6 +80,8 @@ function Userprofil() {
 
         }
         resetForm();
+    setDisabledSubmit(false)
+
     }
 
     const formik = useFormik({
@@ -145,7 +152,17 @@ function Userprofil() {
                                         </div>
 
                                         <div className="box-center-pro">
-                                            <button type='submit'>Update</button>
+                                            {/* <button type='submit'>Update</button> */}
+                                            <button type="submit" disabled={disabledSubmit}>
+                                              {
+                                                        disabledSubmit ? (
+                                                          <div>
+                                                            <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                            <span className="sr-only"></span>  Update
+                                                          </div>
+                                                        ) : 'Update'
+                                                      }
+                                              </button>
                                         </div>
 
                                     </div>
