@@ -76,6 +76,19 @@ function Discuss( {isVisible} ) {
 
   }
 
+  const calendarLink = ()=>
+  {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+    const linkcal='https://www.google.com/calendar/render?action=TEMPLATE&text=Your+Event+Title&dates=20240101T010000Z/20240101T020000Z&details=Event+Details&location=Event+Location'
+
+    const newTab = window.open(linkcal, '_blank');
+    newTab.addEventListener('load', () => {
+      setLoading(false);
+    });
+  }
 
   const handleLinkClick = (link) => {
     setLoading(true);
@@ -674,7 +687,8 @@ console.warn("vvvvv", isVisible)
                        <p>{value.long_description}</p>
                    
                        <div className="two-btn-flex">
-                           <Link to="https://www.google.com/calendar/render?action=TEMPLATE&text=Your+Event+Title&dates=20240101T010000Z/20240101T020000Z&details=Event+Details&location=Event+Location" className="add-to-cl">Add to Calendar</Link>
+                            
+                           <Link to='/discuss'  className="add-to-cl" onClick={()=>calendarLink()}> {isLoading ? 'Loading...' : 'Calendar'}</Link>
                            <Link to='/discuss' className="joins" onClick={()=>handleLinkClick(value.meeting_link)}>
                            {isLoading ? 'Loading...' : 'Join Now'}
                             </Link>
