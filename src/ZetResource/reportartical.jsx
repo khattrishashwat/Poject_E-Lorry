@@ -4,11 +4,20 @@ import Footer from "../Footer/footer";
 import Toggleside from "../sidetoggle/sidetoggle";
 import axios from "axios";
 import moment from 'moment';
+// import { saveAs } from 'file-saver';
+import * as FileSaver from 'file-saver';
 
 function Reportartical() {
 
   const [articleData, setArticleData] = useState([])
   const [reportData, setReportData] = useState([])
+
+
+const downloadfile=(fileurl) =>
+{
+  FileSaver.saveAs(fileurl);
+  console.log("cbhsbchsbcvhs", fileurl)
+}  
 
   useEffect(() => {
     dataitem()
@@ -63,7 +72,9 @@ function Reportartical() {
                         <h3>Type:&nbsp;&nbsp;Blog</h3>
                         <h3>Owner:&nbsp;&nbsp;ICCT</h3>
                       </div>
-                      <a href="" className="download-btn">Download &nbsp;&nbsp;<i className="fa-solid fa-download"></i></a>
+                      {/* <a href="" className="download-btn">Download &nbsp;&nbsp;<i className="fa-solid fa-download"></i></a> */}
+                     
+                    <button onClick={()=>downloadfile(value.article_file)} className="download-btn downart">Download &nbsp;&nbsp;<i className="fa-solid fa-download"></i></button> 
                     </div>
                     <div className="img">
                       <figure className="boxShadow2"><img src={value.image} alt="img" className="my-new" />

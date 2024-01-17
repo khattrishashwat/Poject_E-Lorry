@@ -6,6 +6,7 @@ import axios from 'axios'
 function Upcomingevent() {
 
   const [eventDetails,setEventDetails]=useState({})
+  const [recentDetail,setRecentDetails] =useState([])
   const location = useLocation()
   // const { from } = location.state
   console.log(location.state.from,"fromm")
@@ -18,8 +19,9 @@ function Upcomingevent() {
     const fetchEventDetails = async () => {
       try {
         const response = await axios.get(`/event-detail?event_id=${eventId}`,{headers:headers});
-        console.log(response?.data, "eventDetails data");
+        console.log("eventDetails data", response.data.data.recent);
         setEventDetails(response?.data?.data)
+        setRecentDetails(response.data.data.recent)
       } catch (e) {
         console.error(e, "error from upcoming");
       }
@@ -47,20 +49,6 @@ function Upcomingevent() {
             <h1 className="inner-h">FDP on NEP 2020 - Pedagogical Reforms...</h1>
             <hr className="inner-hr" />
             <img src="images/1.png" className="w-100" />
-
-            <div className="newsdetails-main-s">
-              <div className="news-dtls-box enevt-dtls-box">
-                <div className="news-content-inv-s">
-                  <div className="content-block-extra-inv-s event-block-extra-s">
-                    <h3>Description</h3>
-                    <p>{eventDetails.long_description}</p>
-
-
-                  </div>
-                </div>
-              </div>
-            </div>
-
           </div>
           <div className="col-lg-3 col-md-3 col-sm-3 col-xs-12">
             <div className="widget-news-inv">
@@ -69,18 +57,18 @@ function Upcomingevent() {
               </header>
               <div className="content-news-inv">
                 <ul>
-
-
-                  <li>
+                  {recentDetail.map((value,index)=>(
+                  <li key={index}>
                     <a href="#">
                       <div className="widget-wrapper-news-inv">
                         <div className="detail-news-inv details-event-s">
-                          <h6>{eventDetails?.post_announcement_update} </h6>
-                          <p className=""><i className="fa fa-calendar" aria-hidden="true"></i>{eventDetails?.post_date}</p>
+                          <h6 className='textdes-over'>{value.long_description} </h6>
+                          <p className=""><i className="fa fa-calendar" aria-hidden="true"></i>{value.post_date}</p>
                         </div>
                       </div>
                     </a>
                   </li>
+                  ))}
                  
                 
                  

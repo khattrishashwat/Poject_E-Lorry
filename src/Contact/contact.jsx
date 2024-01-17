@@ -1,4 +1,4 @@
-import React,{useEffect,useState} from "react";
+import React, { useEffect, useState } from "react";
 import Footer from "../Footer/footer";
 // import "./contact.css";
 import Toggleside from "../sidetoggle/sidetoggle";
@@ -14,9 +14,9 @@ function Contact() {
 
   const [disabledSubmit, setDisabledSubmit] = useState(false)
 
-  useEffect(()=>{
+  useEffect(() => {
     document.title = 'Contact Page';
-  },[])
+  }, [])
 
 
   const initails = {
@@ -28,17 +28,14 @@ function Contact() {
   }
 
   const validate = Yup.object().shape({
-    name: Yup.string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('Required'),
-    email: Yup.string().email('Invalid email').required('Required'),
+    name: Yup.string().required('Please enter name'),
+    email: Yup.string().email('Invalid email').required('please enter mail'),
     partner: Yup.string()
-      .required('You must select option'),
+      .required('Please  select option'),
     phone: Yup.string()
-      .matches(/^\d{10}$/, 'Invalid phone number')
-      .required('Phone number is required'),
-    comment: Yup.string().min(5, 'Too Short!').max(100, 'Too Long').required('Required'),
+      .matches(/^\$/, 'Invalid phone number')
+      .required('Please enter Phone number'),
+    comment: Yup.string().min(5, 'Too Short!').max(100, 'Too Long').required('Please eneter Comment'),
 
   });
 
@@ -67,20 +64,20 @@ function Contact() {
       }
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(values.email)) {
-    toast("Entered email is invalid", {
-      position: "top-right",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      type: 'error'
-    });
-    setDisabledSubmit(false);
-    return;
-  }
+    if (!emailRegex.test(values.email)) {
+      toast("Entered email is invalid", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        type: 'error'
+      });
+      setDisabledSubmit(false);
+      return;
+    }
     const headers = {
       "Content-Type": "application/json",
       "Accept": "application/json",
@@ -216,7 +213,7 @@ function Contact() {
                   onChange={formik.handleChange}
                   placeholder="Your name*"
                 />
-                {formik.touched.name && formik.errors.name ? <div className='text-danger'>{formik.errors.name}</div> : null}
+                {formik.touched.name && formik.errors.name ? <div className='text-danger textvalidanger'>{formik.errors.name}</div> : null}
 
               </div>
 
@@ -229,7 +226,7 @@ function Contact() {
                   onChange={formik.handleChange}
                   placeholder="Phone number*"
                 />
-                {formik.touched.phone && formik.errors.phone ? <div className='text-danger'>{formik.errors.phone}</div> : null}
+                {formik.touched.phone && formik.errors.phone ? <div className='text-danger textvalidanger'>{formik.errors.phone}</div> : null}
 
               </div>
 
@@ -242,7 +239,7 @@ function Contact() {
                   onChange={formik.handleChange}
                   placeholder="Your email*"
                 />
-                {formik.touched.email && formik.errors.email ? <div className='text-danger'>{formik.errors.email}</div> : null}
+                {formik.touched.email && formik.errors.email ? <div className='text-danger textvalidanger'>{formik.errors.email}</div> : null}
 
               </div>
 
@@ -254,7 +251,7 @@ function Contact() {
                   <option value="Yes">Yes</option>
                   <option value="No">No</option>
                 </select>
-                {formik.touched.partner && formik.errors.partner ? <div className='text-danger'>{formik.errors.partner}</div> : null}
+                {formik.touched.partner && formik.errors.partner ? <div className='text-danger textvalidanger'>{formik.errors.partner}</div> : null}
 
               </div>
 
@@ -262,7 +259,7 @@ function Contact() {
                 <textarea name="comment" value={formik.values.comment} onChange={formik.handleChange} placeholder="Type your message here...">
                   Type your message here...
                 </textarea>
-                {formik.touched.comment && formik.errors.comment ? <div className='text-danger'>{formik.errors.comment}</div> : null}
+                {formik.touched.comment && formik.errors.comment ? <div className='text-danger textvalidanger'>{formik.errors.comment}</div> : null}
 
               </div>
 
@@ -271,7 +268,7 @@ function Contact() {
                   disabledSubmit ? (
                     <div>
                       <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                      <span className="sr-only"></span> Submit 
+                      <span className="sr-only"></span> Submit
                     </div>
                   ) : 'Submit'
                 }

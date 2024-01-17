@@ -13,6 +13,7 @@ import axios from "axios";
 import Toggleside from '../sidetoggle/sidetoggle'
 
 
+
 function Navbars(props) {
   const [sidernav, setsidernav] = useState(true);
   const [isprofile, setProfile] = useState(false)
@@ -20,39 +21,36 @@ function Navbars(props) {
   const [dropdownzet, setDropdownzet] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
+  const currentPath = location.pathname;
   // const { parameterValue } = props.params;
   // const { parameterValue } = props.location.state || {};
   // console.warn("loc",location.state)
   // console.warn("pro",parameterValue)
 
 
-  const[profileupdate,setProfileupdate]=useState([])
+  const [profileupdate, setProfileupdate] = useState([])
 
-  const token=localStorage.getItem('authtoken')
-  const headers={
- //   "Content-Type":"application/json",
-   "Accept":"application/json",
-   'Authorization': `Bearer ${token}`,
- }
+  const token = localStorage.getItem('authtoken')
+  const headers = {
+    //   "Content-Type":"application/json",
+    "Accept": "application/json",
+    'Authorization': `Bearer ${token}`,
+  }
 
 
-  const dataprofile= async()=>
-  {
-      try
-      {
-          const resp=await axios.get("/view-profile",{headers:headers})
-          // console.log(" nav api profile update responce",resp.data.data)
-          setProfileupdate(resp.data.data)
-      }
-      catch(errors)
-      {
-        console.log(errors)
-      }
+  const dataprofile = async () => {
+    try {
+      const resp = await axios.get("/view-profile", { headers: headers })
+      // console.log(" nav api profile update responce",resp.data.data)
+      setProfileupdate(resp.data.data)
+    }
+    catch (errors) {
+      console.log(errors)
+    }
 
   }
 
-  const profileaction=()=>
-  {
+  const profileaction = () => {
     const tokens = localStorage.getItem('authtoken')
     // console.warn("@#token", tokens)
     if (!tokens) {
@@ -71,17 +69,15 @@ function Navbars(props) {
   }, [location.state])
 
 
-    // this for logout for profile 
-    
+  // this for logout for profile 
 
-  useEffect(()=>
-  { 
-   if(location.state && location.state.parameterValue === "yourParameterValue")
-   {
-   localStorage.removeItem('authtoken')
-    profileaction()
-   }
-  },[location.state])
+
+  useEffect(() => {
+    if (location.state && location.state.parameterValue === "yourParameterValue") {
+      localStorage.removeItem('authtoken')
+      profileaction()
+    }
+  }, [location.state])
 
 
 
@@ -103,7 +99,7 @@ function Navbars(props) {
           {sidernav ? (
             <div className="nav-area">
               <div className="logo">
-                <Link to="/"> <img src="/e_lorry/web/images/e-Lorry.png" alt="navimg1"/></Link>
+                <Link to="/"> <img src="/e_lorry/web/images/e-Lorry.png" alt="navimg1" /></Link>
               </div>
               <div className="abc">
                 <ul>
@@ -130,35 +126,41 @@ function Navbars(props) {
                     </div>
                   </li>
 
-                  <li><Link to="/discuss" className="heelo">ZET Chatroom</Link></li>
+                  {/* {
+                   currentPath.includes('/post/')===false &&( */}
+                    
+                    <li><Link to="/discuss" className="heelo">ZET Chatroom</Link></li>
+                   {/* )
+
+                   } */}
                   <li><Link to="/gallery" className="heelo">Gallery</Link></li>
                   <li><Link to="/contact" className="heelo">Contact</Link></li>
 
 
                   {isprofile ?
-                  (   
-                  <li className="navbar-dropdown">
-                  <img src={profileupdate.avator} alt="zyx" className="imgprofile" /> 
-  
-                  <div className="dropdown leftings">
-                      <Link to='/profileSetting'>My Account</Link>
-                      <Link to='/resetpassword'>Change Password</Link>
-                      <Link to="/logout">Logout</Link>                     
-                  </div>
-              </li>
-                  )
-            :
-            (
-            <Link to="/auth/login" className="log-btn">Login</Link>
-            )
-            }
-                  
+                    (
+                      <li className="navbar-dropdown">
+                        <img src={profileupdate.avator} alt="zyx" className="imgprofile" />
+
+                        <div className="dropdown leftings">
+                          <Link to='/profileSetting'>My Account</Link>
+                          <Link to='/resetpassword'>Change Password</Link>
+                          <Link to="/logout">Logout</Link>
+                        </div>
+                      </li>
+                    )
+                    :
+                    (
+                      <Link to="/auth/login" className="log-btn">Login</Link>
+                    )
+                  }
+
                 </ul>
               </div>
 
-              
-             
-           
+
+
+
 
 
 
@@ -255,23 +257,23 @@ function Navbars(props) {
                   <Link to="/search" onClick={() => setsidernav(!sidernav)}><i className="fa fa-search"></i></Link>
                 </div>
               </div> */}
-               {isprofile ?
-                  (   
+              {isprofile ?
+                (
                   <li className="navbar-dropdown">
-                  <img src={profileupdate.avator} alt="zyx" className="imgprofile" /> 
-  
-                  <div className="dropdown leftings">
+                    <img src={profileupdate.avator} alt="zyx" className="imgprofile" />
+
+                    <div className="dropdown leftings">
                       <Link to='/profileSetting' onClick={() => setsidernav(!sidernav)} >My Account</Link>
                       <Link to='/resetpassword' onClick={() => setsidernav(!sidernav)} >Change Password</Link>
-                      <Link to="/logout" onClick={() => setsidernav(!sidernav)}>Logout</Link>                     
-                  </div>
-              </li>
-                  )
-            :
-            (
-            <Link to="/auth/login" className="log-btn log-respbtn">Login</Link>
-            )
-            }
+                      <Link to="/logout" onClick={() => setsidernav(!sidernav)}>Logout</Link>
+                    </div>
+                  </li>
+                )
+                :
+                (
+                  <Link to="/auth/login" className="log-btn log-respbtn">Login</Link>
+                )
+              }
             </div>
 
           )}

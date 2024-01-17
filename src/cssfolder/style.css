@@ -3293,6 +3293,14 @@ iframe {
   margin-top: 30px;
 }
 
+
+.discuss-main-parentcl {
+  display: grid;
+  grid-template-columns: 103% 35%;
+  margin-top: 30px;
+}
+
+
 /**********************Discuss-login***************/
 
 .group-section-1 {
@@ -7147,6 +7155,7 @@ transition: all .3s ease-in-out; */
   list-style-type: disclosure-closed !important;
   margin-bottom: 50px;
   margin-left: 20px;
+  text-align: justify;
 }
 
 .carousel-gallery .swiper-slide .ttemp {
@@ -7176,3 +7185,33 @@ transition: all .3s ease-in-out; */
   margin-left: 1px;
 }
 
+.downart
+{
+  border: none;
+  background-color: unset;
+}
+
+.postdetailimg
+{
+    width: 94%;
+    padding-top: 16px;
+    height: 731px;
+}
+
+.blur-sty
+{
+  filter: blur(20px); 
+}
+.textvalidanger
+{
+margin-left:1px;
+margin-top: 5px;
+}
+
+.textdes-over
+{
+  width: 206px; 
+  /* border: 1px solid #ccc;  */
+  overflow-wrap: break-word;
+  font-size: 15px !important;
+}

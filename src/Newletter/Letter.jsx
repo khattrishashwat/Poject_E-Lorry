@@ -147,12 +147,10 @@ const token = localStorage.getItem("authtoken")
 
 
   const downloadFile = (filename, url,event) => {
-    // Use the provided filename and URL to initiate the download
     const link = document.createElement('a');
     link.href = url;
     link.download = filename;
     event.preventDefault();
-    // Simulate a click on the anchor tag
     const newTab = window.open(link, '_blank');
     newTab.addEventListener('load', () => {
       // setLoading(false);
@@ -220,12 +218,12 @@ const token = localStorage.getItem("authtoken")
 
             </div>
 
-            <div className="download-btn-grid">
+        <div className="download-btn-grid">
         {downloadfile?.map((file, index) => (
           <div
             key={index}
             // href="#"
-            // className="download-btn-1"
+            className="download-btn-1"
             onClick={(event) => downloadFile(file.title, file.filename_url,event)}
           >
             {/* {`Newsletter for ${file.title} `} */}

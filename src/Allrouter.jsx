@@ -27,6 +27,7 @@ const Profilepage = React.lazy(() => import('./Auth/profile/profile'))
 const Profileaccount = React.lazy(() => import('./Auth/profile/Userprofil'))
 const Profilepass = React.lazy(() => import('./Auth/profile/Resetpass'))
 const Logoutpage = React.lazy(() => import('./Auth/profile/logout'));
+const Chatpostdetail= React.lazy(()=> import('./Discussiongroup/Postdetail'))
 // const UpcomingEvent = React.lazy(() => import('./Event/Upcomingevent'))
 // import DiscussLogin from './Discussiongroup/discussLogin';
 // import Projectitem from './Projectcontent/project'
@@ -73,6 +74,7 @@ function Allrouter() {
             <Route path='/resetpassword' element={<Profilepass />} />
             {/* <Route path='/teamppage' element={<Temp />} /> */}
             <Route path='/logout' element={<Logoutpage />} />
+            <Route path='/post/:pid' element={<Chatpostdetail />} />
           </Routes>
         </Suspense>
       </Router>
