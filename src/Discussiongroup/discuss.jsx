@@ -17,6 +17,9 @@ import { CommentSection } from "react-comments-section";
 import "react-comments-section/dist/index.css";
 import Navbars from "../navbar/navbars";
 import { GlobalInfo } from "../Allrouter";
+import Chip from '@mui/material/Chip';
+import TextField from '@mui/material/TextField';
+
 
 
 
@@ -60,6 +63,7 @@ function Discuss( {isVisible} ) {
     "Accept": "application/json",
     'Authorization': `Bearer ${token}`,
   }
+
 
 
  
@@ -252,11 +256,10 @@ function Discuss( {isVisible} ) {
     post_date: Yup.date().required('Date is required').nullable(),
     // uploaded_file: Yup.mixed().required('Image is required'),
     uploaded_file: Yup.mixed().required('File is required').test('fileSize', 'File size is too large', (value) => {
-          // You can add your custom file size validation logic here
-          return value && value.size <= 10485760; // 10 MB
+          return value && value.size <= 10485760;
         }),
     meeting_link: Yup.string().required('Plese enter link').test('is-https', 'URL must be HTTPS', (value) => {
-      if (!value) return true; // Allow empty values
+      if (!value) return true;
       return value.startsWith('https://');
     }),
     long_description: Yup.string().min(10, 'Too Short!').max(1000, 'Too Long').required('please enter description'),
@@ -437,7 +440,14 @@ function Discuss( {isVisible} ) {
         // You can add your custom file size validation logic here
         // return value && value.size <= 10485760; // 10 MB
       // }),
-       vip: Yup.string().required('please enter '),
+       vip: Yup.string().required('please enter emails '),
+      //  .test('is-https-emails', 'Each email must start with "https://"', (value) => {
+      //   if (!value) return true; 
+      //   // return value.startsWith('https://');
+      //   const emailArray = value.split(',');
+
+      //   return emailArray.every((email) => email.trim().startsWith('https://'));
+      // }),
       description: Yup.string().min(5, 'Too Short!').max(1000, 'Too Long').required('Required'),
   });
   const submitpost=async(value, { resetForm })=>
@@ -494,6 +504,32 @@ function Discuss( {isVisible} ) {
      onSubmit:submitpost,
      validationSchema:validatedpost,
   })
+
+
+
+  const handleInputChange = (event) => {
+    const emails = event.target.value.split(','); 
+    formik.setFieldValue('vip', emails.join(',')); 
+  };
+
+  const emailChips =formik.values.vip && formik.values.vip.split(',')
+      ? formik.values.vip.split(',').map((email, index) => (
+          <Chip
+            key={index}
+            label={email.trim()}
+            onDelete={() => {
+              const updatedEmails = formik.values.vip
+                .split(',')
+                .filter((_, i) => i !== index)
+                .join(',');
+              formik.setFieldValue('vip', updatedEmails);
+            }}
+            style={{ marginRight: '8px', marginBottom: '8px' }}
+          />
+        ))
+      : null;
+
+
 
 useEffect(()=>{
   document.title = 'Chatroom Page';
@@ -749,23 +785,18 @@ console.warn("vvvvv", isVisible)
                      placeholder="e-lorry@gmail.com" 
                      name="vip"
                      value={fromikpost.values.vip}
-                     onChange={fromikpost.handleChange}
+                    //  onChange={fromikpost.handleChange}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                     fromikpost.handleChange(e);
+                  }}
+                               
                      className="post-form" 
                      />
-                    {fromikpost.touched.vip && fromikpost.errors.vip ? <div className='text-danger testdanger'>{fromikpost.errors.vip}</div> : null}
+                    {fromikpost.touched.vip && fromikpost.errors.vip ? <div className='text-danger testdanger'>{fromikpost.errors.vip}</div> : null}                    
+                    <div style={{ marginTop: '8px' }}>{emailChips}</div>
 
-                   
-                    {/* <div>
-                    <strong>CC:</strong>
-                      <input
-                      name='emailAddress'
-                    value={formik.values.emailAddress &&
-                    formik.values.emailAddress.split(',').map((email, index) => (
-                    <span key={index}>{email.trim()}, </span>
-                   ))}
-                   />
 
-                   </div> */}
                
                     <label className="pst-lab">Description</label>
                     <textarea 

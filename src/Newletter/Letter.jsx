@@ -153,9 +153,13 @@ const token = localStorage.getItem("authtoken")
     link.download = filename;
     event.preventDefault();
     // Simulate a click on the anchor tag
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const newTab = window.open(link, '_blank');
+    newTab.addEventListener('load', () => {
+      // setLoading(false);
+    });
+    // document.body.appendChild(link);
+    // link.click();
+    // document.body.removeChild(link);
   };
   return (
     <>
