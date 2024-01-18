@@ -74,7 +74,7 @@ function Allrouter() {
             <Route path='/resetpassword' element={<Profilepass />} />
             {/* <Route path='/teamppage' element={<Temp />} /> */}
             <Route path='/logout' element={<Logoutpage />} />
-            <Route path='/post/:pid' element={<Chatpostdetail />} />
+            <Route path='/post/:pid/:uid' element={<Chatpostdetail />} />
           </Routes>
         </Suspense>
       </Router>

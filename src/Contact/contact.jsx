@@ -9,6 +9,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import * as Yup from "yup"
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 
 function Contact() {
 
@@ -28,13 +29,15 @@ function Contact() {
   }
 
   const validate = Yup.object().shape({
-    name: Yup.string().required('Please enter name'),
+    name: Yup.string().matches(/^[a-zA-Z\s]+$/, 'Name must only contain alphabets and spaces').min(3, 'Name must be at least 3 digits').required('Please enter name'),
     email: Yup.string().email('Invalid email').required('please enter mail'),
     partner: Yup.string()
-      .required('Please  select option'),
+      .required('Please  select partnership'),
     phone: Yup.string()
-      .matches(/^\$/, 'Invalid phone number')
-      .required('Please enter Phone number'),
+    .matches(/^[0-9]+$/, 'Phone number must only contain digits') // Ensure it only contains digits
+    .min(6, 'Phone number must be at least 6 digits')
+    .max(15, 'Phone number must not exceed 15 digits')
+    .required('Please enter Phone number'),
     comment: Yup.string().min(5, 'Too Short!').max(100, 'Too Long').required('Please eneter Comment'),
 
   });
@@ -47,37 +50,37 @@ function Contact() {
     const itemscon = JSON.stringify(itemcon)
     const requiredFields = ['name', 'phone', 'email', 'partner', 'comment'];
 
-    for (const field of requiredFields) {
-      if (!values[field].trim()) {
-        toast(`Please enter ${field}`, {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          type: 'error'
-        });
-        setDisabledSubmit(false);
-        return; // Stop execution if any field is empty or just spaces
-      }
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(values.email)) {
-      toast("Entered email is invalid", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        type: 'error'
-      });
-      setDisabledSubmit(false);
-      return;
-    }
+    // for (const field of requiredFields) {
+    //   if (!values[field].trim()) {
+    //     toast(`Please enter ${field}`, {
+    //       position: "top-right",
+    //       autoClose: 2000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //       type: 'error'
+    //     });
+    //     setDisabledSubmit(false);
+    //     return; // Stop execution if any field is empty or just spaces
+    //   }
+    // }
+    // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // if (!emailRegex.test(values.email)) {
+    //   toast("Entered email is invalid", {
+    //     position: "top-right",
+    //     autoClose: 2000,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined,
+    //     type: 'error'
+    //   });
+    //   setDisabledSubmit(false);
+    //   return;
+    // }
     const headers = {
       "Content-Type": "application/json",
       "Accept": "application/json",
@@ -127,7 +130,7 @@ function Contact() {
   const formik = useFormik({
     initialValues: initails,
     onSubmit: submitform,
-    // validationSchema: validate,
+    validationSchema: validate,
 
   })
 
@@ -185,18 +188,18 @@ function Contact() {
                 </div>
 
                 <div className="icons-2-main Social-Icons">
-                  <a href="" className="profile-11 Icon-Shape">
+                  <Link to="https://in.pinterest.com/" target="_blank" className="profile-11 Icon-Shape">
                     <i className="fa-brands fa-pinterest-p"></i>
-                  </a>
-                  <a href="" className="profile-11 Icon-Shape">
+                  </Link>
+                  <Link to="https://in.linkedin.com/" target="_blank" className="profile-11 Icon-Shape">
                     <i className="fa-brands fa-linkedin-in"></i>
-                  </a>
-                  <a href="" className="profile-11 Icon-Shape">
+                  </Link>
+                  <Link to='https://www.instagram.com/'  target="_blank" className="profile-11 Icon-Shape">
                     <i className="fa-brands fa-instagram"></i>
-                  </a>
-                  <a href="" className="profile-11 Icon-Shape">
+                  </Link>
+                  <Link to='https://www.facebook.com/' target="_blank" className="profile-11 Icon-Shape">
                     <i className="fa-brands fa-facebook-f"></i>
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

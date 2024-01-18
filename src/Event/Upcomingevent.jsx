@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 import Footer from '../Footer/footer'
 import { useLocation } from 'react-router-dom'
 import axios from 'axios'
+import moment from 'moment'
 
 function Upcomingevent() {
 
-  const [eventDetails,setEventDetails]=useState({})
+  const [eventDetails,setEventDetails]=useState([])
   const [recentDetail,setRecentDetails] =useState([])
   const location = useLocation()
   // const { from } = location.state
@@ -20,7 +21,7 @@ function Upcomingevent() {
       try {
         const response = await axios.get(`/event-detail?event_id=${eventId}`,{headers:headers});
         console.log("eventDetails data", response.data.data.recent);
-        setEventDetails(response?.data?.data)
+        setEventDetails(response.data.data.events)
         setRecentDetails(response.data.data.recent)
       } catch (e) {
         console.error(e, "error from upcoming");
@@ -46,10 +47,28 @@ function Upcomingevent() {
       <div className="small-container" >
         <div className="row rowees ">
           <div className="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-            <h1 className="inner-h">FDP on NEP 2020 - Pedagogical Reforms...</h1>
-            <hr className="inner-hr" />
-            <img src="images/1.png" className="w-100" />
+                 <h1 className="inner-h">{eventDetails.title}</h1>
+                 <hr className="inner-hr" />
+                 <img src={eventDetails.image} className="w-100" />
+              
+        
+
+          <div className="newsdetails-main-s">
+              <div className="news-dtls-box enevt-dtls-box">
+                <div className="news-content-inv-s">
+                  <div className="content-block-extra-inv-s event-block-extra-s">
+                    <h3>Description</h3>
+                    <p>{eventDetails.description}</p>
+                  </div>
+                </div>
+              </div>
           </div>
+
+          
+            </div>
+            
+
+
           <div className="col-lg-3 col-md-3 col-sm-3 col-xs-12">
             <div className="widget-news-inv">
               <header className="header-news-inv for-eventsdtls">
@@ -59,14 +78,14 @@ function Upcomingevent() {
                 <ul>
                   {recentDetail.map((value,index)=>(
                   <li key={index}>
-                    <a href="#">
+                    
                       <div className="widget-wrapper-news-inv">
                         <div className="detail-news-inv details-event-s">
-                          <h6 className='textdes-over'>{value.long_description} </h6>
-                          <p className=""><i className="fa fa-calendar" aria-hidden="true"></i>{value.post_date}</p>
+                          <h6 className='textdes-over'>{value.title} </h6>
+                          <p className=""><i className="fa fa-calendar" aria-hidden="true"></i>{moment(value.event_date).format('DD MMM YYYY')}</p>
                         </div>
                       </div>
-                    </a>
+                    
                   </li>
                   ))}
                  

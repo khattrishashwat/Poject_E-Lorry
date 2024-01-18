@@ -57,7 +57,7 @@ function footer() {
 
 
           <div className="icons-2-main">
-            <Link to="https://www.youtube.com/" className="profile-11"><i className="fa-brands fa-youtube"></i></Link>
+            <Link to="https://www.youtube.com/"  target="_blank" className="profile-11"><i className="fa-brands fa-youtube"></i></Link>
           </div>
         </div>
         <h4>Copyright © 2023 E-Lorry All rights reserved.</h4>

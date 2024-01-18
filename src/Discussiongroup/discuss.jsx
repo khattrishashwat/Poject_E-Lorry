@@ -19,6 +19,9 @@ import Navbars from "../navbar/navbars";
 import { GlobalInfo } from "../Allrouter";
 import Chip from '@mui/material/Chip';
 import TextField from '@mui/material/TextField';
+import { ReactMultiEmail, isEmail } from 'react-multi-email';
+import 'react-multi-email/dist/style.css';
+import Avatar from "react-avatar";
 
 
 
@@ -45,12 +48,23 @@ function Discuss( {isVisible} ) {
   const [disabledSubmit, setDisabledSubmit] = useState(false)
   const [handleclick,sethandleclick] = useState(true)
   const [isLoading, setLoading] = useState(false);
+
+  // for email 
+
+  // const [emails, setEmails] = React.useState<string[]>([]);
+  // const [focused, setFocused] = React.useState(false);
   
+  const [emails, setEmails] = useState([]);
+  // const [isActive, setIsActive] = useState(true);
 
 
-
+  const handleEmailChange = (newEmails) => {
+    setEmails(newEmails);
+  };
   const navigate = useNavigate()
   const location = useLocation()
+
+  console.log("log .......", location)
   
   const token = localStorage.getItem("authtoken");
 
@@ -596,6 +610,33 @@ console.warn("vvvvv", isVisible)
          
         <div className="discuss-main-parent">
           <div className="discuss-grid-1">
+            
+                    {/* <div className="tablink-item">
+                      <Link to ="/">All</Link>
+                      <Link to="/zet-resource/reportartical">Articles</Link>
+                      <Link to="/zet-resource/zetvehical">Models</Link>
+                      <Link to="/zetresource/zetpolicy">Policies</Link>
+                      <Link to='/zet-resource/zettechnology'>Technologies</Link>
+                    </div> */}
+
+
+
+            <div className="discuss-grid-2">
+              <div className="discuss-posti">
+                <div className="right-forms-1f">
+                  <div className="upper-two-btn modefychat-manu">
+                    <button type="button" className="unactive" >ALL</button>
+                    <button type="button" className="unactive" >Articles</button>
+                    <button type="button" className="unactive" >Models</button>
+                    <button type="button" className="unactive" >Policies</button>
+                    <button type="button" className="unactive" >Technologies</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+                    
+           
             {postdiscuss.map((value,index)=>(
             <div className="group-section-1" key={index}>
               <div className="imag-text">
@@ -604,6 +645,7 @@ console.warn("vvvvv", isVisible)
                   <div className="boths">
                     <h4>{value.name}</h4>
                     <h5>Aug 17</h5>
+                    
                   </div>
                 </div>
               </div>
@@ -614,12 +656,11 @@ console.warn("vvvvv", isVisible)
                 className="tru-img"
                 alt="dicimg5"
               />
+               {/* <Avatar name={value.name} /> */}
               <div className="mainsflexings">
                 <div className="like">
                   <i onClick={(e)=>handlelike(value.id)} className={token &&  value.you_like_post == 1 ? "fa-solid fa-thumbs-up thumbcolor  pointmu" : "fa-solid fa-thumbs-up pointmu"} ></i>
-                  
-                  
-                  
+ 
                   <h4>{value.you_like_post}</h4>
                 </div>
                 <div className="like">
@@ -719,6 +760,7 @@ console.warn("vvvvv", isVisible)
                    {eventDisplay.map((value,index)=>(
                    <div className="cards-1" key={index}>
                        <img src={value.uploaded_file} alt="zyx"/> 
+                       <h4 className="dateevent-sty">{value.post_date}</h4>
                        <h4>{value.title}</h4>
                        <p>{value.long_description}</p>
                    
@@ -796,6 +838,37 @@ console.warn("vvvvv", isVisible)
                     {fromikpost.touched.vip && fromikpost.errors.vip ? <div className='text-danger testdanger'>{fromikpost.errors.vip}</div> : null}                    
                     <div style={{ marginTop: '8px' }}>{emailChips}</div>
 
+                   
+
+                    {/* <ReactMultiEmail
+                          placeholder="Input your Email Address"
+                          emails={emails}
+                          onChange={handleEmailChange}
+                          getLabel={(email, index, removeEmail) => (
+                            <div data-tag key={index}>
+                              {email}
+                              <span data-tag-handle onClick={() => removeEmail(index)}>
+                                ×
+                              </span>
+                            </div>
+                          )}
+                     />
+                     <br /> */}
+
+
+                 
+                <select name="partner" id="" value={formik.values.partner} onChange={formik.handleChange} className="post-form" >
+                  {/* <option value="" selected disabled>
+                    Report and Article*
+                  </option> */}
+                  <option value="Report">Article</option>
+                  <option value="vehicle">Models</option>
+                  <option value="policies">Policies</option>
+                  <option value="Technologies">Technologies</option>
+
+                </select>
+                {formik.touched.partner && formik.errors.partner ? <div className='text-danger textvalidanger'>{formik.errors.partner}</div> : null}
+
 
                
                     <label className="pst-lab">Description</label>
@@ -807,10 +880,7 @@ console.warn("vvvvv", isVisible)
                     onChange={fromikpost.handleChange}
 
                     /> 
-                    {fromikpost.touched.description && fromikpost.errors.description ? <div className='text-danger testdanger'>{fromikpost.errors.description}</div> : null}
-
-                    
-               
+                    {fromikpost.touched.description && fromikpost.errors.description ? <div className='text-danger testdanger'>{fromikpost.errors.description}</div> : null}               
                      {/* <button type='submit' className="postes">Post Now</button> */}
                      <button type="submit" disabled={disabledSubmit} className="postes btn-subm" onClick={() => setShow(true)} >
                        {

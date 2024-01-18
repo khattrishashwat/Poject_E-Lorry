@@ -7047,6 +7047,7 @@ transition: all .3s ease-in-out; */
 .enevt-dtls-box {
   border: 1px solid #dadada;
   border-radius: 14px;
+  margin-top: 10px;
 }
 .posse {
   position: relative;
@@ -7102,15 +7103,22 @@ transition: all .3s ease-in-out; */
   
 }
 
-.text-subs{
+/* .text-subs{
   margin-left: 700px !important;
   margin-top: 15px;
   color: #f1ff09 !important;
+} */
+.text-subs {
+  margin-left: 526px !important;
+  margin-top: 16px;
+  color: #ffc107 !important;
+  font-size: 19px;
 }
 
-.text-toggle{
-     margin-top: -17px;
-    margin-bottom: 27px;
+.text-toggle {
+  margin-top: -17px;
+  margin-bottom: 14px;
+  margin-left: 1px;
 }
 
 .btn-subm
@@ -7214,4 +7222,50 @@ margin-top: 5px;
   /* border: 1px solid #ccc;  */
   overflow-wrap: break-word;
   font-size: 15px !important;
+}
+.dateevent-sty
+{
+  margin-top: 5px;
+}
+.eyepass-sty{
+  margin-left: -35px;
+}
+
+
+/* .tablink-item {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  width: 101%;
+  gap: 42px;
+  font-weight: 600;
+}
+
+
+.tablink-item a.active {
+  color: #0909cc !important;
+  transition: 0.2s;
+  border-bottom: 3px solid #62bf45;
+}
+
+.tablink-item a:hover {
+  color: #0909cc !important;
+  transition: 0.2s;
+} */
+
+
+.modefychat-manu{
+  margin-top: -17.5px;
+}
+
+.avtorsty-nav {
+  width: 50px !important;
+  height: 37.5px !important;
+  border-radius: 75% !important;
+}
+
+
+.avtorsty-navl {
+  width: 77px !important;
+  height: 72px !important;
+  border-radius: 64% !important;
 }

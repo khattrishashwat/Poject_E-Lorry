@@ -22,23 +22,18 @@ import TextField from '@mui/material/TextField';
 
 function Postdetail({value}) {
 
-  const{pid}=useParams();
+  const{pid,uid}=useParams();
   // const [clientid,setclientId] =useState([])
 
  
-  // console.log("&&&&&&&&&&&&",id)
+  // console.log("&&&&&&&&&&&&",uid)
   // setclientId(id)
   const targetRef = useRef();
-
-   
-     
-
-
-  const [show, setShow] = useState(false);
-  const [showevent,setShowevent] = useState(false);
-  const [showshare, setShowshare] = useState(false);
-  const [setpostshow, setSetpostshow] = useState(false);
-  const[passicon,setpassicon] =useState(true)
+  // const [show, setShow] = useState(false);
+  // const [showevent,setShowevent] = useState(false);
+  // const [showshare, setShowshare] = useState(false);
+  // const [setpostshow, setSetpostshow] = useState(false);
+  // const[passicon,setpassicon] =useState(true)
   const[showemailmodel,setShowemailmodel]=useState(false)
   const[filefromdata,setFileformdata]=useState()
   const [eventprofile,seteventprofile]=useState()
@@ -55,6 +50,7 @@ function Postdetail({value}) {
   const [handleclick,sethandleclick] = useState(true)
   const [isLoading, setLoading] = useState(false);
   
+  
 
 
 
@@ -63,24 +59,15 @@ function Postdetail({value}) {
   
   const token = localStorage.getItem("authtoken");
 
-  // const navcolor=useContext(GlobalInfo)
-  // console.log("appcolor",navcolor.appcolor)
-
-
   const headers = {
     // "Content-Type": "application/json",
     "Accept": "application/json",
     'Authorization': `Bearer ${token}`,
   }
 
-
-
- 
-
-
   const postDiscuss=async()=>
   {
-    const resp= await axios.get('/posts',{headers:headers})
+    const resp= await axios.get(`/posts?uid=${uid}`,{headers:headers})
     console.log("iiiii",resp.data.data)
     setpostDiscuss(resp.data.data.posts)
     setToppostdiscuss(resp.data.data.top_posts)
@@ -128,28 +115,16 @@ function Postdetail({value}) {
 
   const handlelike= async(post_id) =>
   {
-    if(token == null)
-    {
-      Swal.fire({
-        title: 'please login!',
-        showConfirmButton: false, // Hide the confirm button
-        timer: 3000,
-      })
-      setTimeout(() => {
-        const parameterValue = -1; // Replace this with the actual value of your parameter
-        const path = '/auth/login';
-        navigate(path, { state: { parameterValue } })
-       }, 2000); 
-
-    }else
-    {
+    
       try{
        const statuslike = 1
       const status= statuslike
-      const itemlike={post_id,status}  
-     const resp= await axios.post('/like-dislike-post',itemlike,{headers:headers})
-     setUpdatepost(2)
-    //  console.warn("222222", resp)
+      const post_id=pid;
+      const itemlike={post_id,status,uid}  
+      console.log("///////",itemlike)
+      const resp= await axios.post('/like-dislike-post',itemlike,{headers:headers})
+      setUpdatepost(2)
+      console.warn("222222", resp)
       }
       catch(errors)
       {
@@ -164,9 +139,6 @@ function Postdetail({value}) {
           type: 'error'
         })
       }
-    }
-
-     
   }
 
  
@@ -174,26 +146,13 @@ function Postdetail({value}) {
   const handledislike= async(post_id) =>
   {
     setDisabledSubmit(true)
-    if(token == null)
-    {
-      Swal.fire({
-        title: 'please login!',
-        showConfirmButton: false, // Hide the confirm button
-        timer: 3000,
-      })
-     
-    setTimeout(() => {
-    const parameterValue = -1; // Replace this with the actual value of your parameter
-    const path = '/auth/login';
-    navigate(path, { state: { parameterValue } })
-   }, 2000); 
-    }
-    else 
-    {
+
+
     try{
       const statusDislike = 2
       const status= statusDislike 
-     const itemlike={post_id,status}  
+      const post_id=pid;
+     const itemlike={post_id,status,uid}  
      const resp= await axios.post('/like-dislike-post',itemlike,{headers:headers})
      console.warn("111111", itemlike)   
      console.warn("222222", resp)
@@ -213,7 +172,7 @@ function Postdetail({value}) {
       })
     }
      setDisabledSubmit(false)
-  }
+    // }
   }
 
 
@@ -222,12 +181,12 @@ function Postdetail({value}) {
     const temporaryElement = document.createElement('div');
     temporaryElement.innerHTML = value.text;
      const plainText = temporaryElement.textContent || temporaryElement.innerText;
+     
      const itemcomment = {
-      post_id: value.userId,
-      comment: plainText
+      post_id: pid,
+      comment: plainText,
+      uid:uid,
       };
-
-
     const itemcomments= JSON.stringify(itemcomment)
     // console.log("item1111111",itemcomments)
     const resp= await axios.post('/comment-post',itemcomment,{headers:headers})
@@ -332,32 +291,33 @@ useEffect(()=>{
               />
               <div className="mainsflexings">
                 <div className="like">
-                  <i  className={token &&  value.you_like_post == 1 ? "fa-solid fa-thumbs-up thumbcolor  pointmu" : "fa-solid fa-thumbs-up pointmu"} ></i>
+                  <i  onClick={(e)=>handlelike(value.id)} className={value.you_like_post == 1 ? "fa-solid fa-thumbs-up thumbcolor  pointmu" : "fa-solid fa-thumbs-up pointmu"} ></i>
                   <h4>{value.you_like_post}</h4>
                 </div>
                 <div className="like">
-                  <i  className={token &&  value.you_dislike_post == 1 ? "fa-solid fa-thumbs-down thumbcolor pointmu" : "fa-solid fa-thumbs-down pointmu"}></i>
+                  <i  onClick={(e)=>handledislike(value.id)} className={value.you_dislike_post == 1 ? "fa-solid fa-thumbs-down thumbcolor pointmu" : "fa-solid fa-thumbs-down pointmu"}></i>
                   <h4>{value.you_dislike_post}</h4>
                 </div>
                 <div className="like">
-                  <i className="fa-solid fa-comment pointmu" onDoubleClick={()=>sethandleclick(true)}></i>
+                  <i className="fa-solid fa-comment pointmu" onClick={()=>handleCommentId(value.id)}></i>
                   <h4>{value.post_comments_count}</h4>
                 </div>
-                <div className="like"> 
+                {/* <div className="like"> 
                     <i className="fa-solid fa-share pointmu"></i> 
-                </div>
+                </div> */}
                
               </div>
               {data}
-              {token && (value.id === id) ?  <>            
+              {(value.id === id) ?  <>            
                 <CommentSection
                      currentUser=
                      {{
                        currentUserId: value.id,
                        currentUserImg:value.user_avator,
                        currentUserProfile:value.user_avator,
-                       currentUserFullName: value.name
+                       currentUserFullName: value.name,
                      }}
+                    
                      commentData={data}
                      customImg={value.user_avator}
                      inputStyle={{ border: "1px solid rgb(208 208 208)" }}
@@ -366,9 +326,11 @@ useEffect(()=>{
                      cancelBtnStyle={{ border: "1px solid gray", backgroundColor: "gray", color: "white", padding: "7px 15px"}}
                      replyInputStyle={{ borderBottom: "1px solid black", color: "black" }}
                      onSubmitAction={(data) =>commenthandleapi(data)}
+                     
                      currentData={(data) => {
                       console.log('current data', data);
                     }}
+
                     />
               </> : null}
             </div>

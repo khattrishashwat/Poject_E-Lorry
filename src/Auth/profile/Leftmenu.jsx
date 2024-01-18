@@ -8,6 +8,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Avatar from 'react-avatar';
 
 function Leftmenu() {
 
@@ -131,7 +132,15 @@ function Leftmenu() {
 
                 <div className="profile-ab" onClick={handleShow}>
                     <div className="image-section-pr">
-                        <img src={profileupdate.avator} />
+                        {/* <img src={profileupdate.avator} /> */}
+
+                        { (!profileupdate.avator === null ) ?
+                        ( 
+                         <img src={profileupdate.avator} alt='xyz' className="imgprofile" /> 
+                        )
+                        :
+                        <Avatar className="avtorsty-navl" name={profileupdate.name} />
+                        }
                         <i className="fa-regular fa-pen-to-square"></i>
                     </div>
                 </div>

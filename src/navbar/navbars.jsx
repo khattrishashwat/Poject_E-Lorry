@@ -11,10 +11,11 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import axios from "axios";
 // import "./navbar.css";
 import Toggleside from '../sidetoggle/sidetoggle'
+import Avatar from "react-avatar";
 
 
 
-function Navbars(props) {
+function Navbars() {
   const [sidernav, setsidernav] = useState(true);
   const [isprofile, setProfile] = useState(false)
   const [dropdownew, setDropdownnew] = useState(false);
@@ -26,9 +27,9 @@ function Navbars(props) {
   // const { parameterValue } = props.location.state || {};
   // console.warn("loc",location.state)
   // console.warn("pro",parameterValue)
+  // const { avator, setAvator } = profileUpdate();
 
-
-  const [profileupdate, setProfileupdate] = useState([])
+  const [profileupdate, setProfileupdate] = useState({})
 
   const token = localStorage.getItem('authtoken')
   const headers = {
@@ -41,7 +42,7 @@ function Navbars(props) {
   const dataprofile = async () => {
     try {
       const resp = await axios.get("/view-profile", { headers: headers })
-      // console.log(" nav api profile update responce",resp.data.data)
+      console.log(" nav api profile update responce",resp.data.data)
       setProfileupdate(resp.data.data)
     }
     catch (errors) {
@@ -140,7 +141,16 @@ function Navbars(props) {
                   {isprofile ?
                     (
                       <li className="navbar-dropdown">
-                        <img src={profileupdate.avator} alt="zyx" className="imgprofile" />
+                        { (!profileupdate.avator === null ) ?
+                        ( 
+                         <img src={profileupdate.avator} alt='xyz' className="imgprofile" /> 
+                        )
+                        :
+                        <Avatar className="avtorsty-nav" name={profileupdate.name} />
+                        }
+                         
+                          {/* <Avatar alt="Remy Sharp" name={profileupdate.name} className="btn-xyzprofile" src={profileupdate.avator} /> */}
+                       
 
                         <div className="dropdown leftings">
                           <Link to='/profileSetting'>My Account</Link>

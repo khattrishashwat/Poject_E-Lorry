@@ -14,7 +14,7 @@ function Subscribsection() {
   {
     email:''
   }
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
  
 
   const submitemail= async(value,{resetForm})=>
@@ -29,42 +29,42 @@ function Subscribsection() {
       const itemslog = JSON.stringify(itemlog)
       console.warn("Email : ",itemslog)
       console.log(value.email,"value")
-      if (!value.email) {
-        // Display email field is required toast
-        toast("Email field is required", {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          type: 'error',
-        });
+      // if (!value.email) {
+      //   // Display email field is required toast
+      //   toast("Email field is required", {
+      //     position: "top-right",
+      //     autoClose: 2000,
+      //     hideProgressBar: false,
+      //     closeOnClick: true,
+      //     pauseOnHover: true,
+      //     draggable: true,
+      //     progress: undefined,
+      //     type: 'error',
+      //   });
 
-        // Enable the button for further submissions
-        setDisabledSubmit(false);
-        return;
-      }
-      if (!emailRegex.test(value.email)) {
+      //   // Enable the button for further submissions
+      //   setDisabledSubmit(false);
+      //   return;
+      // }
+      // if (!emailRegex.test(value.email)) {
                 
                 
-        toast("Entered email is invalid", {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          type: 'error'
-        })
+      //   toast("Entered email is invalid", {
+      //     position: "top-right",
+      //     autoClose: 2000,
+      //     hideProgressBar: false,
+      //     closeOnClick: true,
+      //     pauseOnHover: true,
+      //     draggable: true,
+      //     progress: undefined,
+      //     type: 'error'
+      //   })
 
   
-        setDisabledSubmit(false);
+      //   setDisabledSubmit(false);
        
-              return;
-      }
+      //         return;
+      // }
       
       const headers = {
         "Content-Type": "application/json",
@@ -115,13 +115,13 @@ function Subscribsection() {
  
 
   const validation= yup.object().shape({
-    email:yup.string().email('Invalid email').required('enter email')
+    email:yup.string().email('Please enter valid email').required('Please enter email')
   })
 
   const formik=useFormik({
     initialValues:initalize,
     onSubmit:submitemail,
-    // validationSchema:validation
+    validationSchema:validation
   })
 
   return (

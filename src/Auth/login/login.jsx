@@ -16,6 +16,7 @@ function Login() {
 
      const[islogin, setlogin] =useState(true)
      const [disabledSubmit, setDisabledSubmit] = useState(false)
+     const [isDisplaypass,setDisplaypass]=useState(true)
 
      const navigation=useNavigate()
 
@@ -115,7 +116,7 @@ const initialvalue={
 
 
 const validation=Yup.object().shape({
-  email: Yup.string().email('Invalid email').required('Please enter email'),
+  email: Yup.string().email('Please enter valid email').required('Please enter email'),
   password: Yup.string()
   .min(8, 'Password must be at least 8 characters')
   .required('Password is required'),
@@ -227,10 +228,12 @@ const submitlog = async(values) =>
 
               <div className="logs-1"> 
                 <label className="labes">  <i className="fa-solid fa-lock"></i>&nbsp;&nbsp;Password</label>
-                <input name='password' value={formiklogin.values.password} onChange={formiklogin.handleChange} type="password"  placeholder="Enter Password"  className="field-11"  />
-              
+                <input name='password' value={formiklogin.values.password} onChange={formiklogin.handleChange} type={isDisplaypass ? "password" : "text"}  placeholder="Enter Password"  className="field-11"  />
+                <span  onClick={()=>setDisplaypass(!isDisplaypass)} className='eyepass-sty'><i className={isDisplaypass ? "fa-regular fa-eye-slash" : "fa-regular fa-eye "} ></i></span>
+      
               {formiklogin.touched.password && formiklogin.errors.password ? <div className='text-danger' style={{marginLeft:"2rem"}}>{formiklogin.errors.password}</div> : null}      
               </div>
+              
 
 
               {/* <div className="forg">  <Link to='/auth/forget'>Forgot Password ?</Link></div> */}
