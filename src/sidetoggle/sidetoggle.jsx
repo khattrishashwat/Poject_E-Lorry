@@ -123,7 +123,7 @@ function Sidetoggle() {
                 />
               {formik.touched.email && formik.errors.email ? <div className='text-danger text-toggle'>{formik.errors.email}</div> : null}  
 
-                <button type="submit" disabled={disabledSubmit} className="btn-subm" style={{backgroundColor:"#1F39A7" ,borderRadius:"30px",width:"100%",height:"11vh"}}>
+                <button type="submit" disabled={disabledSubmit} className="btn-subm" style={{backgroundColor:"#1F39A7" ,borderRadius:"30px",width:"99%",height:"5vh"}}>
                 {
                           disabledSubmit ? (
                             <div>

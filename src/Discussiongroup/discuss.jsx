@@ -22,6 +22,7 @@ import TextField from '@mui/material/TextField';
 import { ReactMultiEmail, isEmail } from 'react-multi-email';
 import 'react-multi-email/dist/style.css';
 import Avatar from "react-avatar";
+import moment from "moment";
 
 
 
@@ -40,6 +41,7 @@ function Discuss( {isVisible} ) {
   const[eventadd,setEventadd] = useState(true)
   const [data,setData] = useState([]);
   const [postdiscuss, setpostDiscuss] = useState([])
+  const [eventfilterpost ,seteventfilterpost]=useState([])
   const [toppostdiscuss,setToppostdiscuss] =useState([])
   const [updatepost,setUpdatepost] =useState()
   // const [currentpost,setcurrentpost]=useState()
@@ -49,13 +51,9 @@ function Discuss( {isVisible} ) {
   const [handleclick,sethandleclick] = useState(true)
   const [isLoading, setLoading] = useState(false);
 
-  // for email 
-
-  // const [emails, setEmails] = React.useState<string[]>([]);
-  // const [focused, setFocused] = React.useState(false);
   
   const [emails, setEmails] = useState([]);
-  // const [isActive, setIsActive] = useState(true);
+  const [isActive, setIsActive] = useState(true);
 
 
   const handleEmailChange = (newEmails) => {
@@ -64,12 +62,12 @@ function Discuss( {isVisible} ) {
   const navigate = useNavigate()
   const location = useLocation()
 
-  console.log("log .......", location)
+  // console.log("log .......", location)
   
   const token = localStorage.getItem("authtoken");
 
   const navcolor=useContext(GlobalInfo)
-  console.log("appcolor",navcolor.appcolor)
+  // console.log("appcolor",navcolor.appcolor)
 
 
   const headers = {
@@ -86,7 +84,7 @@ function Discuss( {isVisible} ) {
   const postDiscuss=async()=>
   {
     const resp= await axios.get('/posts',{headers:headers})
-    console.log("iiiii",resp.data.data)
+    // console.log("iiiii",resp.data.data)
     setpostDiscuss(resp.data.data.posts)
     setToppostdiscuss(resp.data.data.top_posts)
     setEventDisplay(resp.data.data.events)
@@ -203,8 +201,8 @@ function Discuss( {isVisible} ) {
       const status= statusDislike 
      const itemlike={post_id,status}  
      const resp= await axios.post('/like-dislike-post',itemlike,{headers:headers})
-     console.warn("111111", itemlike)   
-     console.warn("222222", resp)
+    //  console.warn("111111", itemlike)   
+    //  console.warn("222222", resp)
      setUpdatepost(1)
     }
     catch(error)
@@ -246,7 +244,7 @@ function Discuss( {isVisible} ) {
 
   const handleCommentId=(id)=>
   {
-    console.warn("hhhhhhhhhhhhhh",id)
+    // console.warn("hhhhhhhhhhhhhh",id)
     setId(id)
     // setCommentsec(true)
   }
@@ -301,7 +299,7 @@ function Discuss( {isVisible} ) {
       frms.append('meeting_link',values.meeting_link)
       frms.append('long_description',values.long_description)
       const respon = await axios.post("/add-event", frms, { headers: headers });
-      console.log("event", respon.data)
+      // console.log("event", respon.data)
       toast(respon.data.message, {
         position: "top-right",
         autoClose: 2000,
@@ -437,6 +435,7 @@ function Discuss( {isVisible} ) {
     image:null,
     vip:'',
     description:'',
+    category:''
 
   }
   // const token = localStorage.getItem('authtoken')
@@ -454,7 +453,7 @@ function Discuss( {isVisible} ) {
         // You can add your custom file size validation logic here
         // return value && value.size <= 10485760; // 10 MB
       // }),
-       vip: Yup.string().required('please enter emails '),
+      //  vip: Yup.string().required('please enter emails '),
       //  .test('is-https-emails', 'Each email must start with "https://"', (value) => {
       //   if (!value) return true; 
       //   // return value.startsWith('https://');
@@ -476,11 +475,12 @@ function Discuss( {isVisible} ) {
      frm.append('title', value.title)
      frm.append('description', value.description)
      frm.append('vip',value.vip)
+     frm.append('category',value.category)
 
 
     //  console.log("fun" , frm)
       const resp= await axios.post('/create-post',frm,{headers:headerspost})
-      console.log("<<<<<<",resp)
+      // console.log("<<<<<<",resp)
       toast(resp.data.message, {
        position: "top-right",
        autoClose: 2000,
@@ -526,6 +526,23 @@ function Discuss( {isVisible} ) {
     formik.setFieldValue('vip', emails.join(',')); 
   };
 
+
+  const filterpostfun=async(value)=>
+  {
+    const postcat=value;
+    console.log("post value",postcat);
+
+    const postcats= (value === undefined) ? '' : postcat
+    console.log("post value",postcats);
+    const resp= await axios.get(`/posts?category=${postcats}`, {headers:headers});
+    // console.log("resp filetr event" ,resp.data.data.posts)
+    seteventfilterpost(resp.data.data.posts)
+
+  }
+
+
+
+
   const emailChips =formik.values.vip && formik.values.vip.split(',')
       ? formik.values.vip.split(',').map((email, index) => (
           <Chip
@@ -551,9 +568,10 @@ useEffect(()=>{
 
 useEffect(()=>{
   postDiscuss()
+  filterpostfun()
 },[updatepost])
 
-console.warn("vvvvv", isVisible)
+// console.warn("vvvvv", isVisible)
 
   return (
     <>
@@ -579,18 +597,31 @@ console.warn("vvvvv", isVisible)
         <div className="threads">
         {toppostdiscuss.map((value,index)=>(
           <div className="thread-text" key={index}>
-            <img src={value.user_avator} alt="dicimg" />
+
+             {/* <img src={value.user_avator} alt='xyz' />  */}
+            
+             { (!value.user_avator == "" ) ?
+                        ( 
+                         <img src={value.user_avator} alt='xyz' className="imgprofile" /> 
+                        )
+                        :
+                        (
+                        <Avatar className="avtorsty-nav" name={value.name} />
+                        )
+              }  
+
+
             <div className="thre-text-flex">
               <div className="boths">
                 <h4>{value.name}</h4>
                 <div className="mainsflexings-1">
                   <div className="like-1">
                     <i className= "fa-solid fa-thumbs-up "></i>                  
-                    <h4>{value.you_like_post}</h4>
+                    <h4>{value.post_like_count}</h4>
                   </div>
                   <div className="like-1">
                     <i className="fa-solid fa-thumbs-down"></i>
-                    <h4>{value.you_dislike_post}</h4>
+                    <h4>{value.post_dislike_count}</h4>
                   </div>
                   <div className="like-1">
                     <i className="fa-solid fa-comment" onClick={emailmodelfun}></i>
@@ -611,40 +642,41 @@ console.warn("vvvvv", isVisible)
         <div className="discuss-main-parent">
           <div className="discuss-grid-1">
             
-                    {/* <div className="tablink-item">
-                      <Link to ="/">All</Link>
-                      <Link to="/zet-resource/reportartical">Articles</Link>
-                      <Link to="/zet-resource/zetvehical">Models</Link>
-                      <Link to="/zetresource/zetpolicy">Policies</Link>
-                      <Link to='/zet-resource/zettechnology'>Technologies</Link>
-                    </div> */}
-
-
-
+        
             <div className="discuss-grid-2">
               <div className="discuss-posti">
                 <div className="right-forms-1f">
                   <div className="upper-two-btn modefychat-manu">
-                    <button type="button" className="unactive" >ALL</button>
-                    <button type="button" className="unactive" >Articles</button>
-                    <button type="button" className="unactive" >Models</button>
-                    <button type="button" className="unactive" >Policies</button>
-                    <button type="button" className="unactive" >Technologies</button>
+                    <button type="button" onClick={()=>filterpostfun('')}  className="unactive" >ALL</button>
+                    <button type="button" onClick={()=>filterpostfun("reports")} className="unactive" >Report</button>
+                    <button type="button" onClick={()=>filterpostfun("vehicle")} className="unactive" >vehicle Model</button>
+                    <button type="button" onClick={()=>filterpostfun("policies")} className="unactive" >Policies</button>
+                    <button type="button" onClick={()=>filterpostfun("technologies")} className="unactive" >Technologies</button>
                   </div>
                 </div>
               </div>
             </div>
 
                     
-           
-            {postdiscuss.map((value,index)=>(
+            {/* postdiscuss  */}
+
+            {eventfilterpost.map((value,index)=>(
             <div className="group-section-1" key={index}>
               <div className="imag-text">
-                <img src={value.user_avator} alt="dicimg4"/>
+                {/* <img src={value.user_avator} alt="dicimg4"/> */}
+                { (!value.user_avator == "" ) ?
+                        ( 
+                         <img src={value.user_avator} alt='xyz' className="imgprofile" /> 
+                        )
+                        :
+                        (
+                        <Avatar className="avtorsty-nav" name={value.name} />
+                        )
+              }  
                 <div className="under-text-flex">
                   <div className="boths">
                     <h4>{value.name}</h4>
-                    <h5>Aug 17</h5>
+                    <h5>{moment(value.created_at).format('DD MMM')}</h5>
                     
                   </div>
                 </div>
@@ -835,8 +867,8 @@ console.warn("vvvvv", isVisible)
                                
                      className="post-form" 
                      />
-                    {fromikpost.touched.vip && fromikpost.errors.vip ? <div className='text-danger testdanger'>{fromikpost.errors.vip}</div> : null}                    
-                    <div style={{ marginTop: '8px' }}>{emailChips}</div>
+                    {/* {fromikpost.touched.vip && fromikpost.errors.vip ? <div className='text-danger testdanger'>{fromikpost.errors.vip}</div> : null}                    
+                    <div style={{ marginTop: '8px' }}>{emailChips}</div> */}
 
                    
 
@@ -857,17 +889,17 @@ console.warn("vvvvv", isVisible)
 
 
                  
-                <select name="partner" id="" value={formik.values.partner} onChange={formik.handleChange} className="post-form" >
+                <select name="category" id="" value={formik.values.category} onChange={formik.handleChange} className="post-form" >
                   {/* <option value="" selected disabled>
                     Report and Article*
                   </option> */}
-                  <option value="Report">Article</option>
-                  <option value="vehicle">Models</option>
+                  <option value="report">Report</option>
+                  <option value="vehicle">Vehicle</option>
                   <option value="policies">Policies</option>
-                  <option value="Technologies">Technologies</option>
+                  <option value="technologies">Technologies</option>
 
                 </select>
-                {formik.touched.partner && formik.errors.partner ? <div className='text-danger textvalidanger'>{formik.errors.partner}</div> : null}
+                {formik.touched.category && formik.errors.category ? <div className='text-danger textvalidanger'>{formik.errors.category}</div> : null}
 
 
                

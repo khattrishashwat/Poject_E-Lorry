@@ -788,7 +788,8 @@ nav .nav-area ul li a:hover {
 	position:relative;
 	animation: fadeIn 1s ease-in both;
 	animation-delay: 6s;	
-    margin-left: 56px;
+    /* margin-left: 56px; */
+    margin-left: -6px;
 }
 
 /*********Circle-around************/

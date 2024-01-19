@@ -77,31 +77,31 @@ const token = localStorage.getItem("authtoken")
   }
 
   const validattion= yup.object().shape({
-    email:yup.string().email('Invalid email').required('Please enter valid email')
+    email:yup.string().email('Please  enter valid email').required('Please enter  email')
   })
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const submitfrom= async(value,{resetForm}) =>
   {
     setDisabledSubmit(true)
     const itemlog = value
     const itemslog = JSON.stringify(itemlog)
-    console.warn("Email : ",itemslog)
-    if (!emailRegex.test(value.email)) {
+//     console.warn("Email : ",itemslog)
+//     if (!emailRegex.test(value.email)) {
                 
-      toast("Entered email is invalid", {
-       position: "top-right",
-       autoClose: 2000,
-       hideProgressBar: false,
-       closeOnClick: true,
-       pauseOnHover: true,
-       draggable: true,
-       progress: undefined,
-       type: 'error'
-     })
-     setDisabledSubmit(false)
-      return;
-}
+//       toast("Entered email is invalid", {
+//        position: "top-right",
+//        autoClose: 2000,
+//        hideProgressBar: false,
+//        closeOnClick: true,
+//        pauseOnHover: true,
+//        draggable: true,
+//        progress: undefined,
+//        type: 'error'
+//      })
+//      setDisabledSubmit(false)
+//       return;
+// }
     const headers = {
       "Content-Type": "application/json",
       "Accept": "application/json",
@@ -136,7 +136,7 @@ const token = localStorage.getItem("authtoken")
     {
       initialValues:initalize,
       onSubmit:submitfrom,
-      // validationSchema:validattion,
+      validationSchema:validattion,
     }
   )
   function formatDate(dateString) {
@@ -196,7 +196,7 @@ const token = localStorage.getItem("authtoken")
               className="subs-email" 
                />
               <i className="fa-solid fa-envelope ft" style={{marginTop:"0.5rem"}}></i>
-              {formik.touched.email && formik.errors.email ? <div className='text-danger'>{formik.errors.email}</div> : null}  
+              {formik.touched.email && formik.errors.email ? <div className='text-danger textttt'>{formik.errors.email}</div> : null}  
 
             <div className="subs-btn-cent">
 

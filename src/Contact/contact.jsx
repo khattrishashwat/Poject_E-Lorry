@@ -34,11 +34,11 @@ function Contact() {
     partner: Yup.string()
       .required('Please  select partnership'),
     phone: Yup.string()
-    .matches(/^[0-9]+$/, 'Phone number must only contain digits') // Ensure it only contains digits
+    .matches(/^[0-9]+$/, 'Phone number must only contain digits') 
     .min(6, 'Phone number must be at least 6 digits')
     .max(15, 'Phone number must not exceed 15 digits')
     .required('Please enter Phone number'),
-    comment: Yup.string().min(5, 'Too Short!').max(100, 'Too Long').required('Please eneter Comment'),
+    comment: Yup.string().min(5, 'Too Short!').max(100, 'Too Long').required('Please enter Comment'),
 
   });
 
@@ -214,7 +214,7 @@ function Contact() {
                   name="name"
                   value={formik.values.name}
                   onChange={formik.handleChange}
-                  placeholder="Your name*"
+                  placeholder="Your name"
                 />
                 {formik.touched.name && formik.errors.name ? <div className='text-danger textvalidanger'>{formik.errors.name}</div> : null}
 
@@ -227,7 +227,7 @@ function Contact() {
                   name="phone"
                   value={formik.values.phone}
                   onChange={formik.handleChange}
-                  placeholder="Phone number*"
+                  placeholder="Phone number"
                 />
                 {formik.touched.phone && formik.errors.phone ? <div className='text-danger textvalidanger'>{formik.errors.phone}</div> : null}
 
@@ -240,7 +240,7 @@ function Contact() {
                   name="email"
                   value={formik.values.email}
                   onChange={formik.handleChange}
-                  placeholder="Your email*"
+                  placeholder="Your email"
                 />
                 {formik.touched.email && formik.errors.email ? <div className='text-danger textvalidanger'>{formik.errors.email}</div> : null}
 
@@ -249,7 +249,7 @@ function Contact() {
               <div className="form-data">
                 <select name="partner" id="" value={formik.values.partner} onChange={formik.handleChange}>
                   <option value="" selected disabled>
-                    Any Partnership*
+                    Any Partnership
                   </option>
                   <option value="Yes">Yes</option>
                   <option value="No">No</option>

@@ -141,12 +141,14 @@ function Navbars() {
                   {isprofile ?
                     (
                       <li className="navbar-dropdown">
-                        { (!profileupdate.avator === null ) ?
+                        { (!profileupdate.avator == "" ) ?
                         ( 
                          <img src={profileupdate.avator} alt='xyz' className="imgprofile" /> 
                         )
                         :
+                        (
                         <Avatar className="avtorsty-nav" name={profileupdate.name} />
+                        )
                         }
                          
                           {/* <Avatar alt="Remy Sharp" name={profileupdate.name} className="btn-xyzprofile" src={profileupdate.avator} /> */}

@@ -170,12 +170,11 @@ function Gallery()
                 <div className="swiper-container">
                   
                     {galleryevent ? (
-
                       <Swiper
                         // install Swiper modules
                         modules={[Navigation, Pagination, A11y]}
-                        spaceBetween={10}
-                        slidesPerView={14}
+                        // spaceBetween={10}
+                        slidesPerView={5}
                         navigation={false}
                         simulateTouch={true}
                       >
@@ -202,14 +201,16 @@ function Gallery()
                                       objectFit:"cover"
                                       
                                     }}
+                                    
                                   >
-                                    <img src={value.filename_url} alt="" style={{ objectFit:"cover", width:"210px",height:"165px"}} className="image"/>
+                                    <em onClick={() => handleOpen(index)} className="mdi mdi-magnify-pluss"></em>
+                                    <img  onClick={() => handleOpen(index)} src={value.filename_url} alt="" style={{ objectFit:"cover", width:"210px",height:"165px"}} className="image"/>
+                                   
                                     <div className="overlays" >
-          <em onClick={() => handleOpen(index)} className="mdi mdi-magnify-pluss"></em>
-        </div>
+                        </div>
                                   </div>
                                 </div>
-                                <span className="Captioni">Event-1</span>
+                                <span className="Captioni">{value.title}</span>
                               </div>
 
                               </div>
@@ -262,7 +263,7 @@ function Gallery()
                                     }}
 
                                     fullscreen={true} />
-                                  <span className="Captionv">Video-1</span>
+                                  <span className="Captionv">{value.title}</span>
                                   </div>)}
                                   </div>
                                 </SwiperSlide>

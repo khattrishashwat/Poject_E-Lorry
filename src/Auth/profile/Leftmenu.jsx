@@ -134,7 +134,7 @@ function Leftmenu() {
                     <div className="image-section-pr">
                         {/* <img src={profileupdate.avator} /> */}
 
-                        { (!profileupdate.avator === null ) ?
+                        { (!profileupdate.avator == "" ) ?
                         ( 
                          <img src={profileupdate.avator} alt='xyz' className="imgprofile" /> 
                         )
