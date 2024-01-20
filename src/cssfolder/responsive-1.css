@@ -40,7 +40,7 @@
 }
 
 .small-container {
-    width: 100%;
+    width: 92%;
 }
 
 nav .nav-area {
@@ -115,7 +115,7 @@ nav .nav-area {
     /* grid-template-columns: 97% !important; */
     gap: 3%;
     justify-content: center;
-    height: 394px;
+    height: 100%;
 }
 
 .swiper-slide.swiper-slide-active
@@ -134,11 +134,21 @@ nav .nav-area {
 }
 
 .main-parent-grid-2 {
-    grid-template-columns: repeat(1 , 1fr);
+    display: grid !important;
+    grid-template-columns: repeat(1, 1fr);
     text-align: center;
     /* margin-top: 1160px; */
     gap: 50px;
 }
+.part-main-parent-grid {
+    display: grid !important;
+    grid-template-columns: repeat(1, 1fr);
+}
+.part-grid-1 img {
+    /* size: 20px; */
+    width: 100%;
+}
+
 
 .no-js .owl-carousel, .owl-carousel.owl-loaded {
     margin-top: 0px;
@@ -358,11 +368,14 @@ form.example input[type=text] {
     grid-template-columns: 100%;
 }
 
-.col-md-3 {
-    width: 94%;
-    margin: auto;
+.content-block-extra-inv-s p {
+    margin-bottom: 20px;
+   text-align: left;
 }
-
+.main-parent-grid-policy {
+    
+    margin: 16px 0px 60px 0px;
+}
 .widget-news-inv>.header-news-inv {
     padding: 10px;
 }
@@ -437,6 +450,8 @@ form.example input[type=text] {
 .divnotice {
     display: flex;
     align-items: center;
+
+    padding: 0 16px !important;
 }
 
 .divnotice p a {
@@ -477,6 +492,14 @@ form.example input[type=text] {
 
 .date {
     right: 0px;
+}
+span.datecal {
+    width: 75% !important;
+}
+.divnotice p {
+    
+    text-align: justify;
+    padding-right: 20px;
 }
 
 .section figcaption {
@@ -652,15 +675,35 @@ form.example input[type=text] {
 
 .newsletter-main-parent-grid {
     grid-template-columns: repeat(1 , 1fr);
+    
+}
+.newsletter-grid-1 {
+
+    height: 300px;
+}
+
+
+.newsletter-grid-2 {
+    padding: 80px 0px 0px 0px;
+}
+.download-btn-grid {
+    grid-template-columns: repeat(1, 1fr);
 }
 
 .byd-img {
     width: 100%;
     border-radius: 11px;
 }
-
+.upper-two-btn {
+    display: block;
+}
 .boths h4 {
     font-size: 17px;
+}
+
+.upper-two-btn button {
+   
+    margin-bottom: 12px;
 }
 
 .title-flex-1 {
@@ -726,8 +769,12 @@ form.example input[type=text] {
 
 .stakes {
     line-height: 50px;
+    margin-left: 0 !important;
 }
-
+.testim {
+    
+    padding-bottom: 15px;
+}
 .media-heading {
     margin-top: 9px;
     line-height: 26px;
@@ -777,6 +824,7 @@ form.example input[type=text] {
     .imgprofile
     {
         margin-left: 29px;
+        width: 62px !important;
     }
     /* .navbar-dropdown .dropdown {
 
@@ -799,5 +847,109 @@ form.example input[type=text] {
         z-index: -1;
         box-shadow: 4px 6px 15px #e3e3e3;
     }
+     
+    .checkout-sign {
+        padding: 50px 0px !important;
+    }
+
+    .container-2 {
+        
+        width: 95% !important;
+    }
+
+    .signin-form {
+        grid-template-columns: 100% !important;
+    }
+
+    .details-flex-2 {
+        
+        grid-template-columns: repeat(1, 1fr) !important;
+    }
+
+
+    .circle-policy {
+       
+        left: -2%;
+        width: 85px;
+        height: 85px;
+        top:-5%
+       
+    }
+
+
+    .circle-policy-1 {
+        right: -1%;
+        bottom: -1%;
+        width: 85px;
+        height: 85px;
+       
+    }
+
+    .boxshadow-flex {
+        
+        grid-template-columns: repeat(1 , 1fr);
+    }
+
+    .sectionra {
+        width: 100% !important;
+        height: 100% !important;
+        margin: 2px auto;
+       
+        background-color: white;
+       display: block;
+        position: relative;
+        border-right: 1px solid #eee;
+    }
+    .sectionra div.img {
+        margin-top: 0px !important;
+        margin-left: 0px !important;
+        padding: 15px;
+    }
+
+    .boxShadow2 img {
+        height: 300px;
+    }
+
+    button.download-btn.downart {
+        margin-top: 30px !important;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

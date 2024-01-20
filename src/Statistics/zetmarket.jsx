@@ -58,7 +58,7 @@ function zetmarket() {
   
     <h2 className="stakes" style={{marginLeft:"3rem"}}>Key ZET Statistics</h2>
     <span className="line-1" ></span>
-    <div className="main-parent-grid-2 mt-70" style={{display:"flex",alignItems:"center",gap:"4rem",justifyContent:"center"}}>
+    <div className="main-parent-grid-2 mt-70" style={{display:"flex",alignItems:"center",gap:"4rem",justifyContent:"space-between",padding:"0 7px"}}>
 
       <div className="gri-1">
         <div className="hovicon effect-4 sub-b">

@@ -130,26 +130,28 @@ function Zetpolicy()
 
             </div>
             {/* <div className="policy-container posse"> */}
+            <div className='ccol-lg-12 col-md-12 col-sm-12 col-xs-12 posse'>
         <div className="main-parent-grid-policy">
           <div className="policy-grid-1">
-            <h3 style={{marginLeft:'50px'}}>Advantages</h3>
+            <h3 style={{marginLeft: '-0px'}}>Advantages</h3>
             <ul>
             <div dangerouslySetInnerHTML={{ __html: parseHTML(policeData.advantages) }} />
             </ul>
           </div>
           <div className="policy-grid-1">
-            <h3 style={{marginLeft:'50px'}}>Challenges</h3>
+            <h3 style={{marginLeft:'0px'}}>Challenges</h3>
             <ul>  
               <div dangerouslySetInnerHTML={{ __html: parseHTML(policeData.challanges) }} />
             </ul>
           </div>
         </div>
-      {/* </div> */}
+        
+      </div>
 
        {/* static data  section  */}
        
-      <div className="row posse">
-        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+     
+        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 posse">
           <div className="newsdetails-main-s">
             <div className="news-dtls-box enevt-dtls-box">
               <div className="news-content-inv-s posse">
@@ -167,13 +169,18 @@ function Zetpolicy()
           </div>
 
           <img src="/e_lorry/web/images/Policy-1.png" className="poli-11"/>
+
+
+
+          <div className="circle-policy"></div>
+        <div className="circle-policy-1"></div> 
+
         </div>
 
 
-        <div className="circle-policy"></div>
-        <div className="circle-policy-1"></div> 
+        
      
-    </div>
+        
 
       
           </div>

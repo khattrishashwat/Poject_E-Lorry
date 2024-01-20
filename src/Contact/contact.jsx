@@ -30,7 +30,7 @@ function Contact() {
 
   const validate = Yup.object().shape({
     name: Yup.string().matches(/^[a-zA-Z\s]+$/, 'Name must only contain alphabets and spaces').min(3, 'Name must be at least 3 digits').required('Please enter name'),
-    email: Yup.string().email('Invalid email').required('please enter mail'),
+    email: Yup.string().email('Invalid email').required('please enter email'),
     partner: Yup.string()
       .required('Please  select partnership'),
     phone: Yup.string()

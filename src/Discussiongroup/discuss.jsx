@@ -54,6 +54,7 @@ function Discuss( {isVisible} ) {
   
   const [emails, setEmails] = useState([]);
   const [isActive, setIsActive] = useState(true);
+  const [activeButton, setActiveButton] = useState('');
 
 
   const handleEmailChange = (newEmails) => {
@@ -531,6 +532,7 @@ function Discuss( {isVisible} ) {
   const filterpostfun=async(value)=>
   {
     const postcat=value;
+    setActiveButton(value);
     console.log("post value",postcat);
     const postcats= (value === undefined) ? '' : postcat
     console.log("post value",postcats);
@@ -647,11 +649,11 @@ useEffect(()=>{
               <div className="discuss-posti">
                 <div className="right-forms-1f">
                   <div className="upper-two-btn modefychat-manu">
-                    <button type="button" onClick={()=>filterpostfun('')}  className="btnnew" >ALL</button>
-                    <button type="button" onClick={()=>filterpostfun("reports")} className="btnnew" >Report</button>
-                    <button type="button" onClick={()=>filterpostfun("vehicle")} className="btnnew" >vehicle Model</button>
-                    <button type="button" onClick={()=>filterpostfun("policies")} className="btnnew" >Policies</button>
-                    <button type="button" onClick={()=>filterpostfun("technologies")} className="btnnew" >Technologies</button>
+                    <button type="button" onClick={()=>filterpostfun('')}  className={activeButton === '' ?      'xyzx' : 'btnnew'} >ALL</button>
+                    <button type="button" onClick={()=>filterpostfun("reports")} className={activeButton === 'reports' ?      'xyzx' : 'btnnew'} >Report</button>
+                    <button type="button" onClick={()=>filterpostfun("vehicle")} className={activeButton === 'vehicle' ?      'xyzx' : 'btnnew'}>vehicle Model</button>
+                    <button type="button" onClick={()=>filterpostfun("policies")} className={activeButton === 'policies' ?     'xyzx' : 'btnnew'} >Policies</button>
+                    <button type="button" onClick={()=>filterpostfun("technologies")} className={activeButton === 'technologies' ? 'xyzx' : 'btnnew'} >Technologies</button>
                   </div>
                 </div>
               </div>
@@ -1069,6 +1071,7 @@ useEffect(()=>{
                     {formik.touched.long_description && formik.errors.long_description ? <div className='text-danger testdanger'>{formik.errors.long_description}</div> : null}
 
                     {/* <button type='submit' className="postes"> Post Now </button> */}
+                    
                     <button type="submit" disabled={disabledSubmit} className="postes btn-subm" onClick={()=>setShowevent(true)} >
                        {
                           disabledSubmit ? (
@@ -1078,7 +1081,7 @@ useEffect(()=>{
                             </div>
                           ) : 'Add Events'
                         }
-                </button>
+                    </button>
 
                   </form>
                   </div>

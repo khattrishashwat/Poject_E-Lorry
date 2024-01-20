@@ -127,7 +127,7 @@ useEffect(()=>{
                         <div className="eye">
                           <i className={passdisplay ? "fa fa-eye-slash" : "fa-regular fa-eye"} onClick={() => setPasswordDisplay(!passdisplay)}></i>
                         </div>
-                        {formik.touched.old_password && formik.errors.old_password ? <div className='text-danger'>{formik.errors.old_password}</div> : null}
+                        {formik.touched.old_password && formik.errors.old_password ? <div className='text-danger customram'>{formik.errors.old_password}</div> : null}
 
                       </div>
 
@@ -144,7 +144,7 @@ useEffect(()=>{
                         <div className="eye">
                           <i className={passdisplays ? "fa fa-eye-slash" : "fa-regular fa-eye"} onClick={() => setPasswordDisplays(!passdisplays)} ></i>
                         </div>
-                        {formik.touched.password && formik.errors.password ? <div className='text-danger'>{formik.errors.password}</div> : null}
+                        {formik.touched.password && formik.errors.password ? <div className='text-danger customram'>{formik.errors.password}</div> : null}
 
                       </div>
 
@@ -161,7 +161,7 @@ useEffect(()=>{
                         <div className="eye">
                           <i className={passdisplayc ? "fa fa-eye-slash" : "fa-regular fa-eye"} onClick={() => setPasswordDisplayc(!passdisplayc)} ></i>
                         </div>
-                        {formik.touched.cpassword && formik.errors.cpassword ? <div className='text-danger'>{formik.errors.cpassword}</div> : null}
+                        {formik.touched.cpassword && formik.errors.cpassword ? <div className='text-danger customram'>{formik.errors.cpassword}</div> : null}
 
                       </div>
 

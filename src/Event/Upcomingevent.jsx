@@ -46,7 +46,7 @@ function Upcomingevent() {
     <section className="middle-sec pt-5 pb-3" >
       <div className="small-container" >
         <div className="row rowees ">
-          <div className="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+          <div className="col-lg-9 col-md-6 col-sm-6 col-xs-12">
                  <h1 className="inner-h">{eventDetails.title}</h1>
                  <hr className="inner-hr" />
                  <img src={eventDetails.image} className="w-100" />
@@ -69,7 +69,7 @@ function Upcomingevent() {
             
 
 
-          <div className="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+          <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12">
             <div className="widget-news-inv">
               <header className="header-news-inv for-eventsdtls">
                 <h5>Latest Events</h5>

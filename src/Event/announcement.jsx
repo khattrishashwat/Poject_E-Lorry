@@ -84,10 +84,10 @@ function Announcement()
         <div className="ps-0 pt-2 col-md-9">
           <a href={value.url} target="_blank"><p style={{cursor:"pointer"}}>{value.content}</p></a>
         </div>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", marginBottom: "1rem", fontWeight: "bold" }}>
-          {/* Use the formatted date instead of static values */}
-          <span style={{ border: "0.5px solid lightgrey", textAlign: "center", width: "25%", marginLeft: "auto" }}>{createDate.getDate()}</span>
-          <span style={{ backgroundColor: "#632672", color: "white", fontSize: "12px", fontWeight: "bold", textAlign: "center", width: "25%", height: "2.8vh", marginLeft: "auto" }}>{formattedDate}</span>
+        <div className="col-md-3" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",  marginBottom: "1rem", fontWeight: "bold" }}>
+          
+          <span className="datecal"  style={{ border: "0.5px solid lightgrey", textAlign: "center",  }}>{createDate.getDate()}</span>
+          <span className="datecal" style={{ backgroundColor: "#632672", color: "white", fontSize: "12px", fontWeight: "bold", textAlign: "center",  }}>{formattedDate}</span>
         </div>
       </div>
       <hr />
