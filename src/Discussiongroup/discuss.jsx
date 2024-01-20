@@ -267,9 +267,9 @@ function Discuss( {isVisible} ) {
     // post_announcement_update: Yup.string().min(5, 'Too Short!').max(100, 'Too Long').required('Please enter Post'),
     post_date: Yup.date().required('Date is required').nullable(),
     // uploaded_file: Yup.mixed().required('Image is required'),
-    uploaded_file: Yup.mixed().required('File is required').test('fileSize', 'File size is too large', (value) => {
-          return value && value.size <= 10485760;
-        }),
+    // uploaded_file: Yup.mixed().required('File is required').test('fileSize', 'File size is too large', (value) => {
+        //   return value && value.size <= 10485760;
+        // }),
     meeting_link: Yup.string().required('Plese enter link').test('is-https', 'URL must be HTTPS', (value) => {
       if (!value) return true;
       return value.startsWith('https://');
@@ -448,7 +448,7 @@ function Discuss( {isVisible} ) {
     title: Yup.string()
       .min(2, 'Too Short!')
       .required('Required'),
-      image: Yup.mixed().required('File is required'),
+      // image: Yup.mixed().required('File is required'),
       // .test('fileSize', 'File size is too large', (value) => {
         // You can add your custom file size validation logic here
         // return value && value.size <= 10485760; // 10 MB
@@ -463,10 +463,10 @@ function Discuss( {isVisible} ) {
       // }),
       description: Yup.string().min(5, 'Too Short!').max(1000, 'Too Long').required('Required'),
   });
-  const submitpost=async(value, { resetForm })=>
+  const submitpost=async(value,  { resetForm })=>
   {
     setDisabledSubmit(true)
-    
+    console.log("value--------------",value)
      try{
      const item=value;
      const items=JSON.stringify(item)
@@ -478,7 +478,7 @@ function Discuss( {isVisible} ) {
      frm.append('category',value.category)
 
 
-    //  console.log("fun" , frm)
+       console.log("fun" , frm)
       const resp= await axios.post('/create-post',frm,{headers:headerspost})
       // console.log("<<<<<<",resp)
       toast(resp.data.message, {
@@ -506,11 +506,12 @@ function Discuss( {isVisible} ) {
        })
 
     }
- resetForm();
+
  setDisabledSubmit(false)
  setTimeout(() => {
   window.location.reload()
  }, 1000);
+ resetForm();
   } 
 
   const fromikpost=useFormik({
@@ -531,7 +532,6 @@ function Discuss( {isVisible} ) {
   {
     const postcat=value;
     console.log("post value",postcat);
-
     const postcats= (value === undefined) ? '' : postcat
     console.log("post value",postcats);
     const resp= await axios.get(`/posts?category=${postcats}`, {headers:headers});
@@ -647,15 +647,17 @@ useEffect(()=>{
               <div className="discuss-posti">
                 <div className="right-forms-1f">
                   <div className="upper-two-btn modefychat-manu">
-                    <button type="button" onClick={()=>filterpostfun('')}  className="unactive" >ALL</button>
-                    <button type="button" onClick={()=>filterpostfun("reports")} className="unactive" >Report</button>
-                    <button type="button" onClick={()=>filterpostfun("vehicle")} className="unactive" >vehicle Model</button>
-                    <button type="button" onClick={()=>filterpostfun("policies")} className="unactive" >Policies</button>
-                    <button type="button" onClick={()=>filterpostfun("technologies")} className="unactive" >Technologies</button>
+                    <button type="button" onClick={()=>filterpostfun('')}  className="btnnew" >ALL</button>
+                    <button type="button" onClick={()=>filterpostfun("reports")} className="btnnew" >Report</button>
+                    <button type="button" onClick={()=>filterpostfun("vehicle")} className="btnnew" >vehicle Model</button>
+                    <button type="button" onClick={()=>filterpostfun("policies")} className="btnnew" >Policies</button>
+                    <button type="button" onClick={()=>filterpostfun("technologies")} className="btnnew" >Technologies</button>
                   </div>
                 </div>
               </div>
             </div>
+
+            
 
                     
             {/* postdiscuss  */}
@@ -683,11 +685,23 @@ useEffect(()=>{
               </div>
               <h3>{value.title}</h3>
               <p>{value.description}</p>
-              <img
+              {/* <img
                 src={value.post_image}
                 className="tru-img"
                 alt="dicimg5"
-              />
+              /> */}
+
+
+              { (!value.post_image == "" ) ?
+                        ( 
+                         <img src={value.post_image} alt='xyz'  className="tru-img"  /> 
+                        )
+                        :
+                        (
+                        <Avatar className="avtorsty-nav" name={value.name} />
+                        )
+              }
+
                {/* <Avatar name={value.name} /> */}
               <div className="mainsflexings">
                 <div className="like">
@@ -720,8 +734,22 @@ useEffect(()=>{
                      currentUser=
                      {{
                        currentUserId: value.id,
-                       currentUserImg:value.user_avator,
-                       currentUserProfile:value.user_avator,
+                       currentUserImg:value.user_avator && value.user_avator !== "" ? (
+                        <img src={value.user_avator} alt='userIcon' className="imgprofile" />
+                      ) : (
+                        <Avatar className="avtorsty-nav" name={value.name} />
+                      )
+                         ,
+                       currentUserProfile:
+                                  !value.user_avator == ""  ?
+                                  ( 
+                                   <img src={value.user_avator} alt='xyz' className="imgprofile" /> 
+                                  )
+                                  :
+                                  (
+                                  <Avatar className="avtorsty-nav" name={value.name} />
+                                  ),
+                        
                        currentUserFullName: value.name
                      }}
                      commentData={data}
@@ -783,7 +811,7 @@ useEffect(()=>{
               <div className="right-forms-1f">
               <div className="upper-two-btn">
                   <button type="button" className="unactive" onClick={()=>setShowevent(true)}>Add Events</button>
-                  <button className="unactive"  onClick={() => setShow(true)}  >add post</button>
+                  <button className="unactive"  onClick={() => setShow(true)}  >Add Post</button>
                   
 
                 </div>
@@ -791,7 +819,16 @@ useEffect(()=>{
                    <h4 className="event-list">Events Listing</h4>
                    {eventDisplay.map((value,index)=>(
                    <div className="cards-1" key={index}>
-                       <img src={value.uploaded_file} alt="zyx"/> 
+                       {/* <img src={value.uploaded_file} alt="zyx"/>  */}
+                       { (!value.uploaded_file == "" ) ?
+                        ( 
+                         <img src={value.uploaded_file} alt='xyz'  /> 
+                        )
+                        :
+                        (
+                        <Avatar className="avtorsty-nav" name={value.name} />
+                        )
+              }
                        <h4 className="dateevent-sty">{value.post_date}</h4>
                        <h4>{value.title}</h4>
                        <p>{value.long_description}</p>
@@ -850,7 +887,7 @@ useEffect(()=>{
                     className="post-form"
                     />
                    
-                    {fromikpost.touched.image && fromikpost.errors.image ? <div className='text-danger testdanger' >{fromikpost.errors.image}</div> : null}
+                    {/* {fromikpost.touched.image && fromikpost.errors.image ? <div className='text-danger testdanger' >{fromikpost.errors.image}</div> : null} */}
 
 
                     <label className="pst-lab">Invite VIP Stakeholder</label>
@@ -888,12 +925,12 @@ useEffect(()=>{
                      <br /> */}
 
 
-                 
-                <select name="category" id="" value={formik.values.category} onChange={formik.handleChange} className="post-form" >
+                <label className="pst-lab">Tags</label>
+                <select name="category" id="" value={fromikpost.values.category} onChange={fromikpost.handleChange} className="post-form" >
                   {/* <option value="" selected disabled>
                     Report and Article*
                   </option> */}
-                  <option value="report">Report</option>
+                  <option value="reports">Report</option>
                   <option value="vehicle">Vehicle</option>
                   <option value="policies">Policies</option>
                   <option value="technologies">Technologies</option>
@@ -1004,9 +1041,9 @@ useEffect(()=>{
                         }}
                         className="post-form"
                       />
-                      {formik.touched.uploaded_file && formik.errors.uploaded_file ? (
+                      {/* {formik.touched.uploaded_file && formik.errors.uploaded_file ? (
                         <div className='text-danger testdanger'>{formik.errors.uploaded_file}</div>
-                      ) : null}
+                      ) : null} */}
 
 
 

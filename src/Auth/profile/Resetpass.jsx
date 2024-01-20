@@ -29,13 +29,13 @@ useEffect(()=>{
   const validation = Yup.object().shape({
     old_password: Yup.string()
       .min(8, 'Password must be at least 8 characters')
-      .required('Password is required'),
+      .required('Please enter old password'),
     password: Yup.string()
       .min(8, 'Password must be at least 8 characters')
-      .required('Password is required'),
+      .required('Please enter new password'),
     cpassword: Yup.string()
       .oneOf([Yup.ref('password'), null], 'Passwords must match')
-      .required('Password confirmation is required'),
+      .required('Please enter password'),
   })
 
   const token = localStorage.getItem('authtoken')
