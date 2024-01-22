@@ -151,14 +151,16 @@ function Leftmenu() {
                             <Modal.Title>Change profile view</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <input
-                                type="file"
-                                placeholder="upload image"
-                                className="post-form"
-                                name='avator'
-                                value={fromik.values.avator}
-                                onChange={(e) => setchoosefile(e.target.files[0])}
-                            />
+                         
+                            <input type="file"  
+                       name='avator'
+                       onChange={(e) => {
+                       fromik.setFieldTouched('avator');
+                       fromik.setFieldValue('avator', e.currentTarget.files[0]);
+                       setchoosefile(e.currentTarget.files[0])
+                     }}
+                    className="post-form"
+                    />
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={handleClose}>

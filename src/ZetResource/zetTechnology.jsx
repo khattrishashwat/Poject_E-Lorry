@@ -53,10 +53,11 @@ function ZetTechnology()
         <section className="middle-sec pt-5 pb-3">
           <div className="row posse">
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-               
+            <h1 className="inner-h" style={{textAlign: 'center'}}>{technologyData.page_title}</h1>
+            <hr className="inner-hr" style={{marginLeft: '538px'}}></hr>
                 <div>
-              <h1 className="inner-h">  {technologyData.page_title}</h1>
-              <hr className="inner-hr" />
+              {/* <h1 className="inner-h">  </h1>
+              <hr className="inner-hr" /> */}
               <div className="newsdetails-main-s">
                 <div className="news-dtls-box enevt-dtls-box">
                   <div className="news-content-inv-s posse">

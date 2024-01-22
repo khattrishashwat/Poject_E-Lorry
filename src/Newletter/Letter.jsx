@@ -84,56 +84,142 @@ const token = localStorage.getItem("authtoken")
   })
 
   // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const submitfrom= async(value,{resetForm}) =>
-  {
-    setDisabledSubmit(true)
-    const itemlog = value
-    const itemslog = JSON.stringify(itemlog)
-//     console.warn("Email : ",itemslog)
-//     if (!emailRegex.test(value.email)) {
-                
-//       toast("Entered email is invalid", {
-//        position: "top-right",
-//        autoClose: 2000,
-//        hideProgressBar: false,
-//        closeOnClick: true,
-//        pauseOnHover: true,
-//        draggable: true,
-//        progress: undefined,
-//        type: 'error'
-//      })
-//      setDisabledSubmit(false)
-//       return;
-// }
-    const headers = {
-      "Content-Type": "application/json",
-      "Accept": "application/json",
-    }
-    try{
-      setDisabledSubmit(true)
-      const respo=await axios.post("/subscribe-newsletter", `${itemslog}`,
-      {headers:headers})
-      console.warn("res###",respo)
-      toast(respo.data.message, {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      })
-      setDisabledSubmit(false)
-    }
-    catch(errors)
-    {
-      setDisabledSubmit(true)
-      console.warn("chdcschacha",)
-      setDisabledSubmit(false)
-    }
+//   const submitfrom= async(value,{resetForm}) =>
+//   {
+//     setDisabledSubmit(true)
+//     const itemlog = value
+//     const itemslog = JSON.stringify(itemlog)
+// //
+//     const headers = {
+//       "Content-Type": "application/json",
+//       "Accept": "application/json",
+//     }
+//     try{
+//       setDisabledSubmit(true)
+//       const respo=await axios.post("/subscribe-newsletter", `${itemslog}`,
+//       {headers:headers})
+//       console.warn("res###",respo.data.message)
+//       toast(respo.data.message, {
+//         position: "top-right",
+//         autoClose: 2000,
+//         hideProgressBar: false,
+//         closeOnClick: true,
+//         pauseOnHover: true,
+//         draggable: true,
+//         progress: undefined,
+//       })
+//       // setDisabledSubmit(false)
+//     }
+//     catch(errors)
+//     {
+//       console.warn(",,,,,,,,,,,,," ,errors)
+//     toast(errors.response.data.message, {
+//       position: "top-right",
+//       autoClose: 2000,
+//       hideProgressBar: false,
+//       closeOnClick: true,
+//       pauseOnHover: true,
+//       draggable: true,
+//       progress: undefined,
+//       type: 'error'
+//     })
+//   }
 
-    resetForm()
+//     resetForm()
+//   }
+
+const submitfrom= async(value,{resetForm}) =>
+{
+if(disabledSubmit){
+  return
+}
+
+setDisabledSubmit(true)
+
+  const itemlog = value
+  const itemslog = JSON.stringify(itemlog)
+  console.warn("Email : ",itemslog)
+  console.log(value.email,"value")
+  // if (!value.email) {
+  //   // Display email field is required toast
+  //   toast("Email field is required", {
+  //     position: "top-right",
+  //     autoClose: 2000,
+  //     hideProgressBar: false,
+  //     closeOnClick: true,
+  //     pauseOnHover: true,
+  //     draggable: true,
+  //     progress: undefined,
+  //     type: 'error',
+  //   });
+
+  //   // Enable the button for further submissions
+  //   setDisabledSubmit(false);
+  //   return;
+  // }
+  // if (!emailRegex.test(value.email)) {
+            
+            
+  //   toast("Entered email is invalid", {
+  //     position: "top-right",
+  //     autoClose: 2000,
+  //     hideProgressBar: false,
+  //     closeOnClick: true,
+  //     pauseOnHover: true,
+  //     draggable: true,
+  //     progress: undefined,
+  //     type: 'error'
+  //   })
+
+
+  //   setDisabledSubmit(false);
+   
+  //         return;
+  // }
+  
+  const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
   }
+  try{
+   
+
+    const respo=await axios.post("/subscribe-newsletter", `${itemslog}`,
+    {headers:headers})
+    console.warn("res###",respo)
+    toast(respo.data.message, {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    })
+    setDisabledSubmit(false)
+
+  }
+  catch(errors)
+  {
+    console.log(errors,"errorssssssssss")
+  
+    toast(errors.response.data.message, {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      type: 'error'
+    })
+    
+  }finally{
+    setDisabledSubmit(false)
+    resetForm()
+   
+  }
+}
 
   const formik=useFormik(
     {

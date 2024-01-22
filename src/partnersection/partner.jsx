@@ -161,8 +161,8 @@ function Partner() {
   <div className="small-container">
     <div className="part-main-parent-grid">
       {Datapart.map((value,index)=>(
-      <div className="part-grid-1" key={index} >
-        <img src={value.image}   alt='img-1' width={'100px'}/>
+      <div className="part-grid-1" key={index} style={{width: '124px', height: '106px', overflow: 'hidden'}} >
+        <img src={value.image}   alt='img-1' width={'100px'} style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center'}}/>
       </div>
       ))}
     </div>

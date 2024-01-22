@@ -42,6 +42,7 @@ function Zetvehicle() {
         <div className="container mt-104">
 
           <h2 className="innerhead-title">Zet Vehicle Models</h2>
+          
 
 
         </div>
@@ -60,6 +61,7 @@ function Zetvehicle() {
 
 
           <div className="model-grid-2">
+
 
             <div className="under-flex-112">
               <h3>Battery</h3>
