@@ -66,12 +66,16 @@ function About({ showbtn }) {
           <h4>Who We Are</h4>
           <h2>About Us</h2>
           <span className="line"></span>
-          <p>
-            {hiddenitem ? 
-            "The electrification of road transport is the need of the hour to reduce the country's overall greenhouse gas emissions. While the electrification of two and three wheelers  cars and buses are gaining momentum, there is a significant push required for the electrification of the medium and heavy-duty trucks in India"
-             :      
-             "The electrification of road transport is the need of the hour to reduce the country's overall greenhouse gas emissions. While the electrification of two and three wheelers  cars and buses are gaining momentum, there is a significant push required for the electrification of the medium and heavy-duty trucks in India.Trucks represent about 5% of total vehicle fleet in India, but they are responsible for more than 70% of CO2 emissions from road transport.1 In freight transport, trucks constitute 70% share by tonne-km2. The growth of India's truck stock and road freight market is going to increase by four folds through 2050 which shows a steep rise in the demand for zero emission truck (ZET). Given the noise around ZETs globally, many enthusiasts are working" 
-             }</p>
+          
+            {hiddenitem ?
+            <div>
+            <p className="textsty-about">The electrification of road transport is the need of the hour to reduce the country's overall greenhouse gas emissions. While the electrification of two and three wheelers  cars and buses are gaining momentum, there is a significant push required for the electrification of the medium and heavy-duty trucks in India </p>
+            </div>
+             : 
+             <div>     
+             <p className="textsty-about" >he electrification of road transport is the need of the hour to reduce the country's overall greenhouse gas emissions. While the electrification of two and three wheelers  cars and buses are gaining momentum, there is a significant push required for the electrification of the medium and heavy-duty trucks in India.Trucks represent about 5% of total vehicle fleet in India, but they are responsible for more than 70% of CO<sub>2</sub> emissions from road transport. In freight transport, trucks constitute 70% share by tonne-km. The growth of India's truck stock and road freight market is going to increase by four folds through 2050 which shows a steep rise in the demand for zero emission truck (ZET). Given the noise around ZETs globally, many enthusiasts are working</p>
+             </div>
+             }
 
           <button onClick={()=>setHiddenitem(!hiddenitem)} id="myBtn">Read more</button>
         </div>

@@ -6526,7 +6526,7 @@ transition: all .3s ease-in-out; */
 .ft {
   position: absolute;
   transform: translate(-50%, -50%);
-  top: 18%;
+  top: 13%;
   right: 2%;
   font-size: 20px;
 }
@@ -7220,7 +7220,7 @@ h4.dateevent-sty {
 .myrs ul li {
   list-style-type: disclosure-closed !important;
   margin-bottom: 50px;
-  margin-left: 20px;
+  margin-left: 50px;
   text-align: justify;
 }
 
@@ -7372,6 +7372,17 @@ span.datecal {
   width: 75%;
 }
 
+.comment-titlepost
+{
+  margin-top: 17px;
+  font-size: 17px;
+}
+
+.textsty-about
+{
+  text-align: center;
+  justify-content: center;
+}
 
 
 

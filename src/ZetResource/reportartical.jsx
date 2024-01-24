@@ -59,8 +59,8 @@ const downloadfile=(fileurl) =>
         <div className="small-container">
           <div className="row">
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <h1 className="inner-h" style={{textAlign:'center'}}>Reports & Articles</h1>
-              <hr className="inner-hr" style={{marginLeft:'538px' }} />
+            {/* <h1 className="inner-h" style={{textAlign:'center'}}>Reports & Articles</h1>
+              <hr className="inner-hr" style={{marginLeft:'538px' }} /> */}
               <div className="boxshadow-flex">
                 {articleData.map((value, index) => (
                   <div className="boxShadow2 sectionra syte" key={index}>
@@ -74,13 +74,13 @@ const downloadfile=(fileurl) =>
                       </div>
                       {/* <a href="" className="download-btn">Download &nbsp;&nbsp;<i className="fa-solid fa-download"></i></a> */}
                      
-                    <button onClick={()=>downloadfile(value.article_file)} className="download-btn downart">Download &nbsp;&nbsp;<i className="fa-solid fa-download"></i></button> 
+                    <button onClick={()=>downloadfile(value.article_file)} style={{color:"#0909cc"}} className="download-btn downart">Click Here &nbsp;&nbsp;</button> 
                     </div>
                     <div className="img">
                       <figure className="boxShadow2"><img src={value.image} alt="img" className="my-new" />
                       </figure>
                     </div>
-                    <span className="date boxShadow1">{moment(value.created_at).format('DD MMM')}</span>
+                    <span className="date boxShadow1">{moment(value.created_at).format('DD MMM YYYY')}</span>
                   </div>
                 ))}
               </div>

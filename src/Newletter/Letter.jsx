@@ -15,6 +15,8 @@ function Letter() {
     document.title = 'NewLetter Page';
     downloadPdf()
   },[])
+
+
 const token = localStorage.getItem("authtoken")
   const headers={
     "Content-Type":"application/json",
@@ -28,48 +30,28 @@ const token = localStorage.getItem("authtoken")
       const response = await axios.get('/newsletter',{headers:headers})
         
       console.log(response,"newLetter")
-      if(token){
+     
       setDownloadFile(response.data.data)
-      }else{
-        toast("Please login to download the Newsletters", {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          type: 'error',
-        });
-      }
-      
-      // const blob = new Blob([response.data], { type: 'application/pdf' });
-      // const link = document.createElement('a');
-      // link.href = window.URL.createObjectURL(blob);
-      // link.download = 'example.pdf'; 
-      // link.click();
+
+       
     } catch (error) {
       console.error('Error downloading PDF:', error);
+      toast(error.response.data.message, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        type: 'error',
+      });
     }
   };
 
 
 
-  // const downloadPdf = async () => {
-  //   try {
-  //     const response = await axios.get('your-pdf-api-endpoint', {
-  //       responseType: 'blob', // Set the response type to blob
-  //     });
-
-  //     const blob = new Blob([response.data], { type: 'application/pdf' });
-  //     const link = document.createElement('a');
-  //     link.href = window.URL.createObjectURL(blob);
-  //     link.download = 'example.pdf'; 
-  //     link.click();
-  //   } catch (error) {
-  //     console.error('Error downloading PDF:', error);
-  //   }
-  // };
+ 
 
   const initalize=
   {
@@ -83,56 +65,12 @@ const token = localStorage.getItem("authtoken")
     }).required('Please enter  email')
   })
 
-  // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-//   const submitfrom= async(value,{resetForm}) =>
-//   {
-//     setDisabledSubmit(true)
-//     const itemlog = value
-//     const itemslog = JSON.stringify(itemlog)
-// //
-//     const headers = {
-//       "Content-Type": "application/json",
-//       "Accept": "application/json",
-//     }
-//     try{
-//       setDisabledSubmit(true)
-//       const respo=await axios.post("/subscribe-newsletter", `${itemslog}`,
-//       {headers:headers})
-//       console.warn("res###",respo.data.message)
-//       toast(respo.data.message, {
-//         position: "top-right",
-//         autoClose: 2000,
-//         hideProgressBar: false,
-//         closeOnClick: true,
-//         pauseOnHover: true,
-//         draggable: true,
-//         progress: undefined,
-//       })
-//       // setDisabledSubmit(false)
-//     }
-//     catch(errors)
-//     {
-//       console.warn(",,,,,,,,,,,,," ,errors)
-//     toast(errors.response.data.message, {
-//       position: "top-right",
-//       autoClose: 2000,
-//       hideProgressBar: false,
-//       closeOnClick: true,
-//       pauseOnHover: true,
-//       draggable: true,
-//       progress: undefined,
-//       type: 'error'
-//     })
-//   }
-
-//     resetForm()
-//   }
 
 const submitfrom= async(value,{resetForm}) =>
 {
-if(disabledSubmit){
-  return
-}
+// if(disabledSubmit){
+//   return
+// }
 
 setDisabledSubmit(true)
 
@@ -140,42 +78,6 @@ setDisabledSubmit(true)
   const itemslog = JSON.stringify(itemlog)
   console.warn("Email : ",itemslog)
   console.log(value.email,"value")
-  // if (!value.email) {
-  //   // Display email field is required toast
-  //   toast("Email field is required", {
-  //     position: "top-right",
-  //     autoClose: 2000,
-  //     hideProgressBar: false,
-  //     closeOnClick: true,
-  //     pauseOnHover: true,
-  //     draggable: true,
-  //     progress: undefined,
-  //     type: 'error',
-  //   });
-
-  //   // Enable the button for further submissions
-  //   setDisabledSubmit(false);
-  //   return;
-  // }
-  // if (!emailRegex.test(value.email)) {
-            
-            
-  //   toast("Entered email is invalid", {
-  //     position: "top-right",
-  //     autoClose: 2000,
-  //     hideProgressBar: false,
-  //     closeOnClick: true,
-  //     pauseOnHover: true,
-  //     draggable: true,
-  //     progress: undefined,
-  //     type: 'error'
-  //   })
-
-
-  //   setDisabledSubmit(false);
-   
-  //         return;
-  // }
   
   const headers = {
     "Content-Type": "application/json",
@@ -214,11 +116,11 @@ setDisabledSubmit(true)
       type: 'error'
     })
     
-  }finally{
+  }
     setDisabledSubmit(false)
     resetForm()
    
-  }
+  
 }
 
   const formik=useFormik(
@@ -268,14 +170,8 @@ setDisabledSubmit(true)
           <div className="newsletter-grid-2">
             <h3>Subscribe Our Newsletter</h3>
             <p>Subscribe to our newsletter and stay updated</p>
-
-
-
             <form onSubmit={formik.handleSubmit}  className='form-sub'>
-
-      
-            <div className="subs-pos">
-             
+            <div className="subs-pos"> 
               <input 
               type="text"
               name='email'

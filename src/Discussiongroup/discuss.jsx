@@ -27,7 +27,7 @@ import moment from "moment";
 
 
 
-function Discuss( {isVisible} ) {
+function Discuss( {isVisible,onHide} ) {
 
   const [show, setShow] = useState(false);
   const [showevent,setShowevent] = useState(false);
@@ -45,16 +45,39 @@ function Discuss( {isVisible} ) {
   const [toppostdiscuss,setToppostdiscuss] =useState([])
   const [updatepost,setUpdatepost] =useState()
   // const [currentpost,setcurrentpost]=useState()
-  const [id, setId] = useState();
+  const [id, setId] = useState(null);
   const [eventDisplay, setEventDisplay] = useState([])
   const [disabledSubmit, setDisabledSubmit] = useState(false)
   const [handleclick,sethandleclick] = useState(true)
   const [isLoading, setLoading] = useState(false);
+  const [isprofile,setProfileupdate]=useState({})
 
   
   const [emails, setEmails] = useState([]);
   const [isActive, setIsActive] = useState(true);
   const [activeButton, setActiveButton] = useState('');
+  const [replayData,setcommentreplyData] =useState([
+    // {
+    //   userId: '01a',
+    //   comId: '012',
+    //   fullName: 'Riya Negi',
+    //   avatarUrl: 'https://ui-avatars.com/api/name=Riya&background=random',
+    //   userProfile: 'https://www.linkedin.com/in/riya-negi-8879631a9/',
+    //   text: 'Hey, Loved your blog! ',
+    //   replies: [
+    //     {
+    //       userId: '02a',
+    //       comId: '013',
+    //       userProfile: 'https://www.linkedin.com/in/riya-negi-8879631a9/',
+    //       fullName: 'Adam Scott',
+    //       avatarUrl: 'https://ui-avatars.com/api/name=Adam&background=random',
+    //       text: 'Thanks! It took me 1 month to finish this project but I am glad it helped out someone!🥰'
+    //     }
+    //   ]
+    // }
+  ])
+
+  const [hiddendata,sethiddendata] =useState(false)
 
 
   const handleEmailChange = (newEmails) => {
@@ -77,6 +100,8 @@ function Discuss( {isVisible} ) {
     'Authorization': `Bearer ${token}`,
   }
 
+
+  
 
 
  
@@ -226,30 +251,71 @@ function Discuss( {isVisible} ) {
 
   const commenthandleapi= async(value)=>
   {
+    console.log("comment replies ....................", value)
     const temporaryElement = document.createElement('div');
     temporaryElement.innerHTML = value.text;
-     const plainText = temporaryElement.textContent || temporaryElement.innerText;
+    const plainText = temporaryElement.textContent || temporaryElement.innerText;
+
+
      const itemcomment = {
       post_id: value.userId,
       comment: plainText
       };
-
+      // if(value.indexOf(0)!==-1){
+      //   itemcomment.parent_id=value[0].comId
+      // itemcomment.post_id=value[0].userId
+      //  itemcomment.post_id=value[0].userId
+      // }
 
     const itemcomments= JSON.stringify(itemcomment)
     // console.log("item1111111",itemcomments)
     const resp= await axios.post('/comment-post',itemcomment,{headers:headers})
     // console.log("comment api", resp)
-    
   }
 
 
-  const handleCommentId=(id)=>
+  const handleCommentId=async(id)=>
   {
-    // console.warn("hhhhhhhhhhhhhh",id)
+    if(token == null)
+    {
+      Swal.fire({
+        title: 'please login!',
+        showConfirmButton: false, // Hide the confirm button
+        timer: 3000,
+      })
+      setTimeout(() => {
+        const parameterValue = -1; // Replace this with the actual value of your parameter
+        const path = '/auth/login';
+        navigate(path, { state: { parameterValue } })
+       }, 2000); 
+
+    }else
+    {
+    const post_id=id;
+    console.log("comment ---------",post_id)
+   
+    const resp=await axios.get(`/postcomment?post_id=${post_id}`,{headers:headers})
+    console.log("comment replay",resp.data.data.post_coment)
+    setcommentreplyData(resp.data.data.post_coment)
+
     setId(id)
+    }
+    
     // setCommentsec(true)
   }
 
+
+  const dataprofile = async () => {
+    try {
+      const resp = await axios.get("/view-profile", { headers: headers })
+      console.log(" nav api profile ",resp.data.data)
+      setProfileupdate(resp.data.data)
+    }
+    catch (errors) {
+      console.log(errors)
+    }
+
+  }
 
 
 
@@ -329,6 +395,7 @@ function Discuss( {isVisible} ) {
     }
     setDisabledSubmit(false)
     setShowevent(false)
+    onHide();
     resetForm()
     setTimeout(() => {
       window.location.reload()
@@ -529,6 +596,12 @@ function Discuss( {isVisible} ) {
   };
 
 
+  const sethandledoubleclick=(idvalue)=>
+  {
+    const idvalues=idvalue == null;
+    setId(idvalues)
+  }
+
   const filterpostfun=async(value)=>
   {
     const postcat=value;
@@ -563,6 +636,32 @@ function Discuss( {isVisible} ) {
       : null;
 
 
+      // const activeElement = document.querySelector('.scrollcls');
+    
+      // if (activeElement) {
+      //   activeElement.scrollIntoView({
+      //     behavior: 'smooth',
+      //     block: 'start',
+      //   });
+      // }
+   
+      const scrollHandle=(scrollid)=>
+      {
+        const postElement = document.getElementById(`post_${scrollid}`);
+
+        // Check if the element exists before scrolling
+        if (postElement) {
+          postElement.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+
+         const customNoComment = () => (
+         <div className="comment-titlepost"> Zero Comments posted here!</div>
+     
+         )
+
+      
+
 
 useEffect(()=>{
   document.title = 'Chatroom Page';
@@ -571,7 +670,12 @@ useEffect(()=>{
 useEffect(()=>{
   postDiscuss()
   filterpostfun()
+  dataprofile()
 },[updatepost])
+
+  // useEffect(() => {
+  //   handleCommentId()
+  // }, []);
 
 // console.warn("vvvvv", isVisible)
 
@@ -618,14 +722,14 @@ useEffect(()=>{
                 <h4>{value.name}</h4>
                 <div className="mainsflexings-1">
                   <div className="like-1">
-                    <i className= "fa-solid fa-thumbs-up "></i>                  
-                    <h4>{value.post_like_count}</h4>
+                    <i onClick={(e)=>scrollHandle(value.id)} className= "fa-solid fa-thumbs-up "></i>                  
+                    <h4 >{value.post_like_count}</h4>
                   </div>
-                  <div className="like-1">
+                  <div className="like-1" onClick={(e)=>scrollHandle(value.id)} >
                     <i className="fa-solid fa-thumbs-down"></i>
                     <h4>{value.post_dislike_count}</h4>
                   </div>
-                  <div className="like-1">
+                  <div className="like-1" onClick={(e)=>scrollHandle(value.id)} >
                     <i className="fa-solid fa-comment" onClick={emailmodelfun}></i>
                     <h4>{value.post_comments_count}</h4>
                   </div>
@@ -666,17 +770,10 @@ useEffect(()=>{
 
             {eventfilterpost.map((value,index)=>(
             <div className="group-section-1" key={index}>
-              <div className="imag-text">
-                {/* <img src={value.user_avator} alt="dicimg4"/> */}
-                { (!value.user_avator == "" ) ?
-                        ( 
-                         <img src={value.user_avator} alt='xyz' className="imgprofile" /> 
-                        )
-                        :
-                        (
-                        <Avatar className="avtorsty-nav" name={value.name} />
-                        )
-              }  
+              <div id={`post_${value.id}`} className="imag-text">
+           
+                { (!value.user_avator == "" ) ? (  <img src={value.user_avator} alt='xyz' className="imgprofile" />  ):( <Avatar className="avtorsty-nav" name={value.name} />  )
+                 }  
                 <div className="under-text-flex">
                   <div className="boths">
                     <h4>{value.name}</h4>
@@ -694,14 +791,7 @@ useEffect(()=>{
               /> */}
 
 
-              { (!value.post_image == "" ) ?
-                        ( 
-                         <img src={value.post_image} alt='xyz'  className="tru-img"  /> 
-                        )
-                        :
-                        (
-                        <Avatar className="avtorsty-nav" name={value.name} />
-                        )
+              { (!value.post_image == "" ) ?(<img src={value.post_image} alt='xyz'  className="tru-img"  />  )  : ( <Avatar className="avtorsty-nav" name={value.name}   />  )
               }
 
                {/* <Avatar name={value.name} /> */}
@@ -720,7 +810,7 @@ useEffect(()=>{
                   <h4>{value.you_dislike_post}</h4>
                 </div>
                 <div className="like">
-                  <i className="fa-solid fa-comment pointmu" onClick={()=>handleCommentId(value.id)}  onDoubleClick={()=>sethandleclick(true)}></i>
+                  <i className="fa-solid fa-comment pointmu" onClick={()=>handleCommentId(value.id)}  onDoubleClick={()=>sethiddendata(!hiddendata)}></i>
                   <h4>{value.post_comments_count}</h4>
                 </div>
                 <div className="like">
@@ -731,43 +821,51 @@ useEffect(()=>{
                
               </div>
               {data}
-              {token && (value.id === id) ?  <>            
-                <CommentSection
+              {token && hiddendata && (value.id === id) ?  <> 
+              {/* { replayData.map((valuedata,indexdata)=>(           */}
+                <CommentSection 
                      currentUser=
                      {{
                        currentUserId: value.id,
-                       currentUserImg:value.user_avator && value.user_avator !== "" ? (
-                        <img src={value.user_avator} alt='userIcon' className="imgprofile" />
-                      ) : (
-                        <Avatar className="avtorsty-nav" name={value.name} />
-                      )
-                         ,
-                       currentUserProfile:
-                                  !value.user_avator == ""  ?
-                                  ( 
-                                   <img src={value.user_avator} alt='xyz' className="imgprofile" /> 
-                                  )
-                                  :
-                                  (
-                                  <Avatar className="avtorsty-nav" name={value.name} />
-                                  ),
-                        
-                       currentUserFullName: value.name
+                      currentUserImg:isprofile.avator || 'images/profile9.jpg',
+                      currentUserProfile:isprofile.avator || 'images/profile9.jpg',
+                      //  currentUserFullName: value.name
                      }}
-                     commentData={data}
-                     customImg={value.user_avator}
-                     inputStyle={{ border: "1px solid rgb(208 208 208)" }}
+                     
+                     commentsCount={value.post_comments_count}
+                     commentData={replayData.map((valudata,index)=>(
+                      {
+                           userId: `${valudata.userid}`,
+                           comId: `${valudata.comid}`,
+                           fullName: `${valudata.name}`,
+                           avatarUrl: `${value.user_avator || "images/profile9.jpg"}`,
+                           userProfile: `${value.user_avator || "images/profile9.jpg"}`,
+                           text: `${valudata.comment_text?valudata.comment_text:'Not Available'}`,
+                          //  text: `${moment(valudata.comentdate).format('DD MMM YYYY')}`,
+                           replies:
+                          (valudata.replies || []).map((reply) => ({
+                            userId: `${reply.userid || ""}`,
+                            comId: `${reply.userid || ''}`,
+                            avatarUrl: `${reply.user_avator || "images/profile9.jpg"}`,
+                            userProfile: `${reply.user_avator || "images/profile9.jpg"}`,
+                            text: `${reply.comment_text ? reply.comment_text : 'Not Available'}`,
+                          })),
+                         }
+
+                     ))}
+
+                     customNoComment={() => customNoComment()}
+                     customImg={isprofile.avator}
+                     inputStyle={{ border: "1px solid rgb(208 208 208)"}}
                      formStyle={{ backgroundColor: "white" }}
-                     submitBtnStyle={{ backgroundColor: "blue", padding: "7px 15px",  position: 'relative', left: '-1px;' }}
+                     submitBtnStyle={{ backgroundColor: "blue", padding: "7px 15px",  position: 'relative', left: '-1px' }}
                      cancelBtnStyle={{ border: "1px solid gray", backgroundColor: "gray", color: "white", padding: "7px 15px"}}
                      replyInputStyle={{ borderBottom: "1px solid black", color: "black" }}
-                     onSubmitAction={(data) =>commenthandleapi(data)}
-                     currentData={(data) => {
-                      console.log('current data', data);
-                    }}
+                     onSubmitAction={(data) => commenthandleapi(data)}
+                     currentData={(data) => console.log(data[0]?.replies)}
                     />
-                               
-
+                     
+                
               </> : null}
             </div>
             ))}
@@ -778,7 +876,8 @@ useEffect(()=>{
         {token? 
         <Modal
               show={showshare}
-              onHide={() => setShowshare(false)}
+              onHide={() =>setShowshare(false)}
+              // onExit={()=>alert('hello')}
               backdrop="static"
               keyboard={false}
               centered
@@ -830,7 +929,7 @@ useEffect(()=>{
                         (
                         <Avatar className="avtorsty-nav" name={value.name} />
                         )
-              }
+                    }
                        <h4 className="dateevent-sty">{value.post_date}</h4>
                        <h4>{value.title}</h4>
                        <p>{value.long_description}</p>
@@ -853,7 +952,7 @@ useEffect(()=>{
       {/* model for addPost */}
            <Modal
               show={show}
-              onHide={() => setShow(false)}
+              onHide={() => {setShow(false);fromikpost.resetForm()}}
               backdrop="static"
               keyboard={false}
               centered
@@ -971,7 +1070,7 @@ useEffect(()=>{
          {/* model for event data  */}
              <Modal
               show={showevent}
-              onHide={() =>setShowevent(false)}
+              onHide={() =>{setShowevent(false);formik.resetForm()}}
               backdrop="static"
               keyboard={false}
               centered

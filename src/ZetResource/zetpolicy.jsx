@@ -111,13 +111,13 @@ function Zetpolicy()
           <div className="row posse">
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
              
-              <h1 className="inner-h" style={{textAlign: 'center'}}><div dangerouslySetInnerHTML={{ __html: parseHTML(policeData.page_title) }} /></h1>
-            <hr className="inner-hr" style={{marginLeft: '538px'}}></hr>
+              {/* <h1 className="inner-h" style={{textAlign: 'center'}}><div dangerouslySetInnerHTML={{ __html: parseHTML(policeData.page_title) }} /></h1>
+            <hr className="inner-hr" style={{marginLeft: '538px'}}></hr> */}
               <div className="newsdetails-main-s">
                 <div className="news-dtls-box enevt-dtls-box">
                   <div className="news-content-inv-s posse">
                     <div className="content-block-extra-inv-s event-block-extra-s">
-                      <h3>E-Lorry Web Portal</h3>
+                      {/* <h3>E-Lorry Web Portal</h3> */}
                       <div dangerouslySetInnerHTML={{ __html: parseHTML(policeData.page_content) }} />
 
 

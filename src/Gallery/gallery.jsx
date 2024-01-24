@@ -26,6 +26,11 @@ function Gallery()
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imageItems.length);
   };
 
+  const characterLimit =12;
+
+  // Truncate the text if it exceeds the character limit
+  
+
   const handlePrev = () => {
     setCurrentImageIndex((prevIndex) =>
       prevIndex === 0 ? imageItems.length - 1 : prevIndex - 1
@@ -207,10 +212,12 @@ function Gallery()
                                     <img  onClick={() => handleOpen(index)} src={value.filename_url} alt="" style={{ objectFit:"cover", width:"210px",height:"165px"}} className="image"/>
                                    
                                     <div className="overlays" >
-                        </div>
+                                  </div>
                                   </div>
                                 </div>
-                                <span className="Captioni">{value.title}</span>
+                                <span className="Captioni">{value.title.length > characterLimit
+                                   ? value.title.substring(0, characterLimit) + '...'
+                                    : value.title}</span>
                               </div>
 
                               </div>
@@ -232,7 +239,7 @@ function Gallery()
                       >
                         <Swiper
                           modules={[Navigation, Pagination, A11y]}
-                          spaceBetween={20}
+                          spaceBetween={10}
                           slidesPerView={5}
                           navigation={false}
                           simulateTouch={true}
@@ -240,6 +247,7 @@ function Gallery()
                         >
                           {galleryvideoitem.map((value,index) => (
                             <div className="Event-videos" >
+                              {value.type === "youtube_link" && (
                               <div className=""key={index} >
                                 <SwiperSlide >
                                   {/* <iframe
@@ -248,9 +256,9 @@ function Gallery()
                                     frameborder={0}
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                     allowFullScreen
-                                  ></iframe> */}
+                                  ></iframe>  */}
                                   <div className="swiper-wrapper">
-                                    {value.type === "youtube_link" && (
+                                    
                                      <div>
                                   <ReactPlayer url={value.filename_url}
                                     controls
@@ -263,11 +271,13 @@ function Gallery()
                                     }}
 
                                     fullscreen={true} />
-                                  <span className="Captionv">{value.title}</span>
-                                  </div>)}
+                                  <span className="Captionv">{value.title.length > characterLimit
+                                   ? value.title.substring(0, characterLimit) + '...'
+                                    : value.title}</span>
+                                  </div>
                                   </div>
                                 </SwiperSlide>
-                              </div>
+                              </div>)}
                             </div>
                           ))}
                         </Swiper>

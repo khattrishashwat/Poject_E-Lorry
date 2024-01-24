@@ -32,7 +32,7 @@ function ZetTechnology()
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlString, 'text/html');
   
-    const ulItems = doc.querySelectorAll('li ui');
+    const ulItems = doc.querySelectorAll('ul li');
     ulItems.forEach((li) => {
       const text = li.textContent;
       li.textContent = text.replace(/&ndash;/g, '–');
@@ -53,8 +53,8 @@ function ZetTechnology()
         <section className="middle-sec pt-5 pb-3">
           <div className="row posse">
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <h1 className="inner-h" style={{textAlign: 'center'}}>{technologyData.page_title}</h1>
-            <hr className="inner-hr" style={{marginLeft: '538px'}}></hr>
+            {/* <h1 className="inner-h" style={{textAlign: 'center'}}>{technologyData.page_title}</h1>
+            <hr className="inner-hr" style={{marginLeft: '538px'}}></hr> */}
                 <div>
               {/* <h1 className="inner-h">  </h1>
               <hr className="inner-hr" /> */}

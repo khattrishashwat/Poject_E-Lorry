@@ -157,10 +157,11 @@ const submitlog = async(values) =>
   const parameterValue = -1; 
   // const path = '/'; 
   // navigation(-1, {state : tokenele} )
-  if (parameterValue === -1 ) {
+  if (parameterValue == -1) {
     navigation(parameterValue, { state: tokenele });
   }
-  else{
+  else if(parameterValue == null)
+  {
     navigation('/', {state : tokenele} )
   }
 

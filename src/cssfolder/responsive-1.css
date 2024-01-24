@@ -914,6 +914,13 @@ span.datecal {
         margin-top: 30px !important;
     }
 
+    .ft {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        top: 9%;
+        right: 2%;
+        font-size: 20px;
+    }
 
 
 

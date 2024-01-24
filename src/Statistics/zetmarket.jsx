@@ -64,14 +64,14 @@ function zetmarket() {
         <div className="hovicon effect-4 sub-b">
           <img src='images/ev-sale-01.png' className="circle-1"/>
           <h2 className="goals">15 Mt</h2>
-          <p>Annual savings of CO2 emissions</p>
+          <p>Annual savings of CO<sub>2</sub> emissions</p>
         </div>
       </div>
 
       <div className="gri-1">
         <div className="hovicon effect-4 sub-b">
           <img  src='images/ev-sale-02.png'  className="circle-1" />
-          <h2 className="goals">6900 mil. ltrs </h2>
+          <h2 className="goals">6900 Mil. Ltrs </h2>
           <p>Annual savings of fuels</p>
         </div>
       </div>
@@ -87,7 +87,7 @@ function zetmarket() {
       <div className="gri-1">
         <div className="hovicon effect-4 sub-b">
           <img  src='images/ev-sale-04.png' className="circle-1" />
-          <h2 className="goals">INR 11 lakhs </h2>
+          <h2 className="goals">INR 11 Lakhs </h2>
           <p>Annual savings in operating costs of MGV and HGV.</p>
         </div>
       </div>

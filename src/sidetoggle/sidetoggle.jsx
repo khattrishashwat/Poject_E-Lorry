@@ -3,6 +3,8 @@ import { useFormik } from "formik";
 import * as yup from 'yup'
 import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import axios from "axios";
 
 function Sidetoggle() {
@@ -79,8 +81,12 @@ function Sidetoggle() {
     resetForm();
   }
   const validation= yup.object().shape({
-    email:yup.string().email('please enter valid email').required('Please enter email')
+    email:yup.string().email('please enter valid email').test('email-domain', 'Email domain must be .com or .in', (value) => {
+      if (!value) return false; // Handle empty values if needed
+      return /@(.+\.com|.+\.in)$/.test(value);
+    }).required('Please enter  email')
   })
+  
 
   const formik = useFormik(
     {
