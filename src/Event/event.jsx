@@ -66,6 +66,8 @@ console.log(pasteventitem,"past ")
 
 
                 {/* {pasteventitem.map((value,index)=>( */}
+                {pasteventitem ? (
+                  pasteventitem.length > 0 ? (
                 <ul  className="media-list main-list">
                 {pasteventitem.map((value,index)=>(
 
@@ -89,6 +91,15 @@ console.log(pasteventitem,"past ")
                   </li>
                   ))}
                 </ul>
+                ) : (
+                  <div className="media-list main-list">
+                  <h4 className="upcs">No Events Yet</h4>
+                </div>
+                )
+              ) : (
+                <p>Loading...</p>
+              )
+              }
                 
               </div>
 

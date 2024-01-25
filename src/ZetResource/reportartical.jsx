@@ -74,7 +74,7 @@ const downloadfile=(fileurl) =>
                       </div>
                       {/* <a href="" className="download-btn">Download &nbsp;&nbsp;<i className="fa-solid fa-download"></i></a> */}
                      
-                    <button onClick={()=>downloadfile(value.article_file)} style={{color:"#0909cc"}} className="download-btn downart">Click Here &nbsp;&nbsp;</button> 
+                    <button onClick={()=>downloadfile(value.article_file)} target='_blank' style={{color:"#0909cc"}} className="download-btn downart">Click Here &nbsp;&nbsp;</button> 
                     </div>
                     <div className="img">
                       <figure className="boxShadow2"><img src={value.image} alt="img" className="my-new" />

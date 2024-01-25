@@ -1,4 +1,4 @@
-import React, { useState, useEffect,createContext,useContext } from "react";
+import React, { useState, useEffect,createContext,useContext, useRef } from "react";
 // import "./discuss.css";
 import Footer from "../Footer/footer";
 import Toggleside from '../sidetoggle/sidetoggle'
@@ -29,6 +29,7 @@ import moment from "moment";
 
 function Discuss( {isVisible,onHide} ) {
 
+  const inputRef = useRef(null);
   const [show, setShow] = useState(false);
   const [showevent,setShowevent] = useState(false);
   const [showshare, setShowshare] = useState(false);
@@ -51,31 +52,15 @@ function Discuss( {isVisible,onHide} ) {
   const [handleclick,sethandleclick] = useState(true)
   const [isLoading, setLoading] = useState(false);
   const [isprofile,setProfileupdate]=useState({})
+  const [valueid,setvalueid]=useState([])
 
   
   const [emails, setEmails] = useState([]);
   const [isActive, setIsActive] = useState(true);
   const [activeButton, setActiveButton] = useState('');
   const [replayData,setcommentreplyData] =useState([
-    // {
-    //   userId: '01a',
-    //   comId: '012',
-    //   fullName: 'Riya Negi',
-    //   avatarUrl: 'https://ui-avatars.com/api/name=Riya&background=random',
-    //   userProfile: 'https://www.linkedin.com/in/riya-negi-8879631a9/',
-    //   text: 'Hey, Loved your blog! ',
-    //   replies: [
-    //     {
-    //       userId: '02a',
-    //       comId: '013',
-    //       userProfile: 'https://www.linkedin.com/in/riya-negi-8879631a9/',
-    //       fullName: 'Adam Scott',
-    //       avatarUrl: 'https://ui-avatars.com/api/name=Adam&background=random',
-    //       text: 'Thanks! It took me 1 month to finish this project but I am glad it helped out someone!🥰'
-    //     }
-    //   ]
-    // }
   ])
+  
 
   const [hiddendata,sethiddendata] =useState(false)
 
@@ -86,7 +71,7 @@ function Discuss( {isVisible,onHide} ) {
   const navigate = useNavigate()
   const location = useLocation()
 
-  // console.log("log .......", location)
+  console.log("log .......", location)
   
   const token = localStorage.getItem("authtoken");
 
@@ -259,7 +244,8 @@ function Discuss( {isVisible,onHide} ) {
 
      const itemcomment = {
       post_id: value.userId,
-      comment: plainText
+      comment: plainText,
+      parent_id:value.repliedToCommentId
       };
       // if(value.indexOf(0)!==-1){
       //   itemcomment.parent_id=value[0].comId
@@ -273,6 +259,26 @@ function Discuss( {isVisible,onHide} ) {
     // console.log("comment api", resp)
   }
 
+  const commentreplyapi= async(value)=>
+  {
+    console.log("comment replies ....................", value)
+    const temporaryElement = document.createElement('div');
+    temporaryElement.innerHTML = value.text;
+    const plainText = temporaryElement.textContent || temporaryElement.innerText;
+
+
+     const itemcomment = {
+      post_id: value.userId,
+      comment: plainText,
+      parent_id:value.repliedToCommentId,
+      };
+   
+
+    const itemcomments= JSON.stringify(itemcomment)
+    // console.log("item1111111",itemcomments)
+    const resp= await axios.post('/comment-post',itemcomment,{headers:headers})
+    // console.log("comment api", resp)
+  }
 
   const handleCommentId=async(id)=>
   {
@@ -615,7 +621,11 @@ function Discuss( {isVisible,onHide} ) {
 
   }
 
-
+ const setShowshareid=(value)=>
+ {
+  setvalueid(value)
+  setShowshare(true)
+ }
 
 
   const emailChips =formik.values.vip && formik.values.vip.split(',')
@@ -660,7 +670,15 @@ function Discuss( {isVisible,onHide} ) {
      
          )
 
-      
+
+        const handleCopyLink = () => {
+          if (inputRef.current) {
+            inputRef.current.select();
+            document.execCommand('copy');
+            // Optionally, you can show a success message to the user
+            alert('Link copied to clipboard!');
+          }
+        };
 
 
 useEffect(()=>{
@@ -673,9 +691,9 @@ useEffect(()=>{
   dataprofile()
 },[updatepost])
 
-  // useEffect(() => {
-  //   handleCommentId()
-  // }, []);
+// useEffect(()=>{
+//   handleCommentId()
+// },[])
 
 // console.warn("vvvvv", isVisible)
 
@@ -692,7 +710,6 @@ useEffect(()=>{
         draggable
         pauseOnHover
       />
-      {/* < Navbars style={{backgroundColor:`${navcolor.appcolor}`}}/> */}
       <Toggleside />
       <div className="small-container">
          
@@ -702,10 +719,10 @@ useEffect(()=>{
 
         <div className="threads">
         {toppostdiscuss.map((value,index)=>(
-          <div className="thread-text" key={index}>
+          <div className="thread-text" key={index} >
 
              {/* <img src={value.user_avator} alt='xyz' />  */}
-            
+            <div onClick={(e)=>scrollHandle(value.id)}>
              { (!value.user_avator == "" ) ?
                         ( 
                          <img src={value.user_avator} alt='xyz' className="imgprofile" /> 
@@ -714,10 +731,11 @@ useEffect(()=>{
                         (
                         <Avatar className="avtorsty-nav" name={value.name} />
                         )
-              }  
+              }
+              </div>  
 
 
-            <div className="thre-text-flex">
+            <div className="thre-text-flex" onClick={(e)=>scrollHandle(value.id)}>
               <div className="boths">
                 <h4>{value.name}</h4>
                 <div className="mainsflexings-1">
@@ -777,8 +795,7 @@ useEffect(()=>{
                 <div className="under-text-flex">
                   <div className="boths">
                     <h4>{value.name}</h4>
-                    <h5>{moment(value.created_at).format('DD MMM')}</h5>
-                    
+                    <h5>{moment(value.created_at).format('DD MMM')}</h5>          
                   </div>
                 </div>
               </div>
@@ -802,11 +819,7 @@ useEffect(()=>{
                   <h4>{value.you_like_post}</h4>
                 </div>
                 <div className="like">
-                  <i  onClick={(e)=>handledislike(value.id)} className={token &&  value.you_dislike_post == 1 ? "fa-solid fa-thumbs-down thumbcolor pointmu" : "fa-solid fa-thumbs-down pointmu"}></i>
-                  
-                 
-                  
-                  
+                  <i  onClick={(e)=>handledislike(value.id)} className={token &&  value.you_dislike_post == 1 ? "fa-solid fa-thumbs-down thumbcolor pointmu" : "fa-solid fa-thumbs-down pointmu"}></i>               
                   <h4>{value.you_dislike_post}</h4>
                 </div>
                 <div className="like">
@@ -815,7 +828,7 @@ useEffect(()=>{
                 </div>
                 <div className="like">
                   {/* <a href=""> */}
-                    <i className="fa-solid fa-share pointmu" onClick={()=>setShowshare(true)} ></i>
+                    <i className="fa-solid fa-share pointmu" onClick={()=>setShowshareid(value.unique_code)} ></i>
                   {/* </a> */}
                 </div>
                
@@ -826,33 +839,15 @@ useEffect(()=>{
                 <CommentSection 
                      currentUser=
                      {{
-                       currentUserId: value.id,
+                      currentUserId: value.id,
                       currentUserImg:isprofile.avator || 'images/profile9.jpg',
                       currentUserProfile:isprofile.avator || 'images/profile9.jpg',
                       //  currentUserFullName: value.name
                      }}
                      
                      commentsCount={value.post_comments_count}
-                     commentData={replayData.map((valudata,index)=>(
-                      {
-                           userId: `${valudata.userid}`,
-                           comId: `${valudata.comid}`,
-                           fullName: `${valudata.name}`,
-                           avatarUrl: `${value.user_avator || "images/profile9.jpg"}`,
-                           userProfile: `${value.user_avator || "images/profile9.jpg"}`,
-                           text: `${valudata.comment_text?valudata.comment_text:'Not Available'}`,
-                          //  text: `${moment(valudata.comentdate).format('DD MMM YYYY')}`,
-                           replies:
-                          (valudata.replies || []).map((reply) => ({
-                            userId: `${reply.userid || ""}`,
-                            comId: `${reply.userid || ''}`,
-                            avatarUrl: `${reply.user_avator || "images/profile9.jpg"}`,
-                            userProfile: `${reply.user_avator || "images/profile9.jpg"}`,
-                            text: `${reply.comment_text ? reply.comment_text : 'Not Available'}`,
-                          })),
-                         }
-
-                     ))}
+                     
+                   
 
                      customNoComment={() => customNoComment()}
                      customImg={isprofile.avator}
@@ -861,11 +856,45 @@ useEffect(()=>{
                      submitBtnStyle={{ backgroundColor: "blue", padding: "7px 15px",  position: 'relative', left: '-1px' }}
                      cancelBtnStyle={{ border: "1px solid gray", backgroundColor: "gray", color: "white", padding: "7px 15px"}}
                      replyInputStyle={{ borderBottom: "1px solid black", color: "black" }}
+                      commentData={replayData.map((valudata,index)=>(
+                         {
+                           userId: `${valudata.userid}`,
+                           comId: `${valudata.comid}`,
+                           fullName: `${valudata.name}`,
+                           avatarUrl: `${value.user_avator || "images/profile9.jpg"}`,
+                           userProfile: `${value.user_avator || "images/profile9.jpg"}`,
+                          //  text: `${valudata.comment_text?valudata.comment_text:'Not Available'} ${moment(valudata.comentdate).format('DD MMM YYYY')}`,
+                          //  date: `${moment(valudata.comentdate).format('DD MMM YYYY')}`,
+                         text: (
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                              <span>{valudata.comment_text ? valudata.comment_text : 'Not Available'}</span>
+                              <span style={{marginLeft:'111px'}}>{moment(valudata.comentdate).format('DD MMM')}</span>
+                            </div>
+                          ),
+                           replies:
+                          (valudata.replies || []).map((reply) => ({
+                            userId: `${reply.userid}`,
+                            comId: `${reply.comid }`,
+                            avatarUrl: `${reply.user_avator || "images/profile9.jpg"}`,
+                            userProfile: `${reply.user_avator || "images/profile9.jpg"}`,
+            
+                            text: (
+                              <div style={{ display: 'flex', justifyContent: 'space-between' ,width:"100%",gap:"1rem"}}>
+                                <span>{reply.comment_text ? reply.comment_text : 'Not Available'}</span>
+                                <span style={{marginLeft:'111px'}}>{moment(reply.comentdate).format('DD MMM ')}</span>
+                              </div>
+                            ),
+                          })),
+                         }
+
+                     ))}
                      onSubmitAction={(data) => commenthandleapi(data)}
-                     currentData={(data) => console.log(data[0]?.replies)}
+                    //  currentData={(data) => console.log("",comentdate)}
+                   
+                     onReplyAction={(data) => commentreplyapi(data)}
                     />
                      
-                
+          
               </> : null}
             </div>
             ))}
@@ -889,12 +918,15 @@ useEffect(()=>{
                     <form  className="for">
                     <input 
                     type="text"
-                    placeholder="https://www.google.co.in/" 
+                    // placeholder="https://www.google.co.in/" 
                     name="title"
+                    value={`https://dev.webmobrildemo.com/e_lorry/web/${valueid}`}
                     className="post-form"
+                    ref={inputRef}
+                    readOnly 
                     />
                
-                     <button  className="postes">Copy Link</button>
+                     <button  className="postes" onClick={handleCopyLink} >Copy Link</button>
                     </form>
                     </div>
               </Modal.Body>

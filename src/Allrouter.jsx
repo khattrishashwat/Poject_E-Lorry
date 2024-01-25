@@ -28,6 +28,9 @@ const Profileaccount = React.lazy(() => import('./Auth/profile/Userprofil'))
 const Profilepass = React.lazy(() => import('./Auth/profile/Resetpass'))
 const Logoutpage = React.lazy(() => import('./Auth/profile/logout'));
 const Chatpostdetail= React.lazy(()=> import('./Discussiongroup/Postdetail'))
+const Sharedetailpage =React.lazy(()=>import('./Discussiongroup/Sharedetail'))
+const Privacypage = React.lazy(()=>import('./privacypolicy/privacy'))
+const Termpage  = React.lazy(()=> import('./termandcondition/term'))
 // const UpcomingEvent = React.lazy(() => import('./Event/Upcomingevent'))
 // import DiscussLogin from './Discussiongroup/discussLogin';
 // import Projectitem from './Projectcontent/project'
@@ -75,6 +78,9 @@ function Allrouter() {
             {/* <Route path='/teamppage' element={<Temp />} /> */}
             <Route path='/logout' element={<Logoutpage />} />
             <Route path='/post/:pid/:uid' element={<Chatpostdetail />} />
+            <Route path='/:pid' element={<Sharedetailpage />} />
+            <Route path='/privacypage' element={<Privacypage />} />
+            <Route path='/termcondition' element={<Termpage />} />
           </Routes>
         </Suspense>
       </Router>

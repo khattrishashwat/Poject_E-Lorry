@@ -51,6 +51,9 @@ function footer() {
               <li><Link to='/discuss'>ZET Chatroom</Link></li>
               <li><Link to='/gallery'>Gallery</Link></li>
               <li><Link to='/contact'>Contact</Link></li>
+              <li><Link to='/privacypage'>Privacy & Policy</Link></li>
+              <li><Link to='/termcondition'>Term & Condition</Link></li>
+
 
             </ul>
           </div>
