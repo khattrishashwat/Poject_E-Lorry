@@ -245,16 +245,17 @@ function Discuss( {isVisible,onHide} ) {
      const itemcomment = {
       post_id: value.userId,
       comment: plainText,
-      parent_id:value.repliedToCommentId
+      // parent_id:value.userId,
       };
       // if(value.indexOf(0)!==-1){
       //   itemcomment.parent_id=value[0].comId
       // itemcomment.post_id=value[0].userId
       //  itemcomment.post_id=value[0].userId
       // }
+      
 
     const itemcomments= JSON.stringify(itemcomment)
-    // console.log("item1111111",itemcomments)
+    console.log("comment",itemcomment)
     const resp= await axios.post('/comment-post',itemcomment,{headers:headers})
     // console.log("comment api", resp)
   }
@@ -275,7 +276,7 @@ function Discuss( {isVisible,onHide} ) {
    
 
     const itemcomments= JSON.stringify(itemcomment)
-    // console.log("item1111111",itemcomments)
+    console.log("item reply 00000000000",itemcomment)
     const resp= await axios.post('/comment-post',itemcomment,{headers:headers})
     // console.log("comment api", resp)
   }

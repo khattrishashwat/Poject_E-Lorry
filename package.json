@@ -22,6 +22,7 @@
     "react": "^18.2.0",
     "react-avatar": "^5.0.3",
     "react-bootstrap": "^2.9.1",
+    "react-commentbox": "^3.0.1",
     "react-comments-section": "^2.0.10",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
