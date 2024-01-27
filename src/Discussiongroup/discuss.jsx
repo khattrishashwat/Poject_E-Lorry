@@ -694,9 +694,9 @@ function Discuss({ isVisible, onHide }) {
 //       setId(id)
 // },[action,id])
 
-useEffect(()=>{
-  handleCommentId()
-},[action])
+// useEffect(()=>{
+//   handleCommentId()
+// },[action])
 
   // console.warn("vvvvv", isVisible)
 

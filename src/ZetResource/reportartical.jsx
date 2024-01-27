@@ -13,10 +13,21 @@ function Reportartical() {
   const [reportData, setReportData] = useState([])
 
 
-const downloadfile=(fileurl) =>
+const downloadfile=(filename, url,event) =>
 {
-  FileSaver.saveAs(fileurl);
-  console.log("cbhsbchsbcvhs", fileurl)
+ 
+  // FileSaver.saveAs(fileurl);
+
+
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  event.preventDefault();
+  const newTab = window.open(link, '_blank');
+  newTab.addEventListener('load', () => {
+    // setLoading(false);
+  });
+  console.log("cbhsbchsbcvhs", url)
 }  
 
   useEffect(() => {
@@ -74,7 +85,7 @@ const downloadfile=(fileurl) =>
                       </div>
                       {/* <a href="" className="download-btn">Download &nbsp;&nbsp;<i className="fa-solid fa-download"></i></a> */}
                      
-                    <button onClick={()=>downloadfile(value.article_file)} target='_blank' style={{color:"#0909cc"}} className="download-btn downart">Click Here &nbsp;&nbsp;</button> 
+                    <button onClick={(event)=>downloadfile(value.title,value.article_file, event)}  style={{color:"#0909cc"}} className="download-btn downart">Click Here &nbsp;&nbsp;</button> 
                     </div>
                     <div className="img">
                       <figure className="boxShadow2"><img src={value.image} alt="img" className="my-new" />
