@@ -55,16 +55,18 @@ function Discuss({ isVisible, onHide }) {
   const [isprofile, setProfileupdate] = useState({})
   const [valueid, setvalueid] = useState([])
 
+  console.log(isprofile,"isprofileee")
 
   const [emails, setEmails] = useState([]);
   const [isActive, setIsActive] = useState(true);
   const [activeButton, setActiveButton] = useState('');
   const [replayData, setcommentreplyData] = useState([])
-
+// const [replayComment,setReplayComment]=useState(false)
 
   const [hiddendata, sethiddendata] = useState(false)
   const[action,setAction] =useState(false)
 
+  
 
   const handleEmailChange = (newEmails) => {
     setEmails(newEmails);
@@ -239,52 +241,98 @@ function Discuss({ isVisible, onHide }) {
   //   onSubmit:commentSubmit,
   // })
 
-  const commenthandleapi = async (value) => {
-    console.log("comment replies ....................", value)
-    const temporaryElement = document.createElement('div');
-    temporaryElement.innerHTML = value.text;
-    const plainText = temporaryElement.textContent || temporaryElement.innerText;
+  // const commenthandleapi = async (value) => {
+  //   console.log("comment replies ....................", value)
+  //   const temporaryElement = document.createElement('div');
+  //   temporaryElement.innerHTML = value.text;
+  //   const plainText = temporaryElement.textContent || temporaryElement.innerText;
 
 
-    const itemcomment = {
-      post_id: value.userId,
-      comment: plainText,
-      // parent_id: value.repliedToCommentId,
-    };
+  //   const itemcomment = {
+  //     post_id: value.userId,
+  //     comment: plainText,
+  //     // parent_id: value.repliedToCommentId,
+  //   };
    
 
-    const itemcomments = JSON.stringify(itemcomment)
-    console.log("comment", itemcomment)
-     const resp= await axios.post('/comment-post',itemcomment,{headers:headers})
-    // console.log("comment api", resp)
-    setAction(!action)
-    sethiddendata(true)
+  //   const itemcomments = JSON.stringify(itemcomment)
+  //   console.log("comment", itemcomment)
+  //    const resp= await axios.post('/comment-post',itemcomment,{headers:headers})
+  //   console.log("comment api", resp.data.data.comment_text)
 
-  }
+  //   setcommentreplyData((prevData) => [resp?.data?.data?.comment_text, ...prevData]);
+  //   // sethiddendata(true)
 
-  const commentreplyapi = async (value ) => {
-    value.preventDefault();
-    value.stopPropagation();
+  // }
+  const commenthandleapi = async (value,values) => {
+    console.log(values,'comment ubmit')
+    try {
+      const temporaryElement = document.createElement('div');
+      temporaryElement.innerHTML = value.text;
+      const plainText = temporaryElement.textContent || temporaryElement.innerText;
+  
+      const itemcomment = {
+        post_id: value.userId,
+        comment: plainText,
+      };
+  
+      const resp = await axios.post('/comment-post', itemcomment, { headers: headers });
+  
+      
+      const newCommentText = resp?.data?.data?.comment_text;
+  console.log(newCommentText, "newCommentText")
+      if (newCommentText) {
+        // Construct a new comment object
+      const newComment = {
+        comment_text: newCommentText,
+        name:isprofile?.name
+        // Include other properties as needed
+      };
+
+     
+      setcommentreplyData((prevData) => [newComment, ...prevData]);
+      
+        console.log(replayData,"replayDta after submit")
+      
+      } else {
+        console.error('Invalid response structure or missing comment_text property in the response.');
+      }
+    } catch (error) {
+      console.error('Error submitting comment:', error);
+    }
+  };
+  
+
+  const commentreplyapi = async (value) => {
+    // value.preventDefault();
+    // value.stopPropagation();
     console.log("comment replies ....................", value)
-    const temporaryElement = document.createElement('div');
-    temporaryElement.innerHTML = value.text;
-    const plainText = temporaryElement.textContent || temporaryElement.innerText;
-
-
-    const itemcomment = {
-      post_id: value.userId,
-      comment: plainText,
-      parent_id: value.repliedToCommentId,
-    };
-
-
-    const itemcomments = JSON.stringify(itemcomment)
-    console.log("item reply 00000000000", itemcomment)
-    // const resp = await axios.post('/comment-post', itemcomment, { headers: headers })
-    // console.log("comment api", resp)
+    
+      const temporaryElement = document.createElement('div');
+      temporaryElement.innerHTML = value.text;
+      const plainText = temporaryElement.textContent || temporaryElement.innerText;
+  
+  
+      const itemcomment = {
+        post_id: value.userId,
+        comment: plainText,
+        parent_id: value.repliedToCommentId,
+      };
+  
+  
+      const itemcomments = JSON.stringify(itemcomment)
+      console.log("item reply 00000000000", itemcomment)
+      const resp = await axios.post('/comment-post', itemcomment, { headers: headers })
+      
+      console.log("comment api", resp)
+  
+   
   }
 
   const handleCommentId = async (id) => {
+    if(!hiddendata){
+      return
+    }
     if (token == null) {
       Swal.fire({
         title: 'please login!',
@@ -300,17 +348,108 @@ function Discuss({ isVisible, onHide }) {
     } else {
       const post_id = id;
       console.log("comment ---------", post_id)
-
-      const resp = await axios.get(`/postcomment?post_id=${post_id}`, { headers: headers })
-      console.log("comment replay", resp.data.data.post_coment)
-      setcommentreplyData(resp.data.data.post_coment)
-
+      // sethiddendata(true);
+      console.log(hiddendata,"hiddenDtaa")
+      if(hiddendata && id && token){
+      const resp = await axios.get(`/postcomment?post_id=${id}`, { headers: headers })
+      console.log("comment replay", resp)
+      
+      setcommentreplyData(resp?.data?.data?.post_coment)
+     
       setId(id)
+     
+    }else{
+      setcommentreplyData([])
+     
+      setId(null)
+    }
     }
 
     // setCommentsec(true)
   }
 
+
+  const handleEditcomment = async(commentId) => 
+  {
+    console.log("comment id",commentId);
+  //   
+   
+  };
+
+  const handleDeletecomment = async(commentId) => {
+   
+    console.log("comment id",commentId);
+    const deleteid=
+    {
+      id:commentId
+    }
+
+    // alert("delete",commentId)
+    try{
+      if(hiddendata && id && token){
+   const respo= await axios.post('comment/delete', deleteid,{headers:headers})
+   console.log('rrrrr',respo)
+   toast('Post delete', {
+    position: "top-right",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  })
+  setId(id)
+}
+    }
+    catch(errors)
+    {
+      toast(errors, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        type: 'error'
+      })
+
+    }
+
+  };
+
+
+  // const handleCommentId = async (id, token) => {
+  //   if (token == null) {
+  //     Swal.fire({
+  //       title: 'Please login!',
+  //       showConfirmButton: false, // Hide the confirm button
+  //       timer: 3000,
+  //     });
+  
+  //     setTimeout(() => {
+  //       const parameterValue = -1; // Replace this with the actual value of your parameter
+  //       const path = '/auth/login';
+  //       navigate(path, { state: { parameterValue } });
+  //     }, 2000);
+  //   } else {
+  //     const post_id = id;
+  //     console.log("comment ---------", post_id);
+  
+  //     try {
+  //       const resp = await axios.get(`/postcomment?post_id=${post_id}`, { headers: headers });
+  //       console.log("comment reply", resp);
+  //       setcommentreplyData(resp?.data?.data?.post_coment);
+  //       setId(id);
+  //     } catch (error) {
+  //       console.error("Error fetching comment:", error);
+  //       // Handle error as needed
+  //     }
+  //   }
+  
+  //   // setCommentsec(true)
+  // };
+  
 
   const dataprofile = async () => {
     try {
@@ -615,6 +754,7 @@ function Discuss({ isVisible, onHide }) {
     seteventfilterpost(resp.data.data.posts)
 
   }
+  console.log(eventfilterpost,"eventFlitered")
 
   const setShowshareid = (value) => {
     setvalueid(value)
@@ -682,21 +822,16 @@ function Discuss({ isVisible, onHide }) {
     postDiscuss()
     filterpostfun()
     dataprofile()
-  }, [updatepost])
+  }, [updatepost,hiddendata])
 
-  //  useEffect(()=>{
-  //    handleCommentId()
-  //  },[action])
-//   useEEfect(async ()=>{
-//     const resp = await axios.get(`/postcomment?post_id=${post_id}`, { headers: headers })
-//       console.log("comment replay", resp.data.data.post_coment)
-//       setcommentreplyData(resp.data.data.post_coment)
-//       setId(id)
-// },[action,id])
 
-// useEffect(()=>{
-//   handleCommentId()
-// },[action])
+
+useEffect(()=>{
+  
+    handleCommentId()
+  
+ 
+},[updatepost,hiddendata])
 
   // console.warn("vvvvv", isVisible)
 
@@ -813,7 +948,7 @@ function Discuss({ isVisible, onHide }) {
 
                 {(!value.post_image == "") ? (<img src={value.post_image} alt='xyz' className="tru-img" />) : (<Avatar className="avtorsty-nav" name={value.name} />)
                 }
-
+            
                 {/* <Avatar name={value.name} /> */}
                 <div className="mainsflexings">
                   <div className="like">
@@ -826,7 +961,17 @@ function Discuss({ isVisible, onHide }) {
                     <h4>{value.you_dislike_post}</h4>
                   </div>
                   <div className="like">
-                    <i className="fa-solid fa-comment pointmu" onClick={() => handleCommentId(value.id)} onDoubleClick={() => sethiddendata(!hiddendata)}></i>
+                    <i className="fa-solid fa-comment pointmu"  
+                    onClick={() => { handleCommentId(value.id,value); }} 
+                    // onDoubleClick={() => sethiddendata(!hiddendata)}
+                    // onClick={async () => {
+                    //   await handleCommentId(value.id);
+                    //   sethiddendata(prevHiddendata => !prevHiddendata);
+                    // }}
+                    onDoubleClick={() => sethiddendata(prevHiddendata => !prevHiddendata)} 
+                    >
+
+                    </i>
                     <h4>{value.post_comments_count}</h4>
                   </div>
                   <div className="like">
@@ -837,20 +982,20 @@ function Discuss({ isVisible, onHide }) {
 
                 </div>
                 {data}
-                {token  && (value.id === id) ? <>
+                {token && hiddendata && value.id === id ? <>
                   {/* { replayData.map((valuedata,indexdata)=>(           */}
                 
-
+                  
 
                   <CommentSection
                     currentUser=
                     {{
-                      currentUserId: value.id,
-                      currentUserImg: isprofile.avator || 'images/profile9.jpg',
-                      currentUserProfile: isprofile.avator || 'images/profile9.jpg',
+                      currentUserId: value?.id,
+                      currentUserImg: isprofile?.avator || 'images/profile9.jpg',
+                      currentUserProfile: isprofile?.avator || 'images/profile9.jpg',
                       // currentUserFullName: value.name
                     }}
-                    commentsCount={value.post_comments_count}
+                    commentsCount={value?.post_comments_count}
 
                     customNoComment={() => customNoComment()}
                     customImg={isprofile.avator}
@@ -860,39 +1005,67 @@ function Discuss({ isVisible, onHide }) {
                     cancelBtnStyle={{ border: "1px solid gray", backgroundColor: "gray", color: "white", padding: "7px 15px" }}
                     replyInputStyle={{ borderBottom: "1px solid black", color: "black" }}
                    
-                    onSubmitAction={(data) => commenthandleapi(data)}
+                    onSubmitAction={(data) => commenthandleapi(data,value)}
                     // currentData={(data) => console.log("",comentdate)}
-                    onReplyAction={(data) => commentreplyapi(data)}
+                    // onReplyAction={(data) => {commentreplyapi(data);console.log(data,"reply")}}
+                    onReplyAction={(data) => {
+                      const parentCommentId = data.repliedToCommentId // Replace with the actual property name
+                      console.log(typeof(parentCommentId),"parentCommentId")
+                      const parentComment = replayData?.find(comment =>
+                        comment?.replies?.some(i => i.comid === Number(parentCommentId))
+                      );
+                      
+                    console.log(parentComment,"parentComment")
+                      // Check if the parent comment exists and has more than one reply
+                      if (parentComment && parentComment.replies && parentComment.replies.length >= 1) {
+                        // Display alert if there are more than one reply for the parent comment
+                        alert("Only one reply is allowed for a comment");
+                        // setReplayComment(false)
+                        return
+                      } else {
+                        // Proceed with the reply
+                        // setReplayComment(true)
+                        commentreplyapi(data,parentComment);
+                      }
+                    }}
+                    
+                    
 
-                    commentData={replayData.map((valudata, index) => (
+                    commentData={replayData?.map((valudata, index) => (
                       {
-                        userId: `${valudata.userid}`,
-                        comId: `${valudata.comid}`,
-                        fullName: `${valudata.name}`,
-                        avatarUrl: `${value.user_avator || "images/profile9"}`,
-                        userProfile: `${value.user_avator || "images/profile9.jpg"}`,
+                        userId: `${valudata?.userid}`,
+                        comId: `${valudata?.comid}`,
+                        fullName: `${valudata?.name}`,
+                        avatarUrl: `${value?.user_avator || "images/profile9"}`,
+                        userProfile: `${value?.user_avator || "images/profile9.jpg"}`,
                         // text: `${valudata.comment_text?valudata.comment_text:'Not Available'} ${moment(valudata.comentdate).format('DD MMM YYYY')}`,
                         // date: `${moment(valudata.comentdate).format('DD MMM YYYY')}`,
                         text: (
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <span>{valudata.comment_text ? valudata.comment_text : 'Not Available'}</span>
-                            <span style={{ marginLeft: '111px' }}>{moment(valudata.comentdate).format('DD MMM')}</span>
+                            <span>{valudata?.comment_text}</span>
+                            <span style={{ marginLeft: '111px' }}>{moment(valudata?.comentdate).format('DD MMM')}</span>
                           </div>
                         ),
-                        replies:
-                          (valudata.replies || []).map((reply) => ({
+                        replies:(valudata?.replies || []).map((reply) => ({
                             userId: `${reply.userid}`,
                             comId: `${reply.comid}`,
                             avatarUrl: `${reply.user_avator || "images/profile9.jpg"}`,
                             userProfile: `${reply.user_avator || "images/profile9.jpg"}`,
                             text: (
-                              <div style={{ display: 'flex', justifyContent: 'space-between', width: "100%", gap: "1rem" }}>
-                                <span>{reply.comment_text ? reply.comment_text : 'Not Available'}</span>
-                                <span style={{ marginLeft: '111px' }}>{moment(reply.comentdate).format('DD MMM ')}</span>
+                              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <span>{valudata.comment_text ? valudata.comment_text : 'Not Available'}</span>
+                                <span style={{ marginLeft: '111px' }}>{moment(valudata.comentdate).format('DD MMM YYYY')}</span>
+                                <ul>
+                                <li className="navbar-dropdown">
+                                <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
+                               <div className="dropdown" style={{width:'80px'}}>
+                                    <button onClick={()=>handleEditcomment(reply.comid)} style={{marginRight:"10px"}}>Edit</button> 
+                                    <button onClick={()=>handleDeletecomment(reply.comid,)}>Delete</button>
+                               </div>
+                              </li>
+                              </ul>
                               </div>
                             ),
-
-
                           })),
                       }
 
