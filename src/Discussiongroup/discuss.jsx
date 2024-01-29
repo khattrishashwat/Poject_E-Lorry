@@ -369,9 +369,49 @@ function Discuss({ isVisible, onHide }) {
   }
 
 
-  const handleEditcomment = async(commentId) => 
+  const handleEditcomment = async(editdata) => 
   {
-    console.log("comment id",commentId);
+    console.log("comment id",editdata);
+    // console.log("comment id",commentId);
+    const editcomment=
+    {
+      post_id:editdata.userId,
+      comment:editdata.text,
+      comment_id:editdata.comId,
+    }
+
+    console.log('data come from comment',editcomment);
+    // alert("delete",commentId)
+    try{
+    
+   const respo= await axios.post('/comment-post', editcomment,{headers:headers})
+   console.log('rrrrr',respo)
+   toast('Post Edit', {
+    position: "top-right",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  })
+ 
+
+    }
+    catch(errors)
+    {
+      toast(errors, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        type: 'error'
+      })
+
+    }
   //   
    
   };
@@ -386,7 +426,7 @@ function Discuss({ isVisible, onHide }) {
 
     // alert("delete",commentId)
     try{
-      if(hiddendata && id && token){
+    
    const respo= await axios.post('comment/delete', deleteid,{headers:headers})
    console.log('rrrrr',respo)
    toast('Post delete', {
@@ -398,8 +438,8 @@ function Discuss({ isVisible, onHide }) {
     draggable: true,
     progress: undefined,
   })
-  setId(id)
-}
+ 
+
     }
     catch(errors)
     {
@@ -827,10 +867,7 @@ function Discuss({ isVisible, onHide }) {
 
 
 useEffect(()=>{
-  
     handleCommentId()
-  
- 
 },[updatepost,hiddendata])
 
   // console.warn("vvvvv", isVisible)
@@ -1004,7 +1041,7 @@ useEffect(()=>{
                     submitBtnStyle={{ backgroundColor: "blue", padding: "7px 15px", position: 'relative', left: '-1px' }}
                     cancelBtnStyle={{ border: "1px solid gray", backgroundColor: "gray", color: "white", padding: "7px 15px" }}
                     replyInputStyle={{ borderBottom: "1px solid black", color: "black" }}
-                   
+                    // onEditAction={(data)=>console.log('cjcnjscjs',data)}
                     onSubmitAction={(data) => commenthandleapi(data,value)}
                     // currentData={(data) => console.log("",comentdate)}
                     // onReplyAction={(data) => {commentreplyapi(data);console.log(data,"reply")}}
@@ -1014,7 +1051,6 @@ useEffect(()=>{
                       const parentComment = replayData?.find(comment =>
                         comment?.replies?.some(i => i.comid === Number(parentCommentId))
                       );
-                      
                     console.log(parentComment,"parentComment")
                       // Check if the parent comment exists and has more than one reply
                       if (parentComment && parentComment.replies && parentComment.replies.length >= 1) {
@@ -1044,6 +1080,31 @@ useEffect(()=>{
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <span>{valudata?.comment_text}</span>
                             <span style={{ marginLeft: '111px' }}>{moment(valudata?.comentdate).format('DD MMM')}</span>
+                            <ul>
+                                <li className="navbar-dropdown">
+                                <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
+                               <div className="dropdown" style={{width:'80px', top: '1px'}}>
+                                      <button onClick={() => {
+                      const newText = prompt('Enter new comment text:', valudata?.comment_text);
+                      if (newText !== null && newText !== undefined) {
+                        // handleEditComment(valudata.comId, newText);
+                        // Call the custom action when a comment is edited
+                        handleEditcomment({
+                          userId: `${value?.id}`,
+                          comId: valudata.comid,
+                          avatarUrl: valudata.user_avator || "images/profile9.jpg",
+                          userProfile: valudata.user_avator || "images/profile9.jpg",
+                          fullName: valudata.name,
+                          text: newText,
+                          parentOfEditedCommentId: valudata.parentCommentId || "",
+                        });
+                      }
+                    }} style={{marginRight:"10px"}}>Edit</button>  
+                                    
+                                    <button onClick={()=>handleDeletecomment(valudata.comid,)}>Delete</button>
+                               </div>
+                              </li>
+                              </ul>
                           </div>
                         ),
                         replies:(valudata?.replies || []).map((reply) => ({
@@ -1059,7 +1120,7 @@ useEffect(()=>{
                                 <li className="navbar-dropdown">
                                 <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
                                <div className="dropdown" style={{width:'80px'}}>
-                                    <button onClick={()=>handleEditcomment(reply.comid)} style={{marginRight:"10px"}}>Edit</button> 
+                                    <button onClick={()=>handleEditcomment(reply)} style={{marginRight:"10px"}}>Edit</button>  
                                     <button onClick={()=>handleDeletecomment(reply.comid,)}>Delete</button>
                                </div>
                               </li>
@@ -1067,6 +1128,7 @@ useEffect(()=>{
                               </div>
                             ),
                           })),
+                         
                       }
 
                     ))}

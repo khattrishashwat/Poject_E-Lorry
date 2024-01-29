@@ -61,6 +61,7 @@ function Navbars() {
       setProfile(true)
       dataprofile()
     }
+    
   }
 
 
@@ -74,7 +75,7 @@ function Navbars() {
 
 
   useEffect(() => {
-    if (location.state && location.state.parameterValue === "yourParameterValue") {
+    if (location.state && location.state.parameterValue == "yourParameterValue") {
       localStorage.removeItem('authtoken')
       profileaction()
     }

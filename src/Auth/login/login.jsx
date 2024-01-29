@@ -126,19 +126,19 @@ const validation=Yup.object().shape({
 
 const submitlog = async(values) =>
 {
-  
+  setDisabledSubmit(true)
   const headers={
     "Content-Type":"application/json",
     "Accept":"application/json",
   }
   try
   {
-    setDisabledSubmit(true)
+   
     const itemlog=values
     const itemslog=JSON.stringify(itemlog)
     const resp= await axios.post("/signin",`${itemslog}`, { headers: headers } )
     const tokenele=resp.data.data.token
-    // console.warn("token login ###", tokenele )
+    console.warn("token login ###", tokenele )
     localStorage.setItem("authtoken", resp.data.data.token)
     
 
@@ -152,7 +152,7 @@ const submitlog = async(values) =>
       draggable: true,
       progress: undefined,
   })
-  setDisabledSubmit(false)
+  
 
   const parameterValue = -1; 
   // const path = '/'; 
