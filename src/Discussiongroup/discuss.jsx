@@ -23,6 +23,8 @@ import { ReactMultiEmail, isEmail } from 'react-multi-email';
 import 'react-multi-email/dist/style.css';
 import Avatar from "react-avatar";
 import moment from "moment";
+import Loader from "../loader/loader";
+import Avatarl from '@mui/material/Avatar';
 
 
 
@@ -50,6 +52,8 @@ function Discuss({ isVisible, onHide }) {
   const [id, setId] = useState(null);
   const [eventDisplay, setEventDisplay] = useState([])
   const [disabledSubmit, setDisabledSubmit] = useState(false)
+  const [disabledSubmitdislike,setdisabledSubmitdislike]=useState(false)
+  const [disabledSubmitcomment,setdisabledSubmitcomment]=useState(false)
   const [handleclick, sethandleclick] = useState(true)
   const [isLoading, setLoading] = useState(false);
   const [isprofile, setProfileupdate] = useState({})
@@ -62,6 +66,7 @@ function Discuss({ isVisible, onHide }) {
   const [activeButton, setActiveButton] = useState('');
   const [replayData, setcommentreplyData] = useState([])
 // const [replayComment,setReplayComment]=useState(false)
+  const [repliedComments, setRepliedComments] = useState([]);
 
   const [hiddendata, sethiddendata] = useState(false)
   const[action,setAction] =useState(false)
@@ -143,6 +148,7 @@ function Discuss({ isVisible, onHide }) {
 
 
   const handlelike = async (post_id) => {
+    setDisabledSubmit(true)
     if (token == null) {
       Swal.fire({
         title: 'please login!',
@@ -156,6 +162,7 @@ function Discuss({ isVisible, onHide }) {
       }, 2000);
 
     } else {
+     
       try {
         const statuslike = 1
         const status = statuslike
@@ -177,14 +184,14 @@ function Discuss({ isVisible, onHide }) {
         })
       }
     }
-
-
+    setDisabledSubmit(false)
+    
   }
 
 
 
   const handledislike = async (post_id) => {
-    setDisabledSubmit(true)
+    setdisabledSubmitdislike(true)
     if (token == null) {
       Swal.fire({
         title: 'please login!',
@@ -219,9 +226,9 @@ function Discuss({ isVisible, onHide }) {
           progress: undefined,
           type: 'error'
         })
-      }
-      setDisabledSubmit(false)
+      }  
     }
+    setdisabledSubmitdislike(false)
   }
   // const intialinput={
   //   post_id: value.id,
@@ -275,12 +282,18 @@ function Discuss({ isVisible, onHide }) {
         post_id: value.userId,
         comment: plainText,
       };
+ 
+      // const postcats = null;
+      // const resp = await axios.get(`/posts?category`, { headers: headers });
+      // console.log('anjay');
+      // console.log(resp);
+      // console.log(resp?.data?.data?.posts);
   
-      const resp = await axios.post('/comment-post', itemcomment, { headers: headers });
+     const resp = await axios.post('/comment-post', itemcomment, { headers: headers });
   
       
       const newCommentText = resp?.data?.data?.comment_text;
-  console.log(newCommentText, "newCommentText")
+      console.log(newCommentText, "newCommentText")
       if (newCommentText) {
         // Construct a new comment object
       const newComment = {
@@ -324,16 +337,20 @@ function Discuss({ isVisible, onHide }) {
       console.log("item reply 00000000000", itemcomment)
       const resp = await axios.post('/comment-post', itemcomment, { headers: headers })
       
-      console.log("comment api", resp)
+     console.log("comment api", resp)
   
    
   }
 
   const handleCommentId = async (id) => {
+    console.log('handle click clicked');
+    // setdisabledSubmitcomment(true)
     if(!hiddendata){
       return
     }
+    console.log('after return')
     if (token == null) {
+      console.log('if');
       Swal.fire({
         title: 'please login!',
         showConfirmButton: false, // Hide the confirm button
@@ -346,6 +363,9 @@ function Discuss({ isVisible, onHide }) {
       }, 2000);
 
     } else {
+      console.log('else if');
+
+      setdisabledSubmitcomment(true)
       const post_id = id;
       console.log("comment ---------", post_id)
       // sethiddendata(true);
@@ -357,14 +377,15 @@ function Discuss({ isVisible, onHide }) {
       setcommentreplyData(resp?.data?.data?.post_coment)
      
       setId(id)
-     
+      setdisabledSubmitcomment(false)
     }else{
+      console.log('else ')
       setcommentreplyData([])
      
       setId(null)
     }
     }
-
+    
     // setCommentsec(true)
   }
 
@@ -377,7 +398,9 @@ function Discuss({ isVisible, onHide }) {
     {
       post_id:editdata.userId,
       comment:editdata.text,
+      parent_id:editdata.parent_id,
       comment_id:editdata.comId,
+
     }
 
     console.log('data come from comment',editcomment);
@@ -412,20 +435,51 @@ function Discuss({ isVisible, onHide }) {
       })
 
     }
+    //  for fetch data
+
+    if(hiddendata && id && token){
+      const resp = await axios.get(`/postcomment?post_id=${editdata.userId}`, { headers: headers })
+      console.log("comment replay", resp)
+      
+      setcommentreplyData(resp?.data?.data?.post_coment)
+      console.log("for fetching data", resp?.data?.data?.post_coment)
+     
+      setId(id)
+     
+    }else{
+      setcommentreplyData([])
+     
+      setId(null)
+    }
+
+
   //   
    
   };
 
-  const handleDeletecomment = async(commentId) => {
+  const handleDeletecomment = async(commentId, postid) => {
    
-    console.log("comment id",commentId);
+    console.log("comment id",commentId, postid);
     const deleteid=
     {
       id:commentId
     }
+    
+    const confirmationResult = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    });
 
-    // alert("delete",commentId)
-    try{
+
+
+
+    if (confirmationResult.isConfirmed) {
+      try{
     
    const respo= await axios.post('comment/delete', deleteid,{headers:headers})
    console.log('rrrrr',respo)
@@ -456,7 +510,28 @@ function Discuss({ isVisible, onHide }) {
 
     }
 
+    // for fetch data
+    if(hiddendata && id && token){
+      const resp = await axios.get(`/postcomment?post_id=${postid}`, { headers: headers })
+      console.log("comment replay", resp)
+      
+      setcommentreplyData(resp?.data?.data?.post_coment)
+      console.log("for fetching data", resp?.data?.data?.post_coment)
+     
+      setId(id)
+     
+    }else{
+      setcommentreplyData([])
+     
+      setId(null)
+    }
+  }
+
+    // alert("delete",commentId)
+  
+
   };
+  
 
 
   // const handleCommentId = async (id, token) => {
@@ -627,7 +702,7 @@ function Discuss({ isVisible, onHide }) {
         { headers: headers })
       const tokenele = (resp.data.data.token)
       // console.warn("token login ###", tokenele)
-      localStorage.setItem("authtoken", (resp.data.data.token))
+     // localStorage.setItem("authtoken", (resp.data.data.token))
 
 
       // console.warn("login @#@", resp)
@@ -783,6 +858,8 @@ function Discuss({ isVisible, onHide }) {
     setId(idvalues)
   }
 
+
+
   const filterpostfun = async (value) => {
     const postcat = value;
     setActiveButton(value);
@@ -795,7 +872,6 @@ function Discuss({ isVisible, onHide }) {
 
   }
   console.log(eventfilterpost,"eventFlitered")
-
   const setShowshareid = (value) => {
     setvalueid(value)
     setShowshare(true)
@@ -862,13 +938,13 @@ function Discuss({ isVisible, onHide }) {
     postDiscuss()
     filterpostfun()
     dataprofile()
-  }, [updatepost,hiddendata])
+  }, [updatepost])
 
 
 
 useEffect(()=>{
     handleCommentId()
-},[updatepost,hiddendata])
+},[])
 
   // console.warn("vvvvv", isVisible)
 
@@ -948,7 +1024,7 @@ useEffect(()=>{
                   <div className="upper-two-btn modefychat-manu">
                     <button type="button" onClick={() => filterpostfun('')} className={activeButton === '' ? 'xyzx' : 'btnnew'} >ALL</button>
                     <button type="button" onClick={() => filterpostfun("reports")} className={activeButton === 'reports' ? 'xyzx' : 'btnnew'} >Report</button>
-                    <button type="button" onClick={() => filterpostfun("vehicle")} className={activeButton === 'vehicle' ? 'xyzx' : 'btnnew'}>vehicle Model</button>
+                    <button type="button" onClick={() => filterpostfun("vehicle")} className={activeButton === 'vehicle' ? 'xyzx' : 'btnnew'}>Vehicle Model</button>
                     <button type="button" onClick={() => filterpostfun("policies")} className={activeButton === 'policies' ? 'xyzx' : 'btnnew'} >Policies</button>
                     <button type="button" onClick={() => filterpostfun("technologies")} className={activeButton === 'technologies' ? 'xyzx' : 'btnnew'} >Technologies</button>
                   </div>
@@ -989,26 +1065,64 @@ useEffect(()=>{
                 {/* <Avatar name={value.name} /> */}
                 <div className="mainsflexings">
                   <div className="like">
-                    <i onClick={(e) => handlelike(value.id)} className={token && value.you_like_post == 1 ? "fa-solid fa-thumbs-up thumbcolor  pointmu" : "fa-solid fa-thumbs-up pointmu"} ></i>
-
+                    {/* <i onClick={(e) => handlelike(value.id)} className={token && value.you_like_post == 1 ? "fa-solid fa-thumbs-up thumbcolor  pointmu" : "fa-solid fa-thumbs-up pointmu"} ></i> */}
+                    {/* <i onClick={(e) => handlelike(value.id)} className={token && value.you_like_post === 1 ? 'fa-solid fa-thumbs-up thumbcolor pointmu' : 'fa-solid fa-thumbs-up pointmu'}>
+                   {disabledSubmit && <span className="fa-solid fa-thumbs-up"></span>} */}
+                        <i>
+                         {                       
+                          disabledSubmit ? (
+                            <div>
+                              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                              <span className="sr-only"></span>
+                            </div>
+                          ) : <i onClick={(e) => handlelike(value.id)} className={token && value.you_like_post == 1 ? "fa-solid fa-thumbs-up thumbcolor  pointmu" : "fa-solid fa-thumbs-up pointmu"}></i>
+                        }
+                  </i>  
                     <h4>{value.you_like_post}</h4>
                   </div>
                   <div className="like">
-                    <i onClick={(e) => handledislike(value.id)} className={token && value.you_dislike_post == 1 ? "fa-solid fa-thumbs-down thumbcolor pointmu" : "fa-solid fa-thumbs-down pointmu"}></i>
+                    {/* <i onClick={(e) => handledislike(value.id)} className={token && value.you_dislike_post == 1 ? "fa-solid fa-thumbs-down thumbcolor pointmu" : "fa-solid fa-thumbs-down pointmu"}></i> */}
+                    
+                    <i>
+                         {                       
+                          disabledSubmitdislike ? (
+                            <div>
+                              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                              <span className="sr-only"></span>
+                            </div>
+                          ) : <i onClick={(e) => handledislike(value.id)} className={token && value.you_dislike_post == 1 ? "fa-solid fa-thumbs-down thumbcolor pointmu" : "fa-solid fa-thumbs-down pointmu"}></i> 
+
+                        }
+                  </i>  
+                    
                     <h4>{value.you_dislike_post}</h4>
                   </div>
                   <div className="like">
                     <i className="fa-solid fa-comment pointmu"  
-                    onClick={() => { handleCommentId(value.id,value); }} 
+                    onClick={() => {sethiddendata(!hiddendata); handleCommentId(value.id,value);  }} 
                     // onDoubleClick={() => sethiddendata(!hiddendata)}
                     // onClick={async () => {
                     //   await handleCommentId(value.id);
                     //   sethiddendata(prevHiddendata => !prevHiddendata);
                     // }}
-                    onDoubleClick={() => sethiddendata(prevHiddendata => !prevHiddendata)} 
+                    // onDoubleClick={() => sethiddendata(prevHiddendata => !prevHiddendata)} 
                     >
-
                     </i>
+
+
+                    <i>
+                         {                       
+                          disabledSubmitcomment ? (
+                            <div>
+                              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                              <span className="sr-only"></span>
+                            </div>
+                          ) : <i className="fa-solid fa-comment pointmu"  onClick={() => {sethiddendata(!hiddendata); handleCommentId(value.id,value);  }} ></i>
+
+                        }
+                  </i> 
+
+
                     <h4>{value.post_comments_count}</h4>
                   </div>
                   <div className="like">
@@ -1046,23 +1160,49 @@ useEffect(()=>{
                     // currentData={(data) => console.log("",comentdate)}
                     // onReplyAction={(data) => {commentreplyapi(data);console.log(data,"reply")}}
                     onReplyAction={(data) => {
-                      const parentCommentId = data.repliedToCommentId // Replace with the actual property name
-                      console.log(typeof(parentCommentId),"parentCommentId")
-                      const parentComment = replayData?.find(comment =>
-                        comment?.replies?.some(i => i.comid === Number(parentCommentId))
-                      );
-                    console.log(parentComment,"parentComment")
-                      // Check if the parent comment exists and has more than one reply
-                      if (parentComment && parentComment.replies && parentComment.replies.length >= 1) {
-                        // Display alert if there are more than one reply for the parent comment
-                        alert("Only one reply is allowed for a comment");
-                        // setReplayComment(false)
-                        return
-                      } else {
-                        // Proceed with the reply
-                        // setReplayComment(true)
-                        commentreplyapi(data,parentComment);
-                      }
+                    //   const parentCommentId = data.repliedToCommentId // Replace with the actual property name
+                    //   console.log(typeof(parentCommentId),"parentCommentId")
+                    //   const parentComment = replayData?.find(comment =>
+                    //     comment?.replies?.some(i => i.comid === Number(parentCommentId))
+                    //   );
+                    // console.log(parentComment,"parentComment")
+                    //   // Check if the parent comment exists and has more than one reply
+                    //   if (parentComment && parentComment.replies && parentComment.replies.length >= 1) {
+                    //     // Display alert if there are more than one reply for the parent comment
+                    //     alert("Only one reply is allowed for a comment");
+                    //     // setReplayComment(false)
+                    //     return
+                    //   } else {
+                    //     // Proceed with the reply
+                    //     // setReplayComment(true)
+                    //     commentreplyapi(data,parentComment);
+                    //   }
+
+                    const parentCommentId = data.repliedToCommentId // Replace with the actual property name
+                    console.log(typeof(parentCommentId),"parentCommentId")
+                    const parentComment = replayData?.find(comment =>
+                      comment?.replies?.some(i => i.comid === Number(parentCommentId))
+                    );
+                  
+                  console.log(parentComment,"parentComment")
+                    // Check if the parent comment exists and has more than one reply
+                    if (parentComment && parentComment.replies && parentComment.replies.length >= 1) {
+                      // Display alert if there are more than one reply for the parent comment
+                        
+                      setRepliedComments([...repliedComments, parentCommentId]);
+                      return alert("Only one reply is allowed for a comment");
+
+                      
+                      
+                    } else {
+                      // Proceed with the reply
+                      
+                      commentreplyapi(data,parentComment);
+
+                      console.log(" parennnnnn commmmmm",parentComment)
+                    }
+
+
                     }}
                     
                     
@@ -1071,64 +1211,98 @@ useEffect(()=>{
                       {
                         userId: `${valudata?.userid}`,
                         comId: `${valudata?.comid}`,
-                        fullName: `${valudata?.name}`,
-                        avatarUrl: `${value?.user_avator || "images/profile9"}`,
-                        userProfile: `${value?.user_avator || "images/profile9.jpg"}`,
+                        // fullName: `${valudata?.name}`,
+                        // avatarUrl: (<div><img src={value.user_avator} /></div>),
+                        // userProfile: `${value?.user_avator || "images/profile9.jpg"}`,
                         // text: `${valudata.comment_text?valudata.comment_text:'Not Available'} ${moment(valudata.comentdate).format('DD MMM YYYY')}`,
                         // date: `${moment(valudata.comentdate).format('DD MMM YYYY')}`,
                         text: (
+                          <div style={{position: 'relative', top: '7px' }}>
+                            {/* <img src={value?.user_avator} alt="userIcon" class="imgdefault"  />  */}
+                            {(!value.user_avator == "") ? (<img src={value.user_avator} alt='xyz' className="tru-img" />) : (<Avatar className="avtorsty-nav" name={valudata?.name} />)
+                            }
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <span>{valudata?.comment_text}</span>
-                            <span style={{ marginLeft: '111px' }}>{moment(valudata?.comentdate).format('DD MMM')}</span>
+                            <span style={{ marginLeft: '360px' }}>{moment(valudata?.comentdate).format('DD MMM')}</span>
                             <ul>
-                                <li className="navbar-dropdown">
+                              <li className="navbar-dropdown">
+                              {value.name == valudata.name && (
+                                <div>
                                 <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
-                               <div className="dropdown" style={{width:'80px', top: '1px'}}>
-                                      <button onClick={() => {
-                      const newText = prompt('Enter new comment text:', valudata?.comment_text);
-                      if (newText !== null && newText !== undefined) {
-                        // handleEditComment(valudata.comId, newText);
-                        // Call the custom action when a comment is edited
-                        handleEditcomment({
-                          userId: `${value?.id}`,
-                          comId: valudata.comid,
-                          avatarUrl: valudata.user_avator || "images/profile9.jpg",
-                          userProfile: valudata.user_avator || "images/profile9.jpg",
-                          fullName: valudata.name,
-                          text: newText,
-                          parentOfEditedCommentId: valudata.parentCommentId || "",
-                        });
-                      }
-                    }} style={{marginRight:"10px"}}>Edit</button>  
-                                    
-                                    <button onClick={()=>handleDeletecomment(valudata.comid,)}>Delete</button>
-                               </div>
+                                <div className="dropdown" style={{ width: '80px', top: '-2px' }}>
+                                  <button onClick={() => {
+                                    const newText = prompt('Enter new comment text:', valudata?.comment_text);
+                                    if (newText !== null && newText !== undefined) {
+
+                                      handleEditcomment({
+                                        userId: `${value?.id}`, comId: valudata.comid, // parent_id: valudata.parent_comment_id, 
+                                        avatarUrl: valudata.user_avator || "images/profile9.jpg",
+                                        userProfile: valudata.user_avator || "images/profile9.jpg",
+                                        fullName: valudata.name,
+                                        text: newText,
+                                        parentOfEditedCommentId: valudata.parentCommentId || "",
+                                      });
+                                    }
+                                  }} style={{ marginRight: "10px" }}>Edit</button>
+
+                                  <button onClick={() => handleDeletecomment(valudata.comid, value.id)}>Delete</button>
+                                </div>
+                                </div>
+                              )}
                               </li>
-                              </ul>
+                            </ul>
+                            
+                          </div>
+                          {/* <div ><button style={{marginTop:'10px'}} onClick={()=>setreplycommentstate(!setreplycommentstate)}>reply</button></div> */}
                           </div>
                         ),
                         replies:(valudata?.replies || []).map((reply) => ({
                             userId: `${reply.userid}`,
                             comId: `${reply.comid}`,
+                            parent_id:`${reply.parent_comment_id}`,
                             avatarUrl: `${reply.user_avator || "images/profile9.jpg"}`,
                             userProfile: `${reply.user_avator || "images/profile9.jpg"}`,
                             text: (
+                              <div style={{position: 'relative', top: '7px' }}>
+                                 {/* <img src={value?.user_avator} alt="userIcon" class="imgdefault"  />  */}
+                               {
+                               (!reply.user_avator == "") ? (<img src={reply.user_avator} alt='xyz' className="tru-img" />) : (<Avatar className="avtorsty-nav" name={valudata?.name} />)
+                               }
                               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <span>{valudata.comment_text ? valudata.comment_text : 'Not Available'}</span>
-                                <span style={{ marginLeft: '111px' }}>{moment(valudata.comentdate).format('DD MMM YYYY')}</span>
+                                <span>{reply.comment_text ? reply.comment_text : 'Not Available'}</span>
+                                <span style={{ marginLeft: '360px' }}>{moment(reply.comentdate).format('DD MMM YYYY')}</span>
                                 <ul>
                                 <li className="navbar-dropdown">
+                                {value.name ==  reply.name && (
+                                <div>
                                 <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
                                <div className="dropdown" style={{width:'80px'}}>
-                                    <button onClick={()=>handleEditcomment(reply)} style={{marginRight:"10px"}}>Edit</button>  
-                                    <button onClick={()=>handleDeletecomment(reply.comid,)}>Delete</button>
+                                    <button onClick={() => { const newText = prompt('Enter new comment text:', reply?.comment_text);
+                                           if (newText !== null && newText !== undefined) {
+                       
+                                                 handleEditcomment({
+                                                   userId: `${value?.id}`,
+                                                   comId: `${reply.comid}`,
+                                                   parent_id: `${reply.parent_comment_id}`, 
+                                                   avatarUrl: reply.user_avator || "images/profile9.jpg",
+                                                   userProfile: reply.user_avator || "images/profile9.jpg",
+                                                   fullName: reply.name,
+                                                   text: newText,
+                                                   parentOfEditedCommentId: valudata.parentCommentId || "",
+                                                 });
+                                             }
+                                           }} style={{marginRight:"10px"}}>Edit</button>  
+                                    <button onClick={()=>handleDeletecomment(reply.comid,value.id)}>Delete</button>
                                </div>
+                               </div>
+                                )}
                               </li>
                               </ul>
                               </div>
+                              </div>
                             ),
                           })),
-                         
+                          disableReplies: repliedComments.includes(valudata.comid)
                       }
 
                     ))}
@@ -1362,7 +1536,7 @@ useEffect(()=>{
                       <label className="pst-lab">Invite VIP Stakeholder</label>
                       <input
                         type="text"
-                        placeholder="e-lorry@gmail.com"
+                        placeholder="eLorry@gmail.com"
                         name="vip"
                         value={fromikpost.values.vip}
                         //  onChange={fromikpost.handleChange}

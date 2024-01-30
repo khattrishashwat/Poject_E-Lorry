@@ -10,8 +10,9 @@ function Logout() {
     const logouthandel = () => {
         localStorage.removeItem('authtoken')
         navigate('/')
-
-      }
+        console.log('navigating here');
+        window.location.reload();
+      } 
       useEffect(()=>{
    document.title = 'Logout Page';
 
@@ -19,6 +20,7 @@ function Logout() {
 
 
       const parameterValue = 'yourParameterValue';
+      const backnavi=-1
   return (
     <>
     <div className="checkout-sign">
@@ -42,8 +44,9 @@ function Logout() {
                 {/* <a href=""><i className="fa-solid fa-arrow-right-from-bracket"></i></a> */}
                 <div className="logout-btn-flex">
                     {/* <button onClick={logouthandel} className="logout-btn">Yes</button> */}
-                    <Link to='/'  className="logout-btn" state={{ parameterValue }}>yes</Link>
-                    <Link to="/profileSetting" className="logout-btn">No</Link>
+                    {/* <Link to='/'  className="logout-btn" state={{ parameterValue }}>yes</Link> */}
+                    <button  className="logout-btn" onClick={logouthandel}>yes</button>
+                    <Link to={backnavi} className="logout-btn">No</Link>
                 </div>
             </div>
         </div>

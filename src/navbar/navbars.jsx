@@ -32,6 +32,7 @@ function Navbars() {
   const [profileupdate, setProfileupdate] = useState({})
 
   const token = localStorage.getItem('authtoken')
+  console.log("nav token", token)
   const headers = {
     //   "Content-Type":"application/json",
     "Accept": "application/json",
@@ -51,35 +52,54 @@ function Navbars() {
 
   }
 
+
   const profileaction = () => {
-    const tokens = localStorage.getItem('authtoken')
+    console.log('inside profile condition====')
+    // const tokens = localStorage.getItem('authtoken')
+    // console.log('check token in profile')
+    // console.log(tokens);
     // console.warn("@#token", tokens)
-    if (!tokens) {
+    if (!token) {
+      console.log('if check profile')
       setProfile(false)
     }
     else {
+      console.log('else check profile')
       setProfile(true)
       dataprofile()
     }
     
   }
-
+  console.log('navbar===');
 
 
   useEffect(() => {
+    console.log('use effect called')
     profileaction()
-  }, [location.state])
+  //}, [location.state])
+  }, [token])
 
 
   // this for logout for profile 
 
 
-  useEffect(() => {
-    if (location.state && location.state.parameterValue == "yourParameterValue") {
-      localStorage.removeItem('authtoken')
-      profileaction()
-    }
-  }, [location.state])
+  // useEffect(() => {
+  //   console.log('reached here');
+  //   const tokenvalue=localStorage.getItem('authtoken');
+  //   console.log(tokenvalue)
+  //   console.log(location?.state?.parameterValue);
+  //   if (location?.state?.parameterValue == "yourParameterValue") {
+  //     console.log(location.state);
+  //     console.log(location?.state?.parameterValue);
+  //     localStorage.removeItem('authtoken')
+  //     console.log('removded token');
+  //    console.log(localStorage.getItem('authtoken'));
+  //    location.state.parameterValue = null; 
+     
+  //     profileaction()
+  //    // window.location.reload();
+  //   }
+  // }, [])
 
 
 
@@ -108,7 +128,7 @@ function Navbars() {
                   <li><Link to="/">Home</Link></li>
 
                   <li className="navbar-dropdown">
-                    <a href="#" className="one heelo">New at E-Lorry <i className="fa fa-chevron-down" aria-hidden="true"></i></a>
+                    <a href="#" className="one heelo">New at eLorry <i className="fa fa-chevron-down" aria-hidden="true"></i></a>
 
                     <div className="dropdown">
                       <Link to='/annoucement'>News & Announcement</Link>
@@ -233,7 +253,7 @@ function Navbars() {
               <span className="closebtn" onClick={() => setsidernav(!sidernav)} >&times;</span>
               <li><Link to="/" onClick={() => setsidernav(!sidernav)} >Home</Link></li>
 
-              <button className="dropdown-btn-1" onClick={() => setDropdownnew(!dropdownew)}>New at E-Lorry
+              <button className="dropdown-btn-1" onClick={() => setDropdownnew(!dropdownew)}>New at eLorry
                 <i className="fa fa-caret-down"></i>
               </button>
 

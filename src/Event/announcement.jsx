@@ -35,7 +35,7 @@ function Announcement()
       <div className="innerhead">
         <div className="container mt-104">
 
-          <h2 className="innerhead-title">New at E-Lorry</h2>
+          <h2 className="innerhead-title">New at eLorry</h2>
 
 
         </div>

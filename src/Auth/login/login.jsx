@@ -157,20 +157,24 @@ const submitlog = async(values) =>
   const parameterValue = -1; 
   // const path = '/'; 
   // navigation(-1, {state : tokenele} )
+
+
   if (parameterValue == -1) {
-    navigation(parameterValue, { state: tokenele });
+    
+      navigation(parameterValue, { state: tokenele });
+    
   }
-  else if(parameterValue == null)
-  {
-    navigation('/', {state : tokenele} )
-  }
+  // else if(parameterValue == null)
+  // {
+  //   navigation('/', {state : tokenele} )
+  // }
 
 
 
-  setTimeout(() => {
-    // navigation(-1, {state : tokenele} )
-    window.location.reload()
-   }, 1000);
+  // setTimeout(() => {
+  //   // navigation(-1, {state : tokenele} )
+  //   window.location.reload()
+  //  }, 1000);
   }
   catch(errors)
   {

@@ -77,27 +77,32 @@ function Testmonial()
     <>
       {/* <div className="big-container bg"> */}
         <div className="small-container">
-          <h2 className="stakes">What people say <strong>About E-LORRY</strong></h2>
+          <h2 className="stakes">What people say <strong>About eLorry</strong></h2>
           <span className="line-1"></span>
           <section id="testim" className="testim">
             <div className="wrap">
        
-            <span id="right-arrow" className="arrow right fa fa-chevron-right"></span>
-            <span id="left-arrow" className="arrow left fa fa-chevron-left "></span>
+            {/* <span id="right-arrow" className="arrow right fa fa-chevron-right"></span>
+            <span id="left-arrow" className="arrow left fa fa-chevron-left "></span> */}
         
               <Swiper
                 modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay, EffectFade]}
                 spaceBetween={10}
                 slidesPerView={1}
-                navigation={{  
-                  nextEl: '.right-arrow', 
-                  prevEl: '.left-arrow',
-                }}
+                navigation={ 
+                  // nextEl: '.arrow right fa fa-chevron-right', 
+                  // prevEl: '.arrow left fa fa-chevron-left',
+                  true
+                }
+                // classNames={{
+                //   navigationPrev: 'arrow right fa fa-chevron-right',
+                //   navigationNext: 'arrow left fa fa-chevron-left ',
+                // }}
                 // navigation={true}
                 effect="fade"
                 fadeEffect={{ crossFade: true }}
                 mousewheel={true}
-                autoplay={{ delay: '4000', disableOnInteraction: false, pauseOnMouseEnter: true}}
+                // autoplay={{ delay: '4000', disableOnInteraction: false, pauseOnMouseEnter: true}}
                 pagination={{ clickable: true }}
                 
               >

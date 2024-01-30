@@ -47,7 +47,7 @@ function footer() {
             <ul>
               <li><Link to="/">Home</Link></li>
               <li><Link to='/zet-resource/reportartical'>Zet Resources</Link></li>
-              <li><Link to='/newEvent' >New at E-Lorry</Link></li>
+              <li><Link to='/newEvent' >New at eLorry</Link></li>
               <li><Link to='/discuss'>ZET Chatroom</Link></li>
               <li><Link to='/gallery'>Gallery</Link></li>
               <li><Link to='/contact'>Contact</Link></li>
@@ -63,7 +63,7 @@ function footer() {
             <Link to="https://www.youtube.com/"  target="_blank" className="profile-11"><i className="fa-brands fa-youtube"></i></Link>
           </div>
         </div>
-        <h4>Copyright © 2023 E-Lorry All rights reserved.</h4>
+        <h4>Copyright © 2024 eLorry All rights reserved.</h4>
       </div>
 
       <button className="back-to-top ph-1" type="button" onClick={() => {

@@ -722,10 +722,10 @@ nav .nav-area ul li a:hover {
     margin-bottom: 140px;
 }
   
-  .test-arrowbox .swiper-button-next-test,
+  /* .test-arrowbox .swiper-button-next-test,
   .test-arrowbox .swiper-button-prev-test {
     margin-right: 20px;
-    /* background: var(--comp-color);2 */
+    
     border-radius: 50%;
     --size: 55px;
     width: var(--size);
@@ -733,7 +733,7 @@ nav .nav-area ul li a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-  }
+  } */
   
   .arrow-right {
     transform: rotate(180deg);

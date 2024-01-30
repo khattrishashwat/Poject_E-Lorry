@@ -208,8 +208,8 @@ function Gallery()
                                     }}
                                     
                                   >
-                                    <em onClick={() => handleOpen(index)} className="mdi mdi-magnify-pluss"></em>
-                                    <img  onClick={() => handleOpen(index)} src={value.filename_url} alt="" style={{ objectFit:"cover", width:"210px",height:"165px"}} className="image"/>
+                                    <em onClick={() => handleOpen(index,value.title)} className="mdi mdi-magnify-pluss"></em>
+                                    <img  onClick={() => handleOpen(index,value.title)} src={value.filename_url} alt="" style={{ objectFit:"cover", width:"210px",height:"165px"}} className="image"/>
                                    
                                     <div className="overlays" >
                                   </div>
