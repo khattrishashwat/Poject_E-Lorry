@@ -84,7 +84,7 @@ function Sidetoggle() {
     email:yup.string().email('please enter valid email').test('email-domain', 'Email domain must be .com or .in', (value) => {
       if (!value) return false; // Handle empty values if needed
       return /@(.+\.com|.+\.in)$/.test(value);
-    }).required('Please enter  email')
+    }).required('Email field is required')
   })
   
 
@@ -111,7 +111,7 @@ function Sidetoggle() {
         pauseOnHover
       />
       <div className={`sidebar-contact ${toggle ? "active" : ""}`}>
-        <div className="toggle" onClick={() => setToggle(!toggle)}> <img src='/e_lorry/web/images/newsletter-1.png'  style={{ marginTop: '0px' }} alt="toggle21"/></div>
+        <div className="toggle" onClick={() => {setToggle(!toggle); formik.resetForm()}}> <img src='/e_lorry/web/images/newsletter-1.png'  style={{ marginTop: '0px' }} alt="toggle21"/></div>
         {toggle && (
           <div>
             <h2>Join Our Newsletter</h2>

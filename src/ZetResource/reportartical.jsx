@@ -11,7 +11,7 @@ function Reportartical() {
 
   const [articleData, setArticleData] = useState([])
   const [reportData, setReportData] = useState([])
-
+  const characterLimit = 50;
 
 const downloadfile=(filename, url,event) =>
 {
@@ -75,23 +75,29 @@ const downloadfile=(filename, url,event) =>
               <div className="boxshadow-flex">
                 {articleData.map((value, index) => (
                   <div className="boxShadow2 sectionra syte" key={index}>
-                    <div className="text">
+                    <div className="text textabc">
                       <div className="title-flex">
-                        <h1>{value.title}</h1>
+                        {/* <h1>{value.title}</h1> */}
+                        <h1>{value.title.length > characterLimit
+                                    ? value.title.substring(0, characterLimit) + '...'
+                                    : value.title}</h1>
                       </div>
-                      <div className="title-flex-1">
-                        <h3>Type:&nbsp;&nbsp;Blog</h3>
-                        <h3>Owner:&nbsp;&nbsp;ICCT</h3>
+                      <div className="title-flex-1 d-block">
+                        <h3>Type:&nbsp;&nbsp;{value.type}</h3> 
+                        {/* <h3>Owner:&nbsp;&nbsp;{value.owner}</h3> */} 
+                        <div className="d-flex gap"><h3>Owner:</h3><h3>Clean Mobility Shift</h3></div>
                       </div>
                       {/* <a href="" className="download-btn">Download &nbsp;&nbsp;<i className="fa-solid fa-download"></i></a> */}
                      
                     <button onClick={(event)=>downloadfile(value.title,value.article_file, event)}  style={{color:"#0909cc"}} className="download-btn downart">Click Here &nbsp;&nbsp;</button> 
                     </div>
+
+
                     <div className="img">
                       <figure className="boxShadow2"><img src={value.image} alt="img" className="my-new" />
                       </figure>
                     </div>
-                    <span className="date boxShadow1">{moment(value.created_at).format('DD MMM YYYY')}</span>
+                    <span className="date boxShadow1">{moment(value.article_date).format('DD MMM YYYY')}</span>
                   </div>
                 ))}
               </div>

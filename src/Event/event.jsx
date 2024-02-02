@@ -131,11 +131,13 @@ console.log(pasteventitem,"past ")
                 ))} */}
                 {eventdata ? (
                   eventdata.length > 0 ? (
+
                     // eventdata.map((value, index) => (
                       <ul  className="media-list main-list">
                     { eventdata.map((value, index) => (
 
                         <li className="media" key={index}>
+                           <Link class="" to='/upcomingEvent' state={{ from: value?.id }}>
                           <img
                             className="media-object"
                             src={value.image}
@@ -146,6 +148,7 @@ console.log(pasteventitem,"past ")
                             <h4 className="media-heading">{value.title}</h4>
                             <p className="by-author">{value.description}</p>
                           </div>
+                          </Link>
                         </li>
                         ))}
                       </ul>

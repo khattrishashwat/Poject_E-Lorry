@@ -29,7 +29,7 @@ import Avatarl from '@mui/material/Avatar';
 
 
 
-function Discuss({ isVisible, onHide }) {
+function Discuss({ isVisible, onHide, comment }) {
 
   const inputRef = useRef(null);
   const [show, setShow] = useState(false);
@@ -52,26 +52,29 @@ function Discuss({ isVisible, onHide }) {
   const [id, setId] = useState(null);
   const [eventDisplay, setEventDisplay] = useState([])
   const [disabledSubmit, setDisabledSubmit] = useState(false)
-  const [disabledSubmitdislike,setdisabledSubmitdislike]=useState(false)
-  const [disabledSubmitcomment,setdisabledSubmitcomment]=useState(false)
+  const [disabledSubmitdislike, setdisabledSubmitdislike] = useState(false)
+  const [disabledSubmitcomment, setdisabledSubmitcomment] = useState(false)
   const [handleclick, sethandleclick] = useState(true)
   const [isLoading, setLoading] = useState(false);
   const [isprofile, setProfileupdate] = useState({})
   const [valueid, setvalueid] = useState([])
 
-  console.log(isprofile,"isprofileee")
+  console.log(isprofile, "isprofileee")
 
   const [emails, setEmails] = useState([]);
   const [isActive, setIsActive] = useState(true);
   const [activeButton, setActiveButton] = useState('');
   const [replayData, setcommentreplyData] = useState([])
-// const [replayComment,setReplayComment]=useState(false)
+  // const [replayComment,setReplayComment]=useState(false)
   const [repliedComments, setRepliedComments] = useState([]);
 
   const [hiddendata, sethiddendata] = useState(false)
-  const[action,setAction] =useState(false)
+  const [action, setAction] = useState(false)
+  const [loading, setIsLoading] = useState(false)
 
-  
+
+
+
 
   const handleEmailChange = (newEmails) => {
     setEmails(newEmails);
@@ -92,13 +95,6 @@ function Discuss({ isVisible, onHide }) {
     "Accept": "application/json",
     'Authorization': `Bearer ${token}`,
   }
-
-
-
-
-
-
-
 
   const postDiscuss = async () => {
     const resp = await axios.get('/posts', { headers: headers })
@@ -162,13 +158,14 @@ function Discuss({ isVisible, onHide }) {
       }, 2000);
 
     } else {
-     
+
       try {
         const statuslike = 1
         const status = statuslike
         const itemlike = { post_id, status }
         const resp = await axios.post('/like-dislike-post', itemlike, { headers: headers })
         setUpdatepost(2)
+        // setAction(!action)
         //  console.warn("222222", resp)
       }
       catch (errors) {
@@ -185,7 +182,7 @@ function Discuss({ isVisible, onHide }) {
       }
     }
     setDisabledSubmit(false)
-    
+
   }
 
 
@@ -206,10 +203,15 @@ function Discuss({ isVisible, onHide }) {
       }, 2000);
     }
     else {
+      // if(post_id)
+      // {
+      //   console.log("id of dislike", post_id)
+      // }
       try {
         const statusDislike = 2
         const status = statusDislike
         const itemlike = { post_id, status }
+
         const resp = await axios.post('/like-dislike-post', itemlike, { headers: headers })
         //  console.warn("111111", itemlike)   
         //  console.warn("222222", resp)
@@ -226,7 +228,7 @@ function Discuss({ isVisible, onHide }) {
           progress: undefined,
           type: 'error'
         })
-      }  
+      }
     }
     setdisabledSubmitdislike(false)
   }
@@ -260,7 +262,7 @@ function Discuss({ isVisible, onHide }) {
   //     comment: plainText,
   //     // parent_id: value.repliedToCommentId,
   //   };
-   
+
 
   //   const itemcomments = JSON.stringify(itemcomment)
   //   console.log("comment", itemcomment)
@@ -271,42 +273,43 @@ function Discuss({ isVisible, onHide }) {
   //   // sethiddendata(true)
 
   // }
-  const commenthandleapi = async (value,values) => {
-    console.log(values,'comment ubmit')
+  const commenthandleapi = async (value, values) => {
+    console.log(values, 'comment ubmit')
     try {
       const temporaryElement = document.createElement('div');
       temporaryElement.innerHTML = value.text;
       const plainText = temporaryElement.textContent || temporaryElement.innerText;
-  
+
       const itemcomment = {
         post_id: value.userId,
         comment: plainText,
       };
- 
+
       // const postcats = null;
       // const resp = await axios.get(`/posts?category`, { headers: headers });
       // console.log('anjay');
       // console.log(resp);
       // console.log(resp?.data?.data?.posts);
-  
-     const resp = await axios.post('/comment-post', itemcomment, { headers: headers });
-  
-      
+
+      const resp = await axios.post('/comment-post', itemcomment, { headers: headers });
+
+
       const newCommentText = resp?.data?.data?.comment_text;
       console.log(newCommentText, "newCommentText")
       if (newCommentText) {
         // Construct a new comment object
-      const newComment = {
-        comment_text: newCommentText,
-        name:isprofile?.name
-        // Include other properties as needed
-      };
+        const newComment = {
+          comment_text: newCommentText,
+          name: isprofile?.name
+          // Include other properties as needed
+        };
 
-     
-      setcommentreplyData((prevData) => [newComment, ...prevData]);
-      
-        console.log(replayData,"replayDta after submit")
-      
+
+        setcommentreplyData((prevData) => [newComment, ...prevData]);
+        setAction(!action)
+        // sethiddendata(false)
+        console.log(replayData, "replayDta after submit")
+
       } else {
         console.error('Invalid response structure or missing comment_text property in the response.');
       }
@@ -314,115 +317,117 @@ function Discuss({ isVisible, onHide }) {
       console.error('Error submitting comment:', error);
     }
   };
-  
+
 
   const commentreplyapi = async (value) => {
-    // value.preventDefault();
-    // value.stopPropagation();
     console.log("comment replies ....................", value)
-    
-      const temporaryElement = document.createElement('div');
-      temporaryElement.innerHTML = value.text;
-      const plainText = temporaryElement.textContent || temporaryElement.innerText;
-  
-  
-      const itemcomment = {
-        post_id: value.userId,
-        comment: plainText,
-        parent_id: value.repliedToCommentId,
-      };
-  
-  
-      const itemcomments = JSON.stringify(itemcomment)
-      console.log("item reply 00000000000", itemcomment)
-      const resp = await axios.post('/comment-post', itemcomment, { headers: headers })
-      
-     console.log("comment api", resp)
-  
-   
+
+    const temporaryElement = document.createElement('div');
+    temporaryElement.innerHTML = value.text;
+    const plainText = temporaryElement.textContent || temporaryElement.innerText;
+
+
+    const itemcomment = {
+      post_id: value.userId,
+      comment: plainText,
+      parent_id: value.repliedToCommentId,
+    };
+
+
+    const itemcomments = JSON.stringify(itemcomment)
+    console.log("item reply 00000000000", itemcomment)
+    const resp = await axios.post('/comment-post', itemcomment, { headers: headers })
+    setAction(!action)
+    // sethiddendata(false)
+
+    console.log("comment api", resp)
+
+
   }
 
+
+
+
   const handleCommentId = async (id) => {
-    console.log('handle click clicked');
-    // setdisabledSubmitcomment(true)
-    if(!hiddendata){
-      return
-    }
-    console.log('after return')
-    if (token == null) {
-      console.log('if');
-      Swal.fire({
-        title: 'please login!',
-        showConfirmButton: false, // Hide the confirm button
-        timer: 3000,
-      })
-      setTimeout(() => {
-        const parameterValue = -1; // Replace this with the actual value of your parameter
-        const path = '/auth/login';
-        navigate(path, { state: { parameterValue } })
-      }, 2000);
 
-    } else {
-      console.log('else if');
+    // if (token == null) {
+    //   Swal.fire({
+    //     title: 'please login!',
+    //     showConfirmButton: false, // Hide the confirm button
+    //     timer: 3000,
+    //   })
+    //   setTimeout(() => {
+    //     const parameterValue = -1; // Replace this with the actual value of your parameter
+    //     const path = '/auth/login';
+    //     navigate(path, { state: { parameterValue } })
+    //   }, 2000);
 
-      setdisabledSubmitcomment(true)
+    // } else {
+    // sethiddendata(!hiddendata)
+    setdisabledSubmitcomment(true)
+    try {
+      if (loading) {
+        return;
+      }
+      setIsLoading(true);
       const post_id = id;
       console.log("comment ---------", post_id)
-      // sethiddendata(true);
-      console.log(hiddendata,"hiddenDtaa")
-      if(hiddendata && id && token){
+
+
       const resp = await axios.get(`/postcomment?post_id=${id}`, { headers: headers })
       console.log("comment replay", resp)
-      
+
       setcommentreplyData(resp?.data?.data?.post_coment)
-     
+
       setId(id)
-      setdisabledSubmitcomment(false)
-    }else{
-      console.log('else ')
-      setcommentreplyData([])
-     
-      setId(null)
+
+      // sethiddendata(prevHiddendata => !prevHiddendata)
+      sethiddendata(true)
+      //  sethiddendata(prevHiddendata => prevHiddendata !== id);
+    } catch (e) {
+      console.log(e)
+    } finally {
+      setIsLoading(false)
+
     }
-    }
-    
+    setdisabledSubmitcomment(false)
+    // }
+
+
     // setCommentsec(true)
   }
 
-
-  const handleEditcomment = async(editdata) => 
-  {
-    console.log("comment id",editdata);
+  const handleEditcomment = async (editdata) => {
+    console.log("comment id", editdata);
     // console.log("comment id",commentId);
-    const editcomment=
+    const editcomment =
     {
-      post_id:editdata.userId,
-      comment:editdata.text,
-      parent_id:editdata.parent_id,
-      comment_id:editdata.comId,
+      post_id: editdata.userId,
+      comment: editdata.text,
+      parent_id: editdata.parent_id,
+      comment_id: editdata.comId,
 
     }
 
-    console.log('data come from comment',editcomment);
+    console.log('data come from comment', editcomment);
     // alert("delete",commentId)
-    try{
-    
-   const respo= await axios.post('/comment-post', editcomment,{headers:headers})
-   console.log('rrrrr',respo)
-   toast('Post Edit', {
-    position: "top-right",
-    autoClose: 2000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-  })
- 
+    try {
+
+      const respo = await axios.post('/comment-post', editcomment, { headers: headers })
+      console.log('rrrrr', respo)
+      toast('Post Edit', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      })
+
 
     }
-    catch(errors)
-    {
+    catch (errors) {
       toast(errors, {
         position: "top-right",
         autoClose: 2000,
@@ -437,34 +442,34 @@ function Discuss({ isVisible, onHide }) {
     }
     //  for fetch data
 
-    if(hiddendata && id && token){
+    if (hiddendata && id && token) {
       const resp = await axios.get(`/postcomment?post_id=${editdata.userId}`, { headers: headers })
       console.log("comment replay", resp)
-      
+
       setcommentreplyData(resp?.data?.data?.post_coment)
       console.log("for fetching data", resp?.data?.data?.post_coment)
-     
+
       setId(id)
-     
-    }else{
+
+    } else {
       setcommentreplyData([])
-     
+
       setId(null)
     }
 
 
-  //   
-   
+    //   
+
   };
 
-  const handleDeletecomment = async(commentId, postid) => {
-   
-    console.log("comment id",commentId, postid);
-    const deleteid=
+  const handleDeletecomment = async (commentId, postid) => {
+
+    console.log("comment id", commentId, postid);
+    const deleteid =
     {
-      id:commentId
+      id: commentId
     }
-    
+
     const confirmationResult = await Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -479,92 +484,59 @@ function Discuss({ isVisible, onHide }) {
 
 
     if (confirmationResult.isConfirmed) {
-      try{
-    
-   const respo= await axios.post('comment/delete', deleteid,{headers:headers})
-   console.log('rrrrr',respo)
-   toast('Post delete', {
-    position: "top-right",
-    autoClose: 2000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-  })
- 
+      try {
 
+        const respo = await axios.post('comment/delete', deleteid, { headers: headers })
+        console.log('rrrrr', respo)
+        toast('Post delete', {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        })
+
+
+      }
+      catch (errors) {
+        toast(errors, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          type: 'error'
+        })
+
+      }
+
+      // for fetch data
+      if (hiddendata && id && token) {
+        const resp = await axios.get(`/postcomment?post_id=${postid}`, { headers: headers })
+        console.log("comment replay", resp)
+
+        setcommentreplyData(resp?.data?.data?.post_coment)
+        console.log("for fetching data", resp?.data?.data?.post_coment)
+
+        setId(id)
+
+      } else {
+        setcommentreplyData([])
+
+        setId(null)
+      }
     }
-    catch(errors)
-    {
-      toast(errors, {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        type: 'error'
-      })
-
-    }
-
-    // for fetch data
-    if(hiddendata && id && token){
-      const resp = await axios.get(`/postcomment?post_id=${postid}`, { headers: headers })
-      console.log("comment replay", resp)
-      
-      setcommentreplyData(resp?.data?.data?.post_coment)
-      console.log("for fetching data", resp?.data?.data?.post_coment)
-     
-      setId(id)
-     
-    }else{
-      setcommentreplyData([])
-     
-      setId(null)
-    }
-  }
-
+    setAction(!action)
     // alert("delete",commentId)
-  
+
+
+
 
   };
-  
-
-
-  // const handleCommentId = async (id, token) => {
-  //   if (token == null) {
-  //     Swal.fire({
-  //       title: 'Please login!',
-  //       showConfirmButton: false, // Hide the confirm button
-  //       timer: 3000,
-  //     });
-  
-  //     setTimeout(() => {
-  //       const parameterValue = -1; // Replace this with the actual value of your parameter
-  //       const path = '/auth/login';
-  //       navigate(path, { state: { parameterValue } });
-  //     }, 2000);
-  //   } else {
-  //     const post_id = id;
-  //     console.log("comment ---------", post_id);
-  
-  //     try {
-  //       const resp = await axios.get(`/postcomment?post_id=${post_id}`, { headers: headers });
-  //       console.log("comment reply", resp);
-  //       setcommentreplyData(resp?.data?.data?.post_coment);
-  //       setId(id);
-  //     } catch (error) {
-  //       console.error("Error fetching comment:", error);
-  //       // Handle error as needed
-  //     }
-  //   }
-  
-  //   // setCommentsec(true)
-  // };
-  
 
   const dataprofile = async () => {
     try {
@@ -702,7 +674,7 @@ function Discuss({ isVisible, onHide }) {
         { headers: headers })
       const tokenele = (resp.data.data.token)
       // console.warn("token login ###", tokenele)
-     // localStorage.setItem("authtoken", (resp.data.data.token))
+      // localStorage.setItem("authtoken", (resp.data.data.token))
 
 
       // console.warn("login @#@", resp)
@@ -871,7 +843,10 @@ function Discuss({ isVisible, onHide }) {
     seteventfilterpost(resp.data.data.posts)
 
   }
-  console.log(eventfilterpost,"eventFlitered")
+
+  console.log(eventfilterpost, "eventFlitered")
+
+
   const setShowshareid = (value) => {
     setvalueid(value)
     setShowshare(true)
@@ -894,16 +869,6 @@ function Discuss({ isVisible, onHide }) {
       />
     ))
     : null;
-
-
-  // const activeElement = document.querySelector('.scrollcls');
-
-  // if (activeElement) {
-  //   activeElement.scrollIntoView({
-  //     behavior: 'smooth',
-  //     block: 'start',
-  //   });
-  // }
 
   const scrollHandle = (scrollid) => {
     const postElement = document.getElementById(`post_${scrollid}`);
@@ -942,32 +907,23 @@ function Discuss({ isVisible, onHide }) {
 
 
 
-useEffect(()=>{
-    handleCommentId()
-},[])
+  useEffect(() => {
+    filterpostfun()
+  }, [action])
 
-  // console.warn("vvvvv", isVisible)
+  useEffect(() => {
+    handleCommentId(id)
+  }, [action, id])
+
 
   return (
     <>
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
+      <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
       <Toggleside />
       <div className="small-container">
-
         {/* update code  */}
         <h2 className="thread-main-head">Top Discussion Threads</h2>
         <span className="line-1"></span>
-
         <div className="threads">
           {toppostdiscuss.map((value, index) => (
             <div className="thread-text" key={index} >
@@ -1061,66 +1017,84 @@ useEffect(()=>{
 
                 {(!value.post_image == "") ? (<img src={value.post_image} alt='xyz' className="tru-img" />) : (<Avatar className="avtorsty-nav" name={value.name} />)
                 }
-            
+
                 {/* <Avatar name={value.name} /> */}
                 <div className="mainsflexings">
                   <div className="like">
                     {/* <i onClick={(e) => handlelike(value.id)} className={token && value.you_like_post == 1 ? "fa-solid fa-thumbs-up thumbcolor  pointmu" : "fa-solid fa-thumbs-up pointmu"} ></i> */}
                     {/* <i onClick={(e) => handlelike(value.id)} className={token && value.you_like_post === 1 ? 'fa-solid fa-thumbs-up thumbcolor pointmu' : 'fa-solid fa-thumbs-up pointmu'}>
                    {disabledSubmit && <span className="fa-solid fa-thumbs-up"></span>} */}
-                        <i>
-                         {                       
-                          disabledSubmit ? (
-                            <div>
-                              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                              <span className="sr-only"></span>
-                            </div>
-                          ) : <i onClick={(e) => handlelike(value.id)} className={token && value.you_like_post == 1 ? "fa-solid fa-thumbs-up thumbcolor  pointmu" : "fa-solid fa-thumbs-up pointmu"}></i>
-                        }
-                  </i>  
-                    <h4>{value.you_like_post}</h4>
+                    <i>
+                      {
+                        disabledSubmit ? (
+                          <div>
+                            <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            <span className="sr-only"></span>
+                          </div>
+                        ) : <i onClick={(e) => handlelike(value.id)} className={token && value.you_like_post == 1 ? "fa-solid fa-thumbs-up thumbcolor  pointmu" : "fa-solid fa-thumbs-up pointmu"}></i>
+                      }
+                      {/* { const MemoizedLikeButton = React.memo(({ id, you_like_post }) => (
+                       <i onClick={() => handleLike(id)} className={token && you_like_post === 1 ? "fa-solid fa-thumbs-up thumbcolor  pointmu" : "fa-solid fa-thumbs-up pointmu"}></i>
+                        ));} */}
+                    </i>
+                    <h4>{value.post_like_count}</h4>
                   </div>
                   <div className="like">
                     {/* <i onClick={(e) => handledislike(value.id)} className={token && value.you_dislike_post == 1 ? "fa-solid fa-thumbs-down thumbcolor pointmu" : "fa-solid fa-thumbs-down pointmu"}></i> */}
-                    
-                    <i>
-                         {                       
-                          disabledSubmitdislike ? (
-                            <div>
-                              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                              <span className="sr-only"></span>
-                            </div>
-                          ) : <i onClick={(e) => handledislike(value.id)} className={token && value.you_dislike_post == 1 ? "fa-solid fa-thumbs-down thumbcolor pointmu" : "fa-solid fa-thumbs-down pointmu"}></i> 
 
-                        }
-                  </i>  
-                    
-                    <h4>{value.you_dislike_post}</h4>
+                    <i>
+
+                      {
+                        disabledSubmitdislike ? (
+                          <div>
+                            <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            <span className="sr-only"></span>
+                          </div>
+                        ) : <i onClick={(e) => handledislike(value.id)} className={token && value.you_dislike_post == 1 ? "fa-solid fa-thumbs-down thumbcolor pointmu" : "fa-solid fa-thumbs-down pointmu"}></i>
+
+                      }
+                    </i>
+
+                    <h4>{value.post_dislike_count}</h4>
                   </div>
                   <div className="like">
-                    <i className="fa-solid fa-comment pointmu"  
-                    onClick={() => {sethiddendata(!hiddendata); handleCommentId(value.id,value);  }} 
+                    {/* <i className="fa-solid fa-comment pointmu"  
+                    onClick={() => {sethiddendata(!hiddendata); handleCommentId(value.id,value);  }}  
                     // onDoubleClick={() => sethiddendata(!hiddendata)}
                     // onClick={async () => {
                     //   await handleCommentId(value.id);
                     //   sethiddendata(prevHiddendata => !prevHiddendata);
                     // }}
                     // onDoubleClick={() => sethiddendata(prevHiddendata => !prevHiddendata)} 
-                    >
-                    </i>
+                    // >
+                      // </i> */}
 
 
                     <i>
-                         {                       
-                          disabledSubmitcomment ? (
-                            <div>
-                              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                              <span className="sr-only"></span>
-                            </div>
-                          ) : <i className="fa-solid fa-comment pointmu"  onClick={() => {sethiddendata(!hiddendata); handleCommentId(value.id,value);  }} ></i>
+                      {
+                        token && disabledSubmitcomment ? (
+                          <div>
+                            <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            <span className="sr-only"></span>
+                          </div>
+                        ) : <div>
+                          {/* <i className="fa-solid fa-comment pointmu"  onClick={() => {handleCommentId(value.id,value);}} ></i> */}
+                          {!hiddendata && <i className="fa-solid fa-comment pointmu" onClick={() => { handleCommentId(value.id, value); }}
+                          >
 
-                        }
-                  </i> 
+                          </i>}
+                          {hiddendata && <i className="fa-solid fa-comment pointmu"
+                            onClick={() => sethiddendata(false)}
+                          // style={{color:"red"}}
+
+                          >
+
+                          </i>
+                          }
+                        </div>
+                      }
+                    </i>
+
 
 
                     <h4>{value.post_comments_count}</h4>
@@ -1134,20 +1108,15 @@ useEffect(()=>{
                 </div>
                 {data}
                 {token && hiddendata && value.id === id ? <>
-                  {/* { replayData.map((valuedata,indexdata)=>(           */}
-                
-                  
-
                   <CommentSection
                     currentUser=
                     {{
                       currentUserId: value?.id,
                       currentUserImg: isprofile?.avator || 'images/profile9.jpg',
                       currentUserProfile: isprofile?.avator || 'images/profile9.jpg',
-                      // currentUserFullName: value.name
+
                     }}
                     commentsCount={value?.post_comments_count}
-
                     customNoComment={() => customNoComment()}
                     customImg={isprofile.avator}
                     inputStyle={{ border: "1px solid rgb(208 208 208)" }}
@@ -1155,57 +1124,26 @@ useEffect(()=>{
                     submitBtnStyle={{ backgroundColor: "blue", padding: "7px 15px", position: 'relative', left: '-1px' }}
                     cancelBtnStyle={{ border: "1px solid gray", backgroundColor: "gray", color: "white", padding: "7px 15px" }}
                     replyInputStyle={{ borderBottom: "1px solid black", color: "black" }}
-                    // onEditAction={(data)=>console.log('cjcnjscjs',data)}
-                    onSubmitAction={(data) => commenthandleapi(data,value)}
-                    // currentData={(data) => console.log("",comentdate)}
-                    // onReplyAction={(data) => {commentreplyapi(data);console.log(data,"reply")}}
+                    onSubmitAction={(data) => commenthandleapi(data, value)}
                     onReplyAction={(data) => {
-                    //   const parentCommentId = data.repliedToCommentId // Replace with the actual property name
-                    //   console.log(typeof(parentCommentId),"parentCommentId")
-                    //   const parentComment = replayData?.find(comment =>
-                    //     comment?.replies?.some(i => i.comid === Number(parentCommentId))
-                    //   );
-                    // console.log(parentComment,"parentComment")
-                    //   // Check if the parent comment exists and has more than one reply
-                    //   if (parentComment && parentComment.replies && parentComment.replies.length >= 1) {
-                    //     // Display alert if there are more than one reply for the parent comment
-                    //     alert("Only one reply is allowed for a comment");
-                    //     // setReplayComment(false)
-                    //     return
-                    //   } else {
-                    //     // Proceed with the reply
-                    //     // setReplayComment(true)
-                    //     commentreplyapi(data,parentComment);
-                    //   }
+                      const parentCommentId = data.repliedToCommentId
+                      console.log(typeof (parentCommentId), "parentCommentId")
+                      const parentComment = replayData?.find(comment =>
+                        comment?.replies?.some(i => i.comid === Number(parentCommentId))
+                      );
 
-                    const parentCommentId = data.repliedToCommentId // Replace with the actual property name
-                    console.log(typeof(parentCommentId),"parentCommentId")
-                    const parentComment = replayData?.find(comment =>
-                      comment?.replies?.some(i => i.comid === Number(parentCommentId))
-                    );
-                  
-                  console.log(parentComment,"parentComment")
-                    // Check if the parent comment exists and has more than one reply
-                    if (parentComment && parentComment.replies && parentComment.replies.length >= 1) {
-                      // Display alert if there are more than one reply for the parent comment
-                        
-                      setRepliedComments([...repliedComments, parentCommentId]);
-                      return alert("Only one reply is allowed for a comment");
+                      console.log(parentComment, "parentComment")
+                      if (parentComment && parentComment.replies && parentComment.replies.length >= 1) {
 
-                      
-                      
-                    } else {
-                      // Proceed with the reply
-                      
-                      commentreplyapi(data,parentComment);
+                        setRepliedComments([...repliedComments, parentCommentId]);
+                        return alert("Only one reply is allowed for a comment");
 
-                      console.log(" parennnnnn commmmmm",parentComment)
-                    }
-
-
+                      } else {
+                        commentreplyapi(data, parentComment);
+                      }
                     }}
-                    
-                    
+
+
 
                     commentData={replayData?.map((valudata, index) => (
                       {
@@ -1217,194 +1155,161 @@ useEffect(()=>{
                         // text: `${valudata.comment_text?valudata.comment_text:'Not Available'} ${moment(valudata.comentdate).format('DD MMM YYYY')}`,
                         // date: `${moment(valudata.comentdate).format('DD MMM YYYY')}`,
                         text: (
-                          <div style={{position: 'relative', top: '7px' }}>
+                          <div style={{ position: 'relative', top: '7px' }}>
                             {/* <img src={value?.user_avator} alt="userIcon" class="imgdefault"  />  */}
-                            {(!value.user_avator == "") ? (<img src={value.user_avator} alt='xyz' className="tru-img" />) : (<Avatar className="avtorsty-nav" name={valudata?.name} />)
-                            }
-                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <span>{valudata?.comment_text}</span>
-                            <span style={{ marginLeft: '360px' }}>{moment(valudata?.comentdate).format('DD MMM')}</span>
-                            <ul>
-                              <li className="navbar-dropdown">
-                              {value.name == valudata.name && (
-                                <div>
-                                <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                <div className="dropdown" style={{ width: '80px', top: '-2px' }}>
-                                  <button onClick={() => {
-                                    const newText = prompt('Enter new comment text:', valudata?.comment_text);
-                                    if (newText !== null && newText !== undefined) {
 
-                                      handleEditcomment({
-                                        userId: `${value?.id}`, comId: valudata.comid, // parent_id: valudata.parent_comment_id, 
-                                        avatarUrl: valudata.user_avator || "images/profile9.jpg",
-                                        userProfile: valudata.user_avator || "images/profile9.jpg",
-                                        fullName: valudata.name,
-                                        text: newText,
-                                        parentOfEditedCommentId: valudata.parentCommentId || "",
-                                      });
+                            <div className="absd">
+
+                              <div style={{ display: 'flex', marginLeft: '-20px', marginBottom: '10px', justifyContent: 'space-between' }}>
+                                <div className="d-flex gap">
+                                  <div>
+                                    {(!valudata.user_avator == "") ? (<img src={value.user_avator} alt='xyz' className="tru-imged" />) : (<Avatar className="avtorsty-nav" name={valudata?.name} />)
                                     }
-                                  }} style={{ marginRight: "10px" }}>Edit</button>
+                                  </div>
+                                  <div>
+                                    <h4 style={{ marginLeft: '13px', marginTop: "11px", fontSize: '18px', fontWeight: 'bold' }}>{valudata.name}</h4>
+                                  </div>
+                                </div>
 
-                                  <button onClick={() => handleDeletecomment(valudata.comid, value.id)}>Delete</button>
+                                <div>
                                 </div>
+                                <div className="d-flex gap">
+                                  <span>{moment(valudata?.comentdate).format('DD MMM YYYY')}</span>
+
+
+                                  {valudata.name === isprofile.name ? (
+                                    <div>
+                                      <ul>
+                                        <li className="navbar-dropdown">
+                                          <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                          <div className="dropdown dropedit" style={{ width: '80px', top: '-2px', marginTop: "12px" }}>
+                                            <button onClick={() => {
+                                              const newText = prompt('Enter new comment text:', valudata?.comment_text);
+                                              if (newText !== null && newText !== undefined) {
+
+                                                handleEditcomment({
+                                                  userId: `${value?.id}`, comId: valudata.comid, // parent_id: valudata.parent_comment_id, 
+                                                  avatarUrl: valudata.user_avator || "images/profile9.jpg",
+                                                  userProfile: valudata.user_avator || "images/profile9.jpg",
+                                                  fullName: valudata.name,
+                                                  text: newText,
+                                                  parentOfEditedCommentId: valudata.parentCommentId || "",
+                                                });
+                                              }
+                                            }} style={{ marginRight: "10px" }}>Edit</button>
+
+                                            <button onClick={() => handleDeletecomment(valudata.comid, value.id)}>Delete</button>
+                                          </div>
+                                        </li>
+                                      </ul>
+                                    </div>
+
+                                  ) : null
+                                  }
+
                                 </div>
-                              )}
-                              </li>
-                            </ul>
-                            
-                          </div>
-                          {/* <div ><button style={{marginTop:'10px'}} onClick={()=>setreplycommentstate(!setreplycommentstate)}>reply</button></div> */}
+
+                              </div>
+                            </div>
+
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+                              <span>{valudata?.comment_text}</span>
+
+
+
+                              {/* {valudata.name} 
+                            {isprofile.name} */}
+                              {/* </li> */}
+                              {/* </ul> */}
+
+                            </div>
+                            {/* <div ><button style={{marginTop:'10px'}} onClick={()=>setreplycommentstate(!setreplycommentstate)}>reply</button></div> */}
                           </div>
                         ),
-                        replies:(valudata?.replies || []).map((reply) => ({
-                            userId: `${reply.userid}`,
-                            comId: `${reply.comid}`,
-                            parent_id:`${reply.parent_comment_id}`,
-                            avatarUrl: `${reply.user_avator || "images/profile9.jpg"}`,
-                            userProfile: `${reply.user_avator || "images/profile9.jpg"}`,
-                            text: (
-                              <div style={{position: 'relative', top: '7px' }}>
-                                 {/* <img src={value?.user_avator} alt="userIcon" class="imgdefault"  />  */}
-                               {
-                               (!reply.user_avator == "") ? (<img src={reply.user_avator} alt='xyz' className="tru-img" />) : (<Avatar className="avtorsty-nav" name={valudata?.name} />)
-                               }
+                        replies: (valudata?.replies || []).map((reply) => ({
+                          userId: `${reply.userid}`,
+                          comId: `${reply.comid}`,
+                          parent_id: `${reply.parent_comment_id}`,
+                          // fullName:`${reply.name}`,
+                          // avatarUrl: `${reply.user_avator || "images/profile9.jpg"}`,
+                          // userProfile: `${reply.user_avator || "images/profile9.jpg"}`,
+                          text: (
+                            <div style={{ position: 'relative', top: '7px' }}>
+                              {/* <img src={value?.user_avator} alt="userIcon" class="imgdefault"  />  */}
+
+                              <div className="absd">
+                                <div style={{ display: 'flex', marginLeft: '-20px', marginBottom: '10px', justifyContent: 'space-between' }}>
+
+                                  <div className="d-flex">
+                                    <div>
+                                      {
+                                        (!reply.user_avator == "") ? (<img src={reply.user_avator} alt='xyz' className="tru-imged" />) : (<Avatar className="avtorsty-nav" name={valudata?.name} />)
+                                      }
+                                    </div>
+
+                                    <div>
+                                      <h4 style={{ marginLeft: '13px', marginTop: "11px", fontSize: '18px', fontWeight: 'bold' }}>{reply.name}</h4>
+                                    </div>
+                                  </div>
+
+                                  <div className="d-flex gap">
+                                    <span style={{ marginLeft: '360px' }}>{moment(reply.comentdate).format('DD MMM YYYY')}</span>
+
+                                    {reply.name === isprofile.name ? <div>
+                                      <ul>
+                                        <li className="navbar-dropdown">
+                                          {/* {value.name ==  reply.name && ( */}
+                                          <div>
+                                            <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                            <div className="dropdown dropedit" style={{ width: '80px', top: '-2px', marginTop: "12px" }}>
+                                              <button onClick={() => {
+                                                const newText = prompt('Enter new comment text:', reply?.comment_text);
+                                                if (newText !== null && newText !== undefined) {
+
+                                                  handleEditcomment({
+                                                    userId: `${value?.id}`,
+                                                    comId: `${reply.comid}`,
+                                                    parent_id: `${reply.parent_comment_id}`,
+                                                    avatarUrl: reply.user_avator || "images/profile9.jpg",
+                                                    userProfile: reply.user_avator || "images/profile9.jpg",
+                                                    fullName: reply.name,
+                                                    text: newText,
+                                                    parentOfEditedCommentId: valudata.parentCommentId || "",
+                                                  });
+                                                }
+                                              }} style={{ marginRight: "10px" }}>Edit</button>
+                                              <button onClick={() => handleDeletecomment(reply.comid, value.id)}>Delete</button>
+                                            </div>
+                                          </div>
+                                          {/* )} */}
+                                        </li>
+                                      </ul>
+                                    </div>
+                                      : null
+                                    }
+                                  </div>
+
+                                </div>
+                              </div>
+
+
                               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <span>{reply.comment_text ? reply.comment_text : 'Not Available'}</span>
-                                <span style={{ marginLeft: '360px' }}>{moment(reply.comentdate).format('DD MMM YYYY')}</span>
-                                <ul>
-                                <li className="navbar-dropdown">
-                                {value.name ==  reply.name && (
-                                <div>
-                                <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
-                               <div className="dropdown" style={{width:'80px'}}>
-                                    <button onClick={() => { const newText = prompt('Enter new comment text:', reply?.comment_text);
-                                           if (newText !== null && newText !== undefined) {
-                       
-                                                 handleEditcomment({
-                                                   userId: `${value?.id}`,
-                                                   comId: `${reply.comid}`,
-                                                   parent_id: `${reply.parent_comment_id}`, 
-                                                   avatarUrl: reply.user_avator || "images/profile9.jpg",
-                                                   userProfile: reply.user_avator || "images/profile9.jpg",
-                                                   fullName: reply.name,
-                                                   text: newText,
-                                                   parentOfEditedCommentId: valudata.parentCommentId || "",
-                                                 });
-                                             }
-                                           }} style={{marginRight:"10px"}}>Edit</button>  
-                                    <button onClick={()=>handleDeletecomment(reply.comid,value.id)}>Delete</button>
-                               </div>
-                               </div>
-                                )}
-                              </li>
-                              </ul>
+                                <span style={{ marginBottom: '15px' }}>{reply.comment_text ? reply.comment_text : 'Not Available'}</span>
+
+
+                                {/* {reply.parent_comment_id !== 0 ? className="{replyBtn ? 'hidden' : null}" : null} */}
+
+
+
                               </div>
-                              </div>
-                            ),
-                          })),
-                          disableReplies: repliedComments.includes(valudata.comid)
+                            </div>
+                          ),
+                        })),
+                        disableReplies: repliedComments.includes(valudata.comid)
                       }
 
                     ))}
                   />
-
-
-
-
-                 {/* <div className="overlay"><span className="comment-title">{value.post_comments_count} Comment</span><hr className="hr-style" /><div>
-                    
-                    
-                    <form className="form"  onSubmit={fromikcomment.handleSubmit} style={{ backgroundColor: 'white' }}>
-                      <div className="userImg" style={{ margin: '0px' }}>
-                        <a target="_blank" href="images/profile9.jpg">
-                          <img src="images/profile9.jpg" alt="userIcon" className="imgdefault" />
-                        </a>
-                      </div>
-                      <div className="emoji-input">
-                        <input className="postComment"
-                         placeholder="Type your reply here" 
-                         type="text" 
-                         name='comment'
-                         value={fromikcomment.values.comment} 
-                         onChange={fromikcomment.handleChange}
-                         style={{ border: '1px solid rgb(208, 208, 208)' }}
-                          />
-                           <input className="postComment"
-                         placeholder="Type your reply here" 
-                         type="text" 
-                          name=''
-                      
-                          style={{ display: 'none', border: '1px solid rgb(208, 208, 208)' }}
-                          />
-                        <div className="emoji-icon">
-                        </div>
-                      </div>
-                      <button className="postBtn" type="submit"     disabled="" style={{ backgroundColor: 'blue', padding: '7px 15px', position: 'relative', left: '-1px' }}>
-                        Post
-                      </button>
-                    </form>
-                  </div>
-                    <div>
-                      <div>
-
-
-                        <div className="halfDiv">
-                          <div className="userInfo">
-                            <div className="commentsTwo">
-                              <a className="userLink" target="_blank" href="images/profile9.jpg">
-                                <div>
-                                  <img src="images/profile9" alt="userIcon" className="imgdefault" style={{ position: 'relative', top: '7px' }} /></div>
-                                <div className="fullName">
-                                  ram veer
-                                </div>
-                              </a>
-                            </div>
-                            <div className="infoStyle">
-                              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <span>super</span><span style={{ marginLeft: '111px' }}>24 Jan</span>
-                              </div></div><div style={{ marginLeft: '32px' }}>
-                              <div><button className="replyBtn">
-                                <div className="replyIcon"></div><span style={{ marginLeft: '17px' }}>
-                                  Reply</span>
-                              </button>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="userActions">
-                          </div>
-                        </div>
-                      </div>
-                      <div className="replySection">
-                        <div><div className="halfDiv">
-                          <div className="userInfo">
-                            <div className="commentsTwo">
-                              <a className="userLink" target="_blank" href="https://dev.webmobrildemo.com/e_lorry/public/storage/avator_uploads/1705756512im-2.jpg">
-                                <div>
-                                  <img src="https://dev.webmobrildemo.com/e_lorry/public/storage/avator_uploads/1705756512im-2.jpg" alt="userIcon" className="imgdefault" style={{ position: 'relative', top: '7px' }} />
-                                </div>
-                                <div className="fullName">
-                                </div>
-                              </a>
-                            </div>
-                            <div className="infoStyle"><div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', gap: '1rem' }}><span>hii</span><span style={{ marginLeft: '111px' }}>24 Jan </span>
-                            </div>
-                            </div>
-                            <div style={{ marginLeft: '32px' }}>
-                              <div>
-                                <button className="replyBtn"><div className="replyIcon">
-                                </div><span style={{ marginLeft: '17px' }}>Reply</span>
-                                </button></div>
-                            </div>
-                          </div>
-                          <div className="userActions"></div>
-                        </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div> */}
-
-
-
                 </> : null}
               </div>
             ))}
@@ -1747,3 +1652,5 @@ useEffect(()=>{
 }
 
 export default Discuss;
+
+

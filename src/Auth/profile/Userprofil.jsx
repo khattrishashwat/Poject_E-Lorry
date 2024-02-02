@@ -6,10 +6,13 @@ import axios from 'axios'
 import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom'
 
 function Userprofil() {
     const [itemupdate, setitmeupdata] = useState([])
     const [disabledSubmit, setDisabledSubmit] = useState(false)
+
+    const navigation=useNavigate();
 
     const intialvalue = {
         name: itemupdate.name,
@@ -17,7 +20,7 @@ function Userprofil() {
     }
     const validation = Yup.object().shape({
         name: Yup.string().required("Required"),
-        email: Yup.string().email('Invalid email').required('Required'),
+        // email: Yup.string().email('Invalid email').required('Required'),
 
     })
     const token = localStorage.getItem('authtoken')
@@ -46,7 +49,7 @@ function Userprofil() {
     }
 
     const submitdata = async (value, { resetForm }) => {
-    setDisabledSubmit(true)
+         setDisabledSubmit(true)
 
         // console.warn('formik button is working',value)
         try {
@@ -64,7 +67,8 @@ function Userprofil() {
                 progress: undefined,
 
             })
-
+            
+            navigation('/profileSetting')
         }
         catch (errors) {
             toast(errors.response.data.message, {
@@ -143,8 +147,9 @@ function Userprofil() {
                                                     name='email'
                                                     value={formik.values.email}
                                                     onChange={formik.handleChange}
+                                                    readOnly
                                                 />
-                                                {formik.touched.email && formik.errors.email ? <div className='text-danger'>{formik.errors.email}</div> : null}
+                                                {/* {formik.touched.email && formik.errors.email ? <div className='text-danger'>{formik.errors.email}</div> : null} */}
 
                                             </div>
 
