@@ -58,6 +58,10 @@ function Discuss({ isVisible, onHide, comment }) {
   const [isLoading, setLoading] = useState(false);
   const [isprofile, setProfileupdate] = useState({})
   const [valueid, setvalueid] = useState([])
+  const [lineLimit,setLineLimit]= useState({})
+  const [lineLimitid,setLineLimitid]= useState()
+
+
 
   console.log(isprofile, "isprofileee")
 
@@ -71,7 +75,7 @@ function Discuss({ isVisible, onHide, comment }) {
   const [hiddendata, sethiddendata] = useState(false)
   const [action, setAction] = useState(false)
   const [loading, setIsLoading] = useState(false)
-
+  const characterLimit = 12;
 
 
 
@@ -273,6 +277,22 @@ function Discuss({ isVisible, onHide, comment }) {
   //   // sethiddendata(true)
 
   // }
+
+const fun=()=>
+{
+  Swal.fire({
+    title: 'please login!',
+    showConfirmButton: false, // Hide the confirm button
+    timer: 3000,
+  })
+  setTimeout(() => {
+    const parameterValue = -1; // Replace this with the actual value of your parameter
+    const path = '/auth/login';
+    navigate(path, { state: { parameterValue } })
+  }, 2000);
+}
+
+
   const commenthandleapi = async (value, values) => {
     console.log(values, 'comment ubmit')
     try {
@@ -565,7 +585,7 @@ function Discuss({ isVisible, onHide, comment }) {
   const validated = Yup.object().shape({
     title: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('please enter title'),
     // post_announcement_update: Yup.string().min(5, 'Too Short!').max(100, 'Too Long').required('Please enter Post'),
-    post_date: Yup.date().required('Date is required').nullable(),
+    post_date: Yup.date().required('Date is required').min(new Date(), 'Event date cannot be in the past').nullable(),
     // uploaded_file: Yup.mixed().required('Image is required'),
     // uploaded_file: Yup.mixed().required('File is required').test('fileSize', 'File size is too large', (value) => {
     //   return value && value.size <= 10485760;
@@ -627,12 +647,13 @@ function Discuss({ isVisible, onHide, comment }) {
 
     }
     setDisabledSubmit(false)
-    setShowevent(false)
-    onHide();
-    resetForm()
+    // setShowevent(false)
+    // onHide();
+    // resetForm()
     setTimeout(() => {
       window.location.reload()
     }, 1000);
+    resetForm();
   }
 
   const formik = useFormik({
@@ -895,6 +916,16 @@ function Discuss({ isVisible, onHide, comment }) {
   };
 
 
+
+
+  const toggleDescription = (postId) => {
+    setLineLimit((prevExpandedPosts) => ({
+      ...prevExpandedPosts,
+      [postId]: !prevExpandedPosts[postId],
+    }));
+  };
+
+
   useEffect(() => {
     document.title = 'Chatroom Page';
   }, [])
@@ -997,7 +1028,7 @@ function Discuss({ isVisible, onHide, comment }) {
               <div className="group-section-1" key={index}>
                 <div id={`post_${value.id}`} className="imag-text">
 
-                  {(!value.user_avator == "") ? (<img src={value.user_avator} alt='xyz' className="imgprofile" />) : (<Avatar className="avtorsty-nav" name={value.name} />)
+                  {(!value.user_avator == "") ? (<img src={value.user_avator} alt='xyz' className="imgprofiles" />) : (<Avatar className="avtorsty-nav" name={value.name} />)
                   }
                   <div className="under-text-flex">
                     <div className="boths">
@@ -1007,16 +1038,23 @@ function Discuss({ isVisible, onHide, comment }) {
                   </div>
                 </div>
                 <h3>{value.title}</h3>
-                <p>{value.description}</p>
+                 <p>{value.description}</p>  
+
+                 {/* <p>{lineLimit[index]? value.description  : `${value.description.slice(0, 300)}...`}  </p>
+                <p onClick={() => toggleDescription(index)}>
+                  {lineLimit[index] ? 'Read Less' : 'Read More'}
+                </p> */}
+              
+
                 {/* <img
                 src={value.post_image}
                 className="tru-img"
                 alt="dicimg5"
               /> */}
 
-
+{/* 
                 {(!value.post_image == "") ? (<img src={value.post_image} alt='xyz' className="tru-img" />) : (<Avatar className="avtorsty-nav" name={value.name} />)
-                }
+                } */}
 
                 {/* <Avatar name={value.name} /> */}
                 <div className="mainsflexings">
@@ -1072,16 +1110,23 @@ function Discuss({ isVisible, onHide, comment }) {
 
                     <i>
                       {
-                        token && disabledSubmitcomment ? (
+                        token  && disabledSubmitcomment ? (
                           <div>
                             <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             <span className="sr-only"></span>
                           </div>
                         ) : <div>
                           {/* <i className="fa-solid fa-comment pointmu"  onClick={() => {handleCommentId(value.id,value);}} ></i> */}
-                          {!hiddendata && <i className="fa-solid fa-comment pointmu" onClick={() => { handleCommentId(value.id, value); }}
+                          {!hiddendata && <i className="fa-solid fa-comment pointmu" onClick={() => { handleCommentId(value.id, value); 
+                          if(token)
+                          { 
+                          
+                          }
+                          else{
+                          fun()
+                          }
+                        }}
                           >
-
                           </i>}
                           {hiddendata && <i className="fa-solid fa-comment pointmu"
                             onClick={() => sethiddendata(false)}
@@ -1167,7 +1212,9 @@ function Discuss({ isVisible, onHide, comment }) {
                                     }
                                   </div>
                                   <div>
-                                    <h4 style={{ marginLeft: '13px', marginTop: "11px", fontSize: '18px', fontWeight: 'bold' }}>{valudata.name}</h4>
+                                    <h4 style={{ marginLeft: '13px', marginTop: "11px", fontSize: '18px', fontWeight: 'bold' }}>{valudata.name.length > characterLimit
+                                    ? valudata.name.substring(0, characterLimit) + '...'
+                                    : valudata.name}</h4>
                                   </div>
                                 </div>
 
@@ -1248,7 +1295,9 @@ function Discuss({ isVisible, onHide, comment }) {
                                     </div>
 
                                     <div>
-                                      <h4 style={{ marginLeft: '13px', marginTop: "11px", fontSize: '18px', fontWeight: 'bold' }}>{reply.name}</h4>
+                                      <h4 style={{ marginLeft: '13px', marginTop: "11px", fontSize: '18px', fontWeight: 'bold' }}>{reply.name.length > characterLimit
+                                    ? reply.name.substring(0, characterLimit) + '...'
+                                    : reply.name}</h4>
                                     </div>
                                   </div>
 
@@ -1452,8 +1501,8 @@ function Discuss({ isVisible, onHide, comment }) {
 
                         className="post-form"
                       />
-                      {/* {fromikpost.touched.vip && fromikpost.errors.vip ? <div className='text-danger testdanger'>{fromikpost.errors.vip}</div> : null}                    
-                    <div style={{ marginTop: '8px' }}>{emailChips}</div> */}
+                      {/* {fromikpost.touched.vip && fromikpost.errors.vip ? <div className='text-danger testdanger'>{fromikpost.errors.vip}</div> : null}   */}                 
+                    <div style={{ marginTop: '8px' }}>{emailChips}</div> 
 
 
 
@@ -1530,19 +1579,6 @@ function Discuss({ isVisible, onHide, comment }) {
                 <Modal.Body>
                   <div className="content-event">
                     <form className="for" onSubmit={formik.handleSubmit}>
-
-
-                      {/* <label className="pst-lab">Post, Announcement </label>
-                    <input
-                      type="text"
-                      name='post_announcement_update'
-                      value={formik.values.post_announcement_update}
-                      onChange={formik.handleChange}
-                      placeholder="Post, Announcement & Updates"
-                      className="post-form"
-                    />
-                    {formik.touched.post_announcement_update && formik.errors.post_announcement_update ? <div className='text-danger'>{formik.errors.post_announcement_update}</div> : null}  */}
-
 
                       <label className="pst-lab">Add Title</label>
                       <input

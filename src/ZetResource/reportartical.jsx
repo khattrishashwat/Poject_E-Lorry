@@ -85,7 +85,7 @@ const downloadfile=(filename, url,event) =>
                       <div className="title-flex-1 d-block">
                         <h3>Type:&nbsp;&nbsp;{value.type}</h3> 
                         {/* <h3>Owner:&nbsp;&nbsp;{value.owner}</h3> */} 
-                        <div className="d-flex gap"><h3>Owner:</h3><h3>Clean Mobility Shift</h3></div>
+                        <div className="d-flex gap"><h3>Owner:</h3><h3>{value.owner}</h3></div>
                       </div>
                       {/* <a href="" className="download-btn">Download &nbsp;&nbsp;<i className="fa-solid fa-download"></i></a> */}
                      

@@ -18,6 +18,7 @@ function Event() {
     navigate('/annoucement')
   }
 
+  const characterLimit = 100;
 
   // const eventemp=async ()=>
   // {
@@ -84,7 +85,10 @@ console.log(pasteventitem,"past ")
                          {value.title}
                         </h4>
                         <p className="by-author">
-                       {value.description}
+                       {/* {value.description} */}
+                        {value.description.length > characterLimit
+                                    ? value.description.substring(0, characterLimit) + '...'
+                                    : value.description} 
                         </p>
                       </div>
                       </Link>
@@ -146,7 +150,12 @@ console.log(pasteventitem,"past ")
                           />
                           <div className="media-boddy">
                             <h4 className="media-heading">{value.title}</h4>
-                            <p className="by-author">{value.description}</p>
+                            <p className="by-author">
+                              {/* {value.description} */}
+                               {value.description.length > characterLimit
+                                    ? value.description.substring(0, characterLimit) + '...'
+                                    : value.description} 
+                              </p>
                           </div>
                           </Link>
                         </li>

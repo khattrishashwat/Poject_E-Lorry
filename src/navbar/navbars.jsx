@@ -164,7 +164,7 @@ function Navbars() {
                       <li className="navbar-dropdown">
                         { (!profileupdate.avator == "" ) ?
                         ( 
-                         <img src={profileupdate.avator} alt='xyz' className="imgprofile" /> 
+                         <img src={profileupdate.avator} alt='xyz' className="imgprofilenav" /> 
                         )
                         :
                         (

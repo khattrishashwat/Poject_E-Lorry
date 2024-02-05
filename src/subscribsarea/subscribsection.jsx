@@ -115,7 +115,10 @@ function Subscribsection() {
  
 
   const validation= yup.object().shape({
-    email:yup.string().email('Please enter valid email').required('Please enter email')
+    email:yup.string().email('Please enter valid email').test('email-domain', 'Email domain must be .com or .in', (value) => {
+      if (!value) return false; // Handle empty values if needed
+      return /@(.+\.com|.+\.in)$/.test(value);
+    }).required('Email field is required')
   })
 
   const formik=useFormik({
