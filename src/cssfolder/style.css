@@ -6782,7 +6782,7 @@ transition: all .3s ease-in-out; */
   z-index: 0;
   transform: translate(-50%, -50%);
   opacity: 0.2;
-  width: 32%;
+  width: 28%;
   position: relative;
 }
 
@@ -7352,6 +7352,12 @@ margin-top: 5px;
   height: 50px !important;
   border-radius: 75% !important;
 }
+.avtorsty-navcom
+{
+  width: 43px !important;
+  height: 43px !important;
+  border-radius: 79% !important;
+}
 
 
 .avtorsty-navl {
@@ -7592,7 +7598,16 @@ span.datecal {
 
 
 
-
+.poli-1 {
+  position: absolute;
+  top: 57%;
+  left: 50%;
+  z-index: 0;
+  transform: translate(-50%, -50%);
+  opacity: 0.2;
+  width: 14%;
+  /* position: relative; */
+}
 
 
 

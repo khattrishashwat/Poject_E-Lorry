@@ -76,6 +76,7 @@ function Discuss({ isVisible, onHide, comment }) {
   const [action, setAction] = useState(false)
   const [loading, setIsLoading] = useState(false)
   const characterLimit = 12;
+  const characterLimitre=8;
 
 
 
@@ -1010,8 +1011,8 @@ const fun=()=>
                 <div className="right-forms-1f">
                   <div className="upper-two-btn modefychat-manu">
                     <button type="button" onClick={() => filterpostfun('')} className={activeButton === '' ? 'xyzx' : 'btnnew'} >ALL</button>
-                    <button type="button" onClick={() => filterpostfun("reports")} className={activeButton === 'reports' ? 'xyzx' : 'btnnew'} >Report</button>
-                    <button type="button" onClick={() => filterpostfun("vehicle")} className={activeButton === 'vehicle' ? 'xyzx' : 'btnnew'}>Vehicle Model</button>
+                    <button type="button" onClick={() => filterpostfun("reports")} className={activeButton === 'reports' ? 'xyzx' : 'btnnew'} >Reports</button>
+                    <button type="button" onClick={() => filterpostfun("vehicle")} className={activeButton === 'vehicle' ? 'xyzx' : 'btnnew'}>Vehicle Models</button>
                     <button type="button" onClick={() => filterpostfun("policies")} className={activeButton === 'policies' ? 'xyzx' : 'btnnew'} >Policies</button>
                     <button type="button" onClick={() => filterpostfun("technologies")} className={activeButton === 'technologies' ? 'xyzx' : 'btnnew'} >Technologies</button>
                   </div>
@@ -1208,7 +1209,7 @@ const fun=()=>
                               <div style={{ display: 'flex', marginLeft: '-20px', marginBottom: '10px', justifyContent: 'space-between' }}>
                                 <div className="d-flex gap">
                                   <div>
-                                    {(!valudata.user_avator == "") ? (<img src={value.user_avator} alt='xyz' className="tru-imged" />) : (<Avatar className="avtorsty-nav" name={valudata?.name} />)
+                                    {(!valudata.user_avator == "") ? (<img src={valudata.user_avator} alt='xyz' className="avtorsty-navcom" />) : (<Avatar className="avtorsty-nav" name={valudata?.name} />)
                                     }
                                   </div>
                                   <div>
@@ -1285,18 +1286,18 @@ const fun=()=>
                               {/* <img src={value?.user_avator} alt="userIcon" class="imgdefault"  />  */}
 
                               <div className="absd">
-                                <div style={{ display: 'flex', marginLeft: '-20px', marginBottom: '10px', justifyContent: 'space-between' }}>
+                                <div style={{ display: 'flex', marginLeft: '-25px', marginBottom: '10px', justifyContent: 'space-between' }}>
 
                                   <div className="d-flex">
                                     <div>
                                       {
-                                        (!reply.user_avator == "") ? (<img src={reply.user_avator} alt='xyz' className="tru-imged" />) : (<Avatar className="avtorsty-nav" name={valudata?.name} />)
+                                        (!reply.user_avator == "") ? (<img src={reply.user_avator} alt='xyz' className="avtorsty-navcom" />) : (<Avatar className="avtorsty-nav" name={valudata?.name} />)
                                       }
                                     </div>
 
                                     <div>
-                                      <h4 style={{ marginLeft: '13px', marginTop: "11px", fontSize: '18px', fontWeight: 'bold' }}>{reply.name.length > characterLimit
-                                    ? reply.name.substring(0, characterLimit) + '...'
+                                      <h4 style={{ marginLeft: '13px', marginTop: "11px", fontSize: '18px', fontWeight: 'bold' }}>{reply.name.length > characterLimitre
+                                    ? reply.name.substring(0, characterLimitre) + '...'
                                     : reply.name}</h4>
                                     </div>
                                   </div>
@@ -1524,11 +1525,11 @@ const fun=()=>
 
                       <label className="pst-lab">Tags</label>
                       <select name="category" id="" value={fromikpost.values.category} onChange={fromikpost.handleChange} className="post-form" >
-                        {/* <option value="" selected disabled>
-                    Report and Article*
-                  </option> */}
-                        <option value="reports">Report</option>
-                        <option value="vehicle">Vehicle</option>
+                        <option value="" selected disabled>
+                    
+                        </option> 
+                        <option value="reports">Reports</option>
+                        <option value="vehicle">Vehicles</option>
                         <option value="policies">Policies</option>
                         <option value="technologies">Technologies</option>
 

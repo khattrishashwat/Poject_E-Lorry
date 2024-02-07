@@ -169,7 +169,7 @@ setDisabledSubmit(true)
           </div>
           <div className="newsletter-grid-2">
             <h3>Subscribe Our Newsletter</h3>
-            <p>Subscribe to our newsletter and stay updated</p>
+            <p>Join us and stay updated</p>
             <form onSubmit={formik.handleSubmit}  className='form-sub'>
             <div className="subs-pos"> 
               <input 

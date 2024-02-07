@@ -77,7 +77,7 @@ function Testmonial()
     <>
       {/* <div className="big-container bg"> */}
         <div className="small-container">
-          <h2 className="stakes">What people say <strong>About eLorry</strong></h2>
+          <h2 className="stakes">Why Electric Trucks</h2>
           <span className="line-1"></span>
           <section id="testim" className="testim">
             <div className="wrap">
