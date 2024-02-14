@@ -3,6 +3,7 @@ import React, { useState,useEffect } from "react";
 import Footer from "../Footer/footer";
 import Toggleside from '../sidetoggle/sidetoggle'
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function Zetvehicle() {
   const [feature, setfeature] = useState(true);
@@ -108,11 +109,12 @@ function Zetvehicle() {
         </div>
         ))}
 
+
+                  <div className='mt-5'> 
+                    <p> To add any content, please contact us <Link to='/contact'>here</Link></p>
+                   </div>
       </div>
       {/* </div> */}
-
-
-
 
 
       <Footer />

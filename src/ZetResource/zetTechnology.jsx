@@ -2,6 +2,8 @@ import React, { useState,useEffect } from 'react'
 import Footer from '../Footer/footer'
 import axios from 'axios'
 import technoimage from '../techno.png'
+import { Link } from 'react-router-dom'
+
 function ZetTechnology() 
 {
 
@@ -90,9 +92,13 @@ function ZetTechnology()
               <div dangerouslySetInnerHTML={{ __html: parseHTML(technologyData.image_text) }} />
             <p className="techno-para"></p>
           </div> */}
-        </div></div>
-
-
+        </div>
+        
+                  <div className='mt-5'> 
+                    <p> To add any content, please contact us <Link to='/contact'>here</Link></p>
+                   
+                   </div>
+        </div>
 
       <Footer />
 

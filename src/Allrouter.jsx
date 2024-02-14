@@ -1,7 +1,9 @@
 import React, { Suspense , createContext} from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useState } from 'react';
 import Navbarcontent from './navbar/navbars'
 import Loaderfile from './loader/loader'
+import PageNotFound from './Notfound/found'
 const Home = React.lazy(() => import('./Home/home'))
 const ComingEvent = React.lazy(() => import('./Event/event'))
 const UpcomingEvent = React.lazy(() => import('./Event/Upcomingevent'))
@@ -40,7 +42,6 @@ export const GlobalInfo = createContext();
 
 
 function Allrouter() {
-
   return (
     <>
       {/* <Router> */}
@@ -49,7 +50,7 @@ function Allrouter() {
         <Navbarcontent /> 
         <Suspense fallback={<Loaderfile />}>
           <Routes>
-            <Route path="*" element={<h1 h="55vh">Page not found</h1>} />
+            <Route path="*" element={<PageNotFound/>} />
             <Route path='/' element={<Home />} />
             <Route path='/newEvent' element={<ComingEvent />} />
             <Route path='/annoucement' element={<Announcement />} />
@@ -78,7 +79,7 @@ function Allrouter() {
             {/* <Route path='/teamppage' element={<Temp />} /> */}
             <Route path='/logout' element={<Logoutpage />} />
             <Route path='/post/:pid/:uid' element={<Chatpostdetail />} />
-            <Route path='/:pid' element={<Sharedetailpage />} />
+            <Route path='/detail/:pid' element={<Sharedetailpage />} />
             <Route path='/privacypage' element={<Privacypage />} />
             <Route path='/termcondition' element={<Termpage />} />
           </Routes>

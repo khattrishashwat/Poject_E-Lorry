@@ -4,6 +4,7 @@ import Footer from '../Footer/footer'
 import Toggleicon from '../sidetoggle/sidetoggle'
 import axios from 'axios'
 import * as DOMPurify from 'dompurify';
+import { Link } from 'react-router-dom';
 
 function Zetpolicy() 
 {
@@ -177,15 +178,17 @@ function Zetpolicy()
         <div className="circle-policy-1"></div> 
 
         </div>
-
-
-        
-     
-        
-
       
           </div>
+
+
+          <div className='mt-5' > 
+                   <p> To add any content, please contact us <Link to='/contact'>here</Link></p>
+                      
+                   </div>
         </div>
+
+
        
       </section>
      

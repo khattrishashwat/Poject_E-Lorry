@@ -174,7 +174,15 @@ console.log(pasteventitem,"past ")
               </div>
               
             </div>
+            <div className="mt-5"> 
+                   <p> To add any content, please contact us <Link to='/contact'>here</Link></p>
+                   </div>
           </div>
+        
+
+                   
+
+
         </section>
       </div>
 

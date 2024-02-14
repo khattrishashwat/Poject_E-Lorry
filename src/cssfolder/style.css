@@ -6496,6 +6496,7 @@ transition: all .3s ease-in-out; */
 
 .newsletter-grid-2 {
   padding: 80px 0px 0px 40px;
+  text-align: center;
 }
 
 .newsletter-grid-2 p {
@@ -6873,6 +6874,7 @@ transition: all .3s ease-in-out; */
 
 .form-sub {
   box-shadow: unset !important;
+  padding: 1px 59px
 }
 
 .new-new-1 img {
@@ -6908,7 +6910,7 @@ transition: all .3s ease-in-out; */
 .upper-two-btn button {
   background: #0909cc;
   color: white;
-  padding: 10px 0px;
+  padding: 10px 2px;
   text-decoration: none;
   width: 100%;
   display: block;
@@ -7351,12 +7353,14 @@ margin-top: 5px;
   width: 50px !important;
   height: 50px !important;
   border-radius: 75% !important;
+  background-color: #0014c7 !important;
 }
 .avtorsty-navcom
 {
   width: 43px !important;
   height: 43px !important;
   border-radius: 79% !important;
+  background-color: #0014c7 !important;
 }
 
 
@@ -7608,6 +7612,48 @@ span.datecal {
   width: 14%;
   /* position: relative; */
 }
+
+
+/* .link-cont
+{
+  margin-top: '5px';
+} */
+
+
+
+
+
+
+.log-btn {
+
+padding: 10px 11px;
+    display: block;
+}
+
+.discuss-grid-2.width-310 {
+  width: 270px;
+  margin: 0 auto;
+}
+span.plus-icon {
+  font-size: 20px;
+  margin-right: 5px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

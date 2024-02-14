@@ -184,7 +184,7 @@ function Navbars() {
                     )
                     :
                     (
-                      <Link to="/auth/login" className="log-btn">Login</Link>
+                      <Link to="/auth/login" className="log-btn">Member Login</Link>
                     )
                   }
 

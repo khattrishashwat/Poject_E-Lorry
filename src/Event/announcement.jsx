@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from "react";
 // import './event.css'
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 import Footer from "../Footer/footer";
 
@@ -87,7 +88,7 @@ function Announcement()
         <div className="col-md-3" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",  marginBottom: "1rem", fontWeight: "bold" }}>
           
           <span className="datecal"  style={{ border: "0.5px solid lightgrey", textAlign: "center",  }}>{createDate.getDate()}</span>
-          <span className="datecal" style={{ backgroundColor: "#632672", color: "white", fontSize: "12px", fontWeight: "bold", textAlign: "center",  }}>{formattedDate}</span>
+          <span className="datecal" style={{ backgroundColor: "#0909cc", color: "white", fontSize: "12px", fontWeight: "bold", textAlign: "center",  }}>{formattedDate}</span>
         </div>
       </div>
       <hr />
@@ -96,10 +97,11 @@ function Announcement()
   );
 })}
 
+                   </div>
 
-           
-          </div>
-
+                   <div className="mt-5" > 
+                   <p> To add any content, please contact us <Link to='/contact'>here</Link></p>
+                   </div>
         </div>
       </div>
 

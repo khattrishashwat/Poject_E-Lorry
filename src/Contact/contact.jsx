@@ -89,7 +89,7 @@ function Contact() {
       const resp = await axios.post("/contact-us", `${itemscon}`,
         { headers: headers })
 
-      console.warn("api $$$$$", resp)
+      // console.warn("api $$$$$", resp)
       toast(resp.data.message, {
         position: "top-right",
         autoClose: 2000,
@@ -111,7 +111,7 @@ function Contact() {
       setDisabledSubmit(false)
     }
     catch (errors) {
-      console.warn("contact ####", errors.response.data.message)
+      // console.warn("contact ####", errors.response.data.message)
       toast(errors.response.data.message, {
         position: "top-right",
         autoClose: 2000,

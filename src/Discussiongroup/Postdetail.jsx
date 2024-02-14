@@ -70,7 +70,7 @@ function Postdetail({ value }) {
 
   const postDiscuss = async () => {
     const resp = await axios.get(`/posts?uid=${uid}`, { headers: headers })
-    console.log("iiiii", resp.data.data)
+    // console.log("iiiii", resp.data.data)
     setpostDiscuss(resp.data.data.posts)
     setToppostdiscuss(resp.data.data.top_posts)
     setEventDisplay(resp.data.data.events)
@@ -120,10 +120,10 @@ function Postdetail({ value }) {
       const status = statuslike
       const post_id = pid;
       const itemlike = { post_id, status, uid }
-      console.log("///////", itemlike)
+      // console.log("///////", itemlike)
       const resp = await axios.post('/like-dislike-post', itemlike, { headers: headers })
       setUpdatepost(2)
-      console.warn("222222", resp)
+      // console.warn("222222", resp)
     }
     catch (errors) {
       toast(errors.response.data.message, {
@@ -151,8 +151,8 @@ function Postdetail({ value }) {
       const post_id = pid;
       const itemlike = { post_id, status, uid }
       const resp = await axios.post('/like-dislike-post', itemlike, { headers: headers })
-      console.warn("111111", itemlike)
-      console.warn("222222", resp)
+      // console.warn("111111", itemlike)
+      // console.warn("222222", resp)
       setUpdatepost(1)
     }
     catch (error) {
@@ -191,7 +191,7 @@ function Postdetail({ value }) {
 
 
   const handleCommentId = (id) => {
-    console.warn("hhhhhhhhhhhhhh", id)
+    // console.warn("hhhhhhhhhhhhhh", id)
     setId(id)
     // setCommentsec(true)
   }
@@ -333,7 +333,7 @@ function Postdetail({ value }) {
                     onSubmitAction={(data) => commenthandleapi(data)}
 
                     currentData={(data) => {
-                      console.log('current data', data);
+                      // console.log('current data', data);
                     }}
 
                   />

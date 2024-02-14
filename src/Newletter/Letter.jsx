@@ -24,6 +24,7 @@ const token = localStorage.getItem("authtoken")
     "Authorization" : `Bearer ${token}`,
   }
 
+  
 
   const downloadPdf = async () => {
     try {
@@ -163,12 +164,13 @@ setDisabledSubmit(true)
         draggable
         pauseOnHover
       />
+
       <div className="small-container newss">
         <div className="newsletter-main-parent-grid">
           <div className="newsletter-grid-1">
           </div>
           <div className="newsletter-grid-2">
-            <h3>Subscribe Our Newsletter</h3>
+            <h3>Subscribe to our Newsletter</h3>
             <p>Join us and stay updated</p>
             <form onSubmit={formik.handleSubmit}  className='form-sub'>
             <div className="subs-pos"> 

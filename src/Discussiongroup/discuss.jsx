@@ -60,10 +60,11 @@ function Discuss({ isVisible, onHide, comment }) {
   const [valueid, setvalueid] = useState([])
   const [lineLimit,setLineLimit]= useState({})
   const [lineLimitid,setLineLimitid]= useState()
+  const [secondLike,setSecondLike] =useState(true)
 
+ 
 
-
-  console.log(isprofile, "isprofileee")
+  // console.log(isprofile, "isprofileee")
 
   const [emails, setEmails] = useState([]);
   const [isActive, setIsActive] = useState(true);
@@ -163,6 +164,7 @@ function Discuss({ isVisible, onHide, comment }) {
       }, 2000);
 
     } else {
+      
 
       try {
         const statuslike = 1
@@ -170,8 +172,24 @@ function Discuss({ isVisible, onHide, comment }) {
         const itemlike = { post_id, status }
         const resp = await axios.post('/like-dislike-post', itemlike, { headers: headers })
         setUpdatepost(2)
-        // setAction(!action)
-        //  console.warn("222222", resp)
+        setAction(!action)
+         console.warn("222222", resp)
+
+        // setSecondLike((prevLiked) => !prevLiked);
+        // if (secondLike) {
+        //   const statuslike = 1;
+        //   const itemlike = { post_id, status: statuslike };
+        //   // const headers = { /* your headers go here */ };
+    
+        //   try {
+        //     const resp = await axios.post('/like-dislike-post', itemlike, { headers:headers });
+        //     console.log('Post liked successfully:', resp.data);
+        //     setUpdatepost(2);
+        //     // If you need to perform additional actions or reset state, do it here
+        //   } catch (error) {
+        //     console.error('Error liking post:', error);
+        //   }
+        // }
       }
       catch (errors) {
         toast(errors.response.data.message, {
@@ -295,7 +313,7 @@ const fun=()=>
 
 
   const commenthandleapi = async (value, values) => {
-    console.log(values, 'comment ubmit')
+    // console.log(values, 'comment ubmit')
     try {
       const temporaryElement = document.createElement('div');
       temporaryElement.innerHTML = value.text;
@@ -316,7 +334,7 @@ const fun=()=>
 
 
       const newCommentText = resp?.data?.data?.comment_text;
-      console.log(newCommentText, "newCommentText")
+      // console.log(newCommentText, "newCommentText")
       if (newCommentText) {
         // Construct a new comment object
         const newComment = {
@@ -329,7 +347,7 @@ const fun=()=>
         setcommentreplyData((prevData) => [newComment, ...prevData]);
         setAction(!action)
         // sethiddendata(false)
-        console.log(replayData, "replayDta after submit")
+        // console.log(replayData, "replayDta after submit")
 
       } else {
         console.error('Invalid response structure or missing comment_text property in the response.');
@@ -341,7 +359,7 @@ const fun=()=>
 
 
   const commentreplyapi = async (value) => {
-    console.log("comment replies ....................", value)
+    // console.log("comment replies ....................", value)
 
     const temporaryElement = document.createElement('div');
     temporaryElement.innerHTML = value.text;
@@ -356,12 +374,12 @@ const fun=()=>
 
 
     const itemcomments = JSON.stringify(itemcomment)
-    console.log("item reply 00000000000", itemcomment)
+    // console.log("item reply 00000000000", itemcomment)
     const resp = await axios.post('/comment-post', itemcomment, { headers: headers })
     setAction(!action)
     // sethiddendata(false)
 
-    console.log("comment api", resp)
+    // console.log("comment api", resp)
 
 
   }
@@ -392,11 +410,11 @@ const fun=()=>
       }
       setIsLoading(true);
       const post_id = id;
-      console.log("comment ---------", post_id)
+      // console.log("comment ---------", post_id)
 
 
       const resp = await axios.get(`/postcomment?post_id=${id}`, { headers: headers })
-      console.log("comment replay", resp)
+      // console.log("comment replay", resp)
 
       setcommentreplyData(resp?.data?.data?.post_coment)
 
@@ -419,7 +437,7 @@ const fun=()=>
   }
 
   const handleEditcomment = async (editdata) => {
-    console.log("comment id", editdata);
+    // console.log("comment id", editdata);
     // console.log("comment id",commentId);
     const editcomment =
     {
@@ -430,12 +448,12 @@ const fun=()=>
 
     }
 
-    console.log('data come from comment', editcomment);
+    // console.log('data come from comment', editcomment);
     // alert("delete",commentId)
     try {
 
       const respo = await axios.post('/comment-post', editcomment, { headers: headers })
-      console.log('rrrrr', respo)
+      // console.log('rrrrr', respo)
       toast('Post Edit', {
         position: "top-right",
         autoClose: 2000,
@@ -465,10 +483,10 @@ const fun=()=>
 
     if (hiddendata && id && token) {
       const resp = await axios.get(`/postcomment?post_id=${editdata.userId}`, { headers: headers })
-      console.log("comment replay", resp)
+      // console.log("comment replay", resp)
 
       setcommentreplyData(resp?.data?.data?.post_coment)
-      console.log("for fetching data", resp?.data?.data?.post_coment)
+      // console.log("for fetching data", resp?.data?.data?.post_coment)
 
       setId(id)
 
@@ -485,7 +503,7 @@ const fun=()=>
 
   const handleDeletecomment = async (commentId, postid) => {
 
-    console.log("comment id", commentId, postid);
+    // console.log("comment id", commentId, postid);
     const deleteid =
     {
       id: commentId
@@ -508,7 +526,7 @@ const fun=()=>
       try {
 
         const respo = await axios.post('comment/delete', deleteid, { headers: headers })
-        console.log('rrrrr', respo)
+        // console.log('rrrrr', respo)
         toast('Post delete', {
           position: "top-right",
           autoClose: 2000,
@@ -538,10 +556,10 @@ const fun=()=>
       // for fetch data
       if (hiddendata && id && token) {
         const resp = await axios.get(`/postcomment?post_id=${postid}`, { headers: headers })
-        console.log("comment replay", resp)
+        // console.log("comment replay", resp)
 
         setcommentreplyData(resp?.data?.data?.post_coment)
-        console.log("for fetching data", resp?.data?.data?.post_coment)
+        // console.log("for fetching data", resp?.data?.data?.post_coment)
 
         setId(id)
 
@@ -562,7 +580,7 @@ const fun=()=>
   const dataprofile = async () => {
     try {
       const resp = await axios.get("/view-profile", { headers: headers })
-      console.log(" nav api profile ", resp.data.data)
+      // console.log(" nav api profile ", resp.data.data)
       setProfileupdate(resp.data.data)
     }
     catch (errors) {
@@ -786,7 +804,7 @@ const fun=()=>
   });
   const submitpost = async (value, { resetForm }) => {
     setDisabledSubmit(true)
-    console.log("value--------------", value)
+    // console.log("value--------------", value)
     try {
       const item = value;
       const items = JSON.stringify(item)
@@ -798,7 +816,7 @@ const fun=()=>
       frm.append('category', value.category)
 
 
-      console.log("fun", frm)
+      // console.log("fun", frm)
       const resp = await axios.post('/create-post', frm, { headers: headerspost })
       // console.log("<<<<<<",resp)
       toast(resp.data.message, {
@@ -857,16 +875,16 @@ const fun=()=>
   const filterpostfun = async (value) => {
     const postcat = value;
     setActiveButton(value);
-    console.log("post value", postcat);
+    // console.log("post value", postcat);
     const postcats = (value === undefined) ? '' : postcat
-    console.log("post value", postcats);
+    // console.log("post value", postcats);
     const resp = await axios.get(`/posts?category=${postcats}`, { headers: headers });
     // console.log("resp filetr event" ,resp.data.data.posts)
     seteventfilterpost(resp.data.data.posts)
 
   }
 
-  console.log(eventfilterpost, "eventFlitered")
+  // console.log(eventfilterpost, "eventFlitered")
 
 
   const setShowshareid = (value) => {
@@ -956,6 +974,282 @@ const fun=()=>
         {/* update code  */}
         <h2 className="thread-main-head">Top Discussion Threads</h2>
         <span className="line-1"></span>
+
+        {!token ? <></> : <>
+            <div className="discuss-grid-2 width-310">
+              <div className="discuss-posti">
+                <div className="right-forms-1f">
+                  <div className="upper-two-btn">
+                    {/* <button type="button" className="unactive" onClick={() => setShowevent(true)}>Add Events</button> */}
+                    <button className="unactive" onClick={() => setShow(true)}><span className="plus-icon"><i class="fa-solid fa-plus"></i> </span>Start a Discussion</button>
+
+
+                  </div>
+
+                  {/* <h4 className="event-list">Events Listing</h4>
+                  {eventDisplay.map((value, index) => (
+                    <div className="cards-1" key={index}>
+                     
+                      {(!value.uploaded_file == "") ?
+                        (
+                          <img src={value.uploaded_file} alt='xyz' />
+                        )
+                        :
+                        (
+                          <Avatar className="avtorsty-nav" name={value.name} />
+                        )
+                      }
+                      <h4 className="dateevent-sty">{value.post_date}</h4>
+                      <h4>{value.title}</h4>
+                      <p>{value.long_description}</p>
+
+                      <div className="two-btn-flex">
+
+                        <Link to='/discuss' className="add-to-cl" onClick={() => calendarLink()}> {isLoading ? 'Loading...' : 'Calendar'}</Link>
+                        <Link to='/discuss' className="joins" onClick={() => handleLinkClick(value.meeting_link)}>
+                          {isLoading ? 'Loading...' : 'Join Now'}
+                        </Link>
+                      </div>
+                    </div>
+                  ))} */}
+
+                </div>
+
+              </div>
+
+
+              {/* model for addPost */}
+              <Modal
+                show={show}
+                onHide={() => { setShow(false); fromikpost.resetForm() }}
+                backdrop="static"
+                keyboard={false}
+                centered
+              >
+                <Modal.Header closeButton>
+                  <div className="pop-up-content-wrap">
+                    <h4 className="head-event">Start a Discussion</h4>
+                  </div>
+                </Modal.Header>
+                <Modal.Body>
+                  <div className="content-post">
+                    <form onSubmit={fromikpost.handleSubmit} className="for">
+                      <label className="pst-lab">Add Title</label>
+                      <input
+                        type="text"
+                        placeholder="Write Title"
+                        name="title"
+                        value={fromikpost.values.title}
+                        onChange={fromikpost.handleChange}
+                        className="post-form"
+                      />
+                      {fromikpost.touched.title && fromikpost.errors.title ? <div className='text-danger testdanger'>{fromikpost.errors.title}</div> : null}
+
+
+                      <label className="pst-lab">Choose Image / Video</label>
+                      <input type="file"
+                        name='image'
+                        onChange={(e) => {
+                          fromikpost.setFieldTouched('image');
+                          fromikpost.setFieldValue('image', e.currentTarget.files[0]);
+                          setFileformdata(e.currentTarget.files[0])
+                        }}
+                        className="post-form"
+                      />
+
+                      {/* {fromikpost.touched.image && fromikpost.errors.image ? <div className='text-danger testdanger' >{fromikpost.errors.image}</div> : null} */}
+
+
+                      <label className="pst-lab">Invite External Stakeholder</label>
+                      <input
+                        type="text"
+                        placeholder="eLorry@gmail.com"
+                        name="vip"
+                        value={fromikpost.values.vip}
+                        //  onChange={fromikpost.handleChange}
+                        onChange={(e) => {
+                          handleInputChange(e);
+                          fromikpost.handleChange(e);
+                        }}
+
+                        className="post-form"
+                      />
+                      {/* {fromikpost.touched.vip && fromikpost.errors.vip ? <div className='text-danger testdanger'>{fromikpost.errors.vip}</div> : null}   */}                 
+                    <div style={{ marginTop: '8px' }}>{emailChips}</div> 
+
+
+
+                      {/* <ReactMultiEmail
+                          placeholder="Input your Email Address"
+                          emails={emails}
+                          onChange={handleEmailChange}
+                          getLabel={(email, index, removeEmail) => (
+                            <div data-tag key={index}>
+                              {email}
+                              <span data-tag-handle onClick={() => removeEmail(index)}>
+                                ×
+                              </span>
+                            </div>
+                          )}
+                     />
+                     <br /> */}
+
+
+                      <label className="pst-lab">Tags</label>
+                      <select name="category" id="" value={fromikpost.values.category} onChange={fromikpost.handleChange} className="post-form" >
+                        <option value="" selected disabled>
+                    
+                        </option> 
+                        <option value="reports">Reports</option>
+                        <option value="vehicle">Vehicles</option>
+                        <option value="policies">Policies</option>
+                        <option value="technologies">Technologies</option>
+
+                      </select>
+                      {formik.touched.category && formik.errors.category ? <div className='text-danger textvalidanger'>{formik.errors.category}</div> : null}
+
+
+
+                      <label className="pst-lab">Description</label>
+                      <textarea
+                        placeholder="Enter Short Description"
+                        className="post-form"
+                        name="description"
+                        value={fromikpost.values.description}
+                        onChange={fromikpost.handleChange}
+
+                      />
+                      {fromikpost.touched.description && fromikpost.errors.description ? <div className='text-danger testdanger'>{fromikpost.errors.description}</div> : null}
+                      {/* <button type='submit' className="postes">Post Now</button> */}
+                      <button type="submit" disabled={disabledSubmit} className="postes btn-subm" onClick={() => setShow(true)} >
+                        {
+                          disabledSubmit ? (
+                            <div>
+                              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                              <span className="sr-only"></span>  Post Now
+                            </div>
+                          ) : 'Post Now'
+                        }
+                      </button>
+                    </form>
+                  </div>
+                </Modal.Body>
+              </Modal>
+
+              {/* model for event data  */}
+              <Modal
+                show={showevent}
+                onHide={() => { setShowevent(false); formik.resetForm() }}
+                backdrop="static"
+                keyboard={false}
+                centered
+              >
+                <Modal.Header closeButton>
+                  <div className="pop-up-content-wrap">
+                    <h4 className="head-event">Add Events</h4>
+                  </div>
+                </Modal.Header>
+                <Modal.Body>
+                  <div className="content-event">
+                    <form className="for" onSubmit={formik.handleSubmit}>
+
+                      <label className="pst-lab">Add Title</label>
+                      <input
+                        type="text"
+                        name='title'
+                        value={formik.values.title}
+                        onChange={formik.handleChange}
+                        placeholder="Write Title"
+                        className="post-form"
+                      />
+                      {formik.touched.title && formik.errors.title ? <div className='text-danger testdanger'>{formik.errors.title}</div> : null}
+
+                      <label className="pst-lab">Event Date</label>
+                      <input
+                        type="date"
+                        name='post_date'
+                        value={formik.values.post_date}
+                        onChange={formik.handleChange}
+                        placeholder="Write Title"
+                        className="post-form"
+                      />
+                      {formik.touched.post_date && formik.errors.post_date ? <div className='text-danger testdanger'>{formik.errors.post_date}</div> : null}
+
+
+                      {/* <label className="pst-lab">Choose File</label>
+                    <input
+                      type="file"
+                      name="uploaded_file"
+                      value={formik.values.uploaded_file}
+                      onChange={(e)=> seteventprofile(e.target.files[0])}
+                      placeholder="upload image"
+                      className="post-form"
+                    />
+                    {formik.touched.uploaded_file && formik.errors.uploaded_file ? <div className='text-danger'>{formik.errors.uploaded_file}</div> : null} */}
+
+                      <label className="pst-lab">Choose File</label>
+                      <input
+                        type="file"
+                        name="uploaded_file"
+                        onChange={(e) => {
+                          formik.setFieldTouched('uploaded_file');
+                          formik.setFieldValue('uploaded_file', e.currentTarget.files[0]);
+                          seteventprofile(e.currentTarget.files[0]);
+                        }}
+                        className="post-form"
+                      />
+                      {/* {formik.touched.uploaded_file && formik.errors.uploaded_file ? (
+                        <div className='text-danger testdanger'>{formik.errors.uploaded_file}</div>
+                      ) : null} */}
+
+
+
+
+                      <label className="pst-lab">Meeting Link</label>
+                      <input
+                        name="meeting_link"
+                        value={formik.values.meeting_link}
+                        onChange={formik.handleChange}
+                        placeholder="Enter meeting Link"
+                        className="post-form"
+                      />
+                      {formik.touched.meeting_link && formik.errors.meeting_link ? <div className='text-danger testdanger'>{formik.errors.meeting_link}</div> : null}
+
+                      <label className="pst-lab">Description</label>
+                      <textarea
+                        name="long_description"
+                        value={formik.values.long_description}
+                        onChange={formik.handleChange}
+                        placeholder="Enter Long Description"
+                        className="post-form"
+                      ></textarea>
+                      {formik.touched.long_description && formik.errors.long_description ? <div className='text-danger testdanger'>{formik.errors.long_description}</div> : null}
+
+                      {/* <button type='submit' className="postes"> Post Now </button> */}
+
+                      <button type="submit" disabled={disabledSubmit} className="postes btn-subm" onClick={() => setShowevent(true)} >
+                        {
+                          disabledSubmit ? (
+                            <div>
+                              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                              <span className="sr-only"></span>  Add Events
+                            </div>
+                          ) : 'Add Events'
+                        }
+                      </button>
+
+                    </form>
+                  </div>
+
+                </Modal.Body>
+              </Modal>
+
+
+            </div>
+          </>
+
+          }
+
         <div className="threads">
           {toppostdiscuss.map((value, index) => (
             <div className="thread-text" key={index} >
@@ -968,7 +1262,7 @@ const fun=()=>
                   )
                   :
                   (
-                    <Avatar className="avtorsty-nav" name={value.name} />
+                    <Avatar className="avtorsty-nav" name={value.name}  />
                   )
                 }
               </div>
@@ -1070,7 +1364,7 @@ const fun=()=>
                             <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             <span className="sr-only"></span>
                           </div>
-                        ) : <i onClick={(e) => handlelike(value.id)} className={token && value.you_like_post == 1 ? "fa-solid fa-thumbs-up thumbcolor  pointmu" : "fa-solid fa-thumbs-up pointmu"}></i>
+                        ) : <i onClick={(e) => handlelike(value.id)} className={token && secondLike && value.you_like_post == 1 ? "fa-solid fa-thumbs-up thumbcolor  pointmu" : "fa-solid fa-thumbs-up pointmu"}></i>
                       }
                       {/* { const MemoizedLikeButton = React.memo(({ id, you_like_post }) => (
                        <i onClick={() => handleLike(id)} className={token && you_like_post === 1 ? "fa-solid fa-thumbs-up thumbcolor  pointmu" : "fa-solid fa-thumbs-up pointmu"}></i>
@@ -1173,12 +1467,12 @@ const fun=()=>
                     onSubmitAction={(data) => commenthandleapi(data, value)}
                     onReplyAction={(data) => {
                       const parentCommentId = data.repliedToCommentId
-                      console.log(typeof (parentCommentId), "parentCommentId")
+                      // console.log(typeof (parentCommentId), "parentCommentId")
                       const parentComment = replayData?.find(comment =>
                         comment?.replies?.some(i => i.comid === Number(parentCommentId))
                       );
 
-                      console.log(parentComment, "parentComment")
+                      // console.log(parentComment, "parentComment")
                       if (parentComment && parentComment.replies && parentComment.replies.length >= 1) {
 
                         setRepliedComments([...repliedComments, parentCommentId]);
@@ -1385,7 +1679,7 @@ const fun=()=>
                       type="text"
                       // placeholder="https://www.google.co.in/" 
                       name="title"
-                      value={`https://dev.webmobrildemo.com/e_lorry/web/${valueid}`}
+                      value={`https://dev.webmobrildemo.com/e_lorry/web/detail/${valueid}`}
                       className="post-form"
                       ref={inputRef}
                       readOnly
@@ -1403,280 +1697,7 @@ const fun=()=>
 
 
 
-          {!token ? <></> : <>
-            <div className="discuss-grid-2">
-              <div className="discuss-posti">
-                <div className="right-forms-1f">
-                  <div className="upper-two-btn">
-                    <button type="button" className="unactive" onClick={() => setShowevent(true)}>Add Events</button>
-                    <button className="unactive" onClick={() => setShow(true)}  >Add Post</button>
-
-
-                  </div>
-
-                  <h4 className="event-list">Events Listing</h4>
-                  {eventDisplay.map((value, index) => (
-                    <div className="cards-1" key={index}>
-                      {/* <img src={value.uploaded_file} alt="zyx"/>  */}
-                      {(!value.uploaded_file == "") ?
-                        (
-                          <img src={value.uploaded_file} alt='xyz' />
-                        )
-                        :
-                        (
-                          <Avatar className="avtorsty-nav" name={value.name} />
-                        )
-                      }
-                      <h4 className="dateevent-sty">{value.post_date}</h4>
-                      <h4>{value.title}</h4>
-                      <p>{value.long_description}</p>
-
-                      <div className="two-btn-flex">
-
-                        <Link to='/discuss' className="add-to-cl" onClick={() => calendarLink()}> {isLoading ? 'Loading...' : 'Calendar'}</Link>
-                        <Link to='/discuss' className="joins" onClick={() => handleLinkClick(value.meeting_link)}>
-                          {isLoading ? 'Loading...' : 'Join Now'}
-                        </Link>
-                      </div>
-                    </div>
-                  ))}
-
-                </div>
-
-              </div>
-
-
-              {/* model for addPost */}
-              <Modal
-                show={show}
-                onHide={() => { setShow(false); fromikpost.resetForm() }}
-                backdrop="static"
-                keyboard={false}
-                centered
-              >
-                <Modal.Header closeButton>
-                  <div className="pop-up-content-wrap">
-                    <h4 className="head-event">Add Post</h4>
-                  </div>
-                </Modal.Header>
-                <Modal.Body>
-                  <div className="content-post">
-                    <form onSubmit={fromikpost.handleSubmit} className="for">
-                      <label className="pst-lab">Add Title</label>
-                      <input
-                        type="text"
-                        placeholder="Write Title"
-                        name="title"
-                        value={fromikpost.values.title}
-                        onChange={fromikpost.handleChange}
-                        className="post-form"
-                      />
-                      {fromikpost.touched.title && fromikpost.errors.title ? <div className='text-danger testdanger'>{fromikpost.errors.title}</div> : null}
-
-
-                      <label className="pst-lab">Choose Image / Video</label>
-                      <input type="file"
-                        name='image'
-                        onChange={(e) => {
-                          fromikpost.setFieldTouched('image');
-                          fromikpost.setFieldValue('image', e.currentTarget.files[0]);
-                          setFileformdata(e.currentTarget.files[0])
-                        }}
-                        className="post-form"
-                      />
-
-                      {/* {fromikpost.touched.image && fromikpost.errors.image ? <div className='text-danger testdanger' >{fromikpost.errors.image}</div> : null} */}
-
-
-                      <label className="pst-lab">Invite VIP Stakeholder</label>
-                      <input
-                        type="text"
-                        placeholder="eLorry@gmail.com"
-                        name="vip"
-                        value={fromikpost.values.vip}
-                        //  onChange={fromikpost.handleChange}
-                        onChange={(e) => {
-                          handleInputChange(e);
-                          fromikpost.handleChange(e);
-                        }}
-
-                        className="post-form"
-                      />
-                      {/* {fromikpost.touched.vip && fromikpost.errors.vip ? <div className='text-danger testdanger'>{fromikpost.errors.vip}</div> : null}   */}                 
-                    <div style={{ marginTop: '8px' }}>{emailChips}</div> 
-
-
-
-                      {/* <ReactMultiEmail
-                          placeholder="Input your Email Address"
-                          emails={emails}
-                          onChange={handleEmailChange}
-                          getLabel={(email, index, removeEmail) => (
-                            <div data-tag key={index}>
-                              {email}
-                              <span data-tag-handle onClick={() => removeEmail(index)}>
-                                ×
-                              </span>
-                            </div>
-                          )}
-                     />
-                     <br /> */}
-
-
-                      <label className="pst-lab">Tags</label>
-                      <select name="category" id="" value={fromikpost.values.category} onChange={fromikpost.handleChange} className="post-form" >
-                        <option value="" selected disabled>
-                    
-                        </option> 
-                        <option value="reports">Reports</option>
-                        <option value="vehicle">Vehicles</option>
-                        <option value="policies">Policies</option>
-                        <option value="technologies">Technologies</option>
-
-                      </select>
-                      {formik.touched.category && formik.errors.category ? <div className='text-danger textvalidanger'>{formik.errors.category}</div> : null}
-
-
-
-                      <label className="pst-lab">Description</label>
-                      <textarea
-                        placeholder="Enter Short Description"
-                        className="post-form"
-                        name="description"
-                        value={fromikpost.values.description}
-                        onChange={fromikpost.handleChange}
-
-                      />
-                      {fromikpost.touched.description && fromikpost.errors.description ? <div className='text-danger testdanger'>{fromikpost.errors.description}</div> : null}
-                      {/* <button type='submit' className="postes">Post Now</button> */}
-                      <button type="submit" disabled={disabledSubmit} className="postes btn-subm" onClick={() => setShow(true)} >
-                        {
-                          disabledSubmit ? (
-                            <div>
-                              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                              <span className="sr-only"></span>  Post Now
-                            </div>
-                          ) : 'Post Now'
-                        }
-                      </button>
-                    </form>
-                  </div>
-                </Modal.Body>
-              </Modal>
-
-              {/* model for event data  */}
-              <Modal
-                show={showevent}
-                onHide={() => { setShowevent(false); formik.resetForm() }}
-                backdrop="static"
-                keyboard={false}
-                centered
-              >
-                <Modal.Header closeButton>
-                  <div className="pop-up-content-wrap">
-                    <h4 className="head-event">Add Events</h4>
-                  </div>
-                </Modal.Header>
-                <Modal.Body>
-                  <div className="content-event">
-                    <form className="for" onSubmit={formik.handleSubmit}>
-
-                      <label className="pst-lab">Add Title</label>
-                      <input
-                        type="text"
-                        name='title'
-                        value={formik.values.title}
-                        onChange={formik.handleChange}
-                        placeholder="Write Title"
-                        className="post-form"
-                      />
-                      {formik.touched.title && formik.errors.title ? <div className='text-danger testdanger'>{formik.errors.title}</div> : null}
-
-                      <label className="pst-lab">Event Date</label>
-                      <input
-                        type="date"
-                        name='post_date'
-                        value={formik.values.post_date}
-                        onChange={formik.handleChange}
-                        placeholder="Write Title"
-                        className="post-form"
-                      />
-                      {formik.touched.post_date && formik.errors.post_date ? <div className='text-danger testdanger'>{formik.errors.post_date}</div> : null}
-
-
-                      {/* <label className="pst-lab">Choose File</label>
-                    <input
-                      type="file"
-                      name="uploaded_file"
-                      value={formik.values.uploaded_file}
-                      onChange={(e)=> seteventprofile(e.target.files[0])}
-                      placeholder="upload image"
-                      className="post-form"
-                    />
-                    {formik.touched.uploaded_file && formik.errors.uploaded_file ? <div className='text-danger'>{formik.errors.uploaded_file}</div> : null} */}
-
-                      <label className="pst-lab">Choose File</label>
-                      <input
-                        type="file"
-                        name="uploaded_file"
-                        onChange={(e) => {
-                          formik.setFieldTouched('uploaded_file');
-                          formik.setFieldValue('uploaded_file', e.currentTarget.files[0]);
-                          seteventprofile(e.currentTarget.files[0]);
-                        }}
-                        className="post-form"
-                      />
-                      {/* {formik.touched.uploaded_file && formik.errors.uploaded_file ? (
-                        <div className='text-danger testdanger'>{formik.errors.uploaded_file}</div>
-                      ) : null} */}
-
-
-
-
-                      <label className="pst-lab">Meeting Link</label>
-                      <input
-                        name="meeting_link"
-                        value={formik.values.meeting_link}
-                        onChange={formik.handleChange}
-                        placeholder="Enter meeting Link"
-                        className="post-form"
-                      />
-                      {formik.touched.meeting_link && formik.errors.meeting_link ? <div className='text-danger testdanger'>{formik.errors.meeting_link}</div> : null}
-
-                      <label className="pst-lab">Description</label>
-                      <textarea
-                        name="long_description"
-                        value={formik.values.long_description}
-                        onChange={formik.handleChange}
-                        placeholder="Enter Long Description"
-                        className="post-form"
-                      ></textarea>
-                      {formik.touched.long_description && formik.errors.long_description ? <div className='text-danger testdanger'>{formik.errors.long_description}</div> : null}
-
-                      {/* <button type='submit' className="postes"> Post Now </button> */}
-
-                      <button type="submit" disabled={disabledSubmit} className="postes btn-subm" onClick={() => setShowevent(true)} >
-                        {
-                          disabledSubmit ? (
-                            <div>
-                              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                              <span className="sr-only"></span>  Add Events
-                            </div>
-                          ) : 'Add Events'
-                        }
-                      </button>
-
-                    </form>
-                  </div>
-
-                </Modal.Body>
-              </Modal>
-
-
-            </div>
-          </>
-
-          }
+        
 
 
         </div>

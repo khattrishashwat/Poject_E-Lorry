@@ -290,8 +290,8 @@ function Sharedetail({ value }) {
                   alt="dicimg5"
                 /> */}
 
-             { (!postdiscuss.post_image == "" ) ?(<img src={postdiscuss.post_image} alt='xyz'  className="tru-img"  />  )  : ( <Avatar className="avtorsty-nav" name={postdiscuss.name}   />  )
-              }
+             {/* { (!postdiscuss.post_image == "" ) ?(<img src={postdiscuss.post_image} alt='xyz'  className="tru-img"  />  )  : ( <Avatar className="avtorsty-nav" name={postdiscuss.name}   />  )
+              } */}
                 <div className="mainsflexings">
                   {/* <div className="like">
                     <i onClick={(e) => handlelike(value.id)} className={value.you_like_post == 1 ? "fa-solid fa-thumbs-up thumbcolor  pointmu" : "fa-solid fa-thumbs-up pointmu"} ></i>

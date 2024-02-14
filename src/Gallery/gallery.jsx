@@ -203,15 +203,21 @@ function Gallery() {
 
                               : null
                             }
+                           
+
 
                           </div>
+                          
 
                           // </div>
                         ))}
                       </div>
-
+                            
+                             
+                            
                     </div>
-
+                      
+                      
 
 
                   ) :
@@ -311,9 +317,15 @@ function Gallery() {
               </div>
             </div>
           </div>
+
+          <div className="mt-5">
+<p> To add any content, please contact us <Link to='/contact'>here</Link></p>
+
+</div>
+
         </div>
       </div>
-
+     
       <Footer />
     </>
   );

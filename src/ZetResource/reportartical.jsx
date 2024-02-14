@@ -6,6 +6,7 @@ import axios from "axios";
 import moment from 'moment';
 // import { saveAs } from 'file-saver';
 import * as FileSaver from 'file-saver';
+import { Link } from "react-router-dom";
 
 function Reportartical() {
 
@@ -103,7 +104,18 @@ const downloadfile=(filename, url,event) =>
               </div>
             </div>
           </div>
+
+
+          <div className="mt-5"> 
+                   <p> To add any content, please contact us <Link to='/contact'>here</Link></p>
+                    
+                   </div>
+
+
         </div>
+
+       
+                 
       </section>
       <Footer />
     </>

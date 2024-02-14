@@ -25,7 +25,7 @@ function Term()
   {
     // console.warn("technology api")
     const resp= await axios.get("/terms-condition",{headers:headers})
-    console.log("33333",resp.data.data[0])
+    // console.log("33333",resp.data.data[0])
     setTechnologydata(resp.data.data[0])
   }
   

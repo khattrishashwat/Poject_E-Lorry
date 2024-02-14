@@ -82,7 +82,7 @@ function Password() {
       validationSchema: validation,
 
     })
-    console.log(" !!!!!!!",location.state)
+    // console.log(" !!!!!!!",location.state)
    
      useEffect(()=>{
        if(!location.state)

@@ -147,7 +147,7 @@ function Subscribsection() {
         <div className="circle-1-3"></div>
         <h2 className="sh-head">Subscribe to our Newsletter</h2>
         <span className="sh-line"></span>
-        <p className="sh-para">Subscribe our Newsletter to stay updated every moment</p>
+        <p className="sh-para">Join us and stay updated</p>
         <form onSubmit={formik.handleSubmit} className='formhome-sub' noValidate >
         <div className="boths-btn">
         

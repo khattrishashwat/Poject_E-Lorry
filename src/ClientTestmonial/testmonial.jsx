@@ -68,7 +68,7 @@ function Testmonial()
   const datatest= async()=>
   {
     const resp= await axios.get('/testimonial',{headers:headers})
-    console.log("user---------------->" , resp.data.data)
+    // console.log("user---------------->" , resp.data.data)
     setDataItem(resp.data.data)
   }
 
@@ -77,7 +77,7 @@ function Testmonial()
     <>
       {/* <div className="big-container bg"> */}
         <div className="small-container">
-          <h2 className="stakes">Why Electric Trucks</h2>
+          <h2 className="stakes">Why Electric Trucks ?</h2>
           <span className="line-1"></span>
           <section id="testim" className="testim">
             <div className="wrap">

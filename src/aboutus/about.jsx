@@ -77,7 +77,7 @@ function About({ showbtn }) {
              </div>
              }
 
-          <button onClick={()=>setHiddenitem(!hiddenitem)} id="myBtn">Read more</button>
+          <button onClick={()=>setHiddenitem(!hiddenitem)} id="myBtn">{hiddenitem ? 'Read more' : 'Read less'}</button>
         </div>
 
 

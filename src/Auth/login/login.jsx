@@ -48,7 +48,7 @@ function Login() {
         );
         
         // localStorage.setItem("authtoken",JSON.stringify(respons.data.token))
-         console.warn('register####',respons)
+        //  console.warn('register####',respons)
         toast(respons.data.message, {
           position: "top-right",
           autoClose: 2000,
@@ -138,11 +138,11 @@ const submitlog = async(values) =>
     const itemslog=JSON.stringify(itemlog)
     const resp= await axios.post("/signin",`${itemslog}`, { headers: headers } )
     const tokenele=resp.data.data.token
-    console.warn("token login ###", tokenele )
+    // console.warn("token login ###", tokenele )
     localStorage.setItem("authtoken", resp.data.data.token)
     
 
-    console.warn("login @#@", resp)
+    // console.warn("login @#@", resp)
     toast(resp.data.message, {
       position: "top-right",
       autoClose: 2000,

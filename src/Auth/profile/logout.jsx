@@ -10,7 +10,7 @@ function Logout() {
     const logouthandel = () => {
         localStorage.removeItem('authtoken')
         navigate('/')
-        console.log('navigating here');
+        // console.log('navigating here');
         window.location.reload();
       } 
       useEffect(()=>{
