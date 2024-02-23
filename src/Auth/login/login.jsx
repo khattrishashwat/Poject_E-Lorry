@@ -220,7 +220,7 @@ const submitlog = async(values) =>
         <div className="small-container">
           <div className="register-fle">
             <div className="register-box">
-              <h3>Login</h3>
+              <h3>Member Login</h3>
               <p className="log-para">Only eLorry Authorised Personnel are allowed to access this section.</p>
               <form className='logs-1' onSubmit={formiklogin.handleSubmit}>
                <div className="logs-1"> 

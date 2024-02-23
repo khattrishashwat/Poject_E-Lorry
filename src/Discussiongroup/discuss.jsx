@@ -150,7 +150,11 @@ function Discuss({ isVisible, onHide, comment }) {
 
 
   const handlelike = async (post_id) => {
-    setDisabledSubmit(true)
+    // setDisabledSubmit(true)
+    setDisabledSubmit((prevMap) => ({
+      ...prevMap,
+      [post_id]: true, // Disable for the clicked post ID
+    }));
     if (token == null) {
       Swal.fire({
         title: 'please login!',
@@ -204,14 +208,22 @@ function Discuss({ isVisible, onHide, comment }) {
         })
       }
     }
-    setDisabledSubmit(false)
+    // setDisabledSubmit(false)
+    setDisabledSubmit((prevMap) => ({
+      ...prevMap,
+      [post_id]: false,
+    }));
 
   }
 
 
 
   const handledislike = async (post_id) => {
-    setdisabledSubmitdislike(true)
+    // setdisabledSubmitdislike(true)
+    setdisabledSubmitdislike((prevMap) => ({
+      ...prevMap,
+      [post_id]: true, // Disable for the clicked post ID
+    }));
     if (token == null) {
       Swal.fire({
         title: 'please login!',
@@ -253,7 +265,11 @@ function Discuss({ isVisible, onHide, comment }) {
         })
       }
     }
-    setdisabledSubmitdislike(false)
+    // setdisabledSubmitdislike(false)
+    setdisabledSubmitdislike((prevMap) => ({
+      ...prevMap,
+      [post_id]: false,
+    }));
   }
   // const intialinput={
   //   post_id: value.id,
@@ -403,7 +419,11 @@ const fun=()=>
 
     // } else {
     // sethiddendata(!hiddendata)
-    setdisabledSubmitcomment(true)
+    // setdisabledSubmitcomment(true)
+    setdisabledSubmitcomment((prevMap) => ({
+      ...prevMap,
+      [id]: true, // Disable for the clicked post ID
+    }));
     try {
       if (loading) {
         return;
@@ -429,7 +449,11 @@ const fun=()=>
       setIsLoading(false)
 
     }
-    setdisabledSubmitcomment(false)
+    // setdisabledSubmitcomment(false)
+    setdisabledSubmitcomment((prevMap) => ({
+      ...prevMap,
+      [id]: false,
+    }));
     // }
 
 
@@ -983,8 +1007,10 @@ const fun=()=>
                     {/* <button type="button" className="unactive" onClick={() => setShowevent(true)}>Add Events</button> */}
                     <button className="unactive" onClick={() => setShow(true)}><span className="plus-icon"><i class="fa-solid fa-plus"></i> </span>Start a Discussion</button>
 
+                    <button className="unactive" onClick={() => setShowevent(true)}><span className="plus-icon"><i class="fa-solid fa-plus"></i> </span>Add an event</button>
 
                   </div>
+                  
 
                   {/* <h4 className="event-list">Events Listing</h4>
                   {eventDisplay.map((value, index) => (
@@ -1011,7 +1037,7 @@ const fun=()=>
                         </Link>
                       </div>
                     </div>
-                  ))} */}
+                  ))}  */}
 
                 </div>
 
@@ -1024,7 +1050,7 @@ const fun=()=>
                 onHide={() => { setShow(false); fromikpost.resetForm() }}
                 backdrop="static"
                 keyboard={false}
-                centered
+                centered 
               >
                 <Modal.Header closeButton>
                   <div className="pop-up-content-wrap">
@@ -1359,7 +1385,7 @@ const fun=()=>
                    {disabledSubmit && <span className="fa-solid fa-thumbs-up"></span>} */}
                     <i>
                       {
-                        disabledSubmit ? (
+                        disabledSubmit[value.id] ? (
                           <div>
                             <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             <span className="sr-only"></span>
@@ -1378,7 +1404,7 @@ const fun=()=>
                     <i>
 
                       {
-                        disabledSubmitdislike ? (
+                        disabledSubmitdislike[value.id] ? (
                           <div>
                             <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             <span className="sr-only"></span>
@@ -1405,7 +1431,7 @@ const fun=()=>
 
                     <i>
                       {
-                        token  && disabledSubmitcomment ? (
+                        token  && disabledSubmitcomment[value.id] ? (
                           <div>
                             <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             <span className="sr-only"></span>
@@ -1694,8 +1720,42 @@ const fun=()=>
           }
 
 
+                 {!token ? <></> : <>
+                 <div className="discuss-grid-2 width-310">
+              <div className="discuss-posti">
+                <div className="right-forms-1f">
+                  <div className="text-centAlieng">
+                 <h4 className="event-list  underline-style">Events Listing</h4>
+                 </div>
+                  {eventDisplay.map((value, index) => (
+                    <div className="cards-1" key={index}>
+                     
+                      {(!value.uploaded_file == "") ?
+                        (
+                          <img src={value.uploaded_file} alt='xyz' />
+                        )
+                        :
+                        (
+                          <Avatar className="avtorsty-nav" name={value.name} />
+                        )
+                      }
+                      <h4 className="dateevent-sty">{value.post_date}</h4>
+                      <h4>{value.title}</h4>
+                      <p>{value.long_description}</p>
 
+                      <div className="two-btn-flex">
 
+                        <Link to='/discuss' className="add-to-cl" onClick={() => calendarLink()}> {isLoading ? 'Loading...' : 'Calendar'}</Link>
+                        <Link to='/discuss' className="joins" onClick={() => handleLinkClick(value.meeting_link)}>
+                          {isLoading ? 'Loading...' : 'Join Now'}
+                        </Link>
+                      </div>
+                    </div>
+                  ))} 
+                  </div>
+                  </div>
+                  </div>
+                  </>}
 
         
 
