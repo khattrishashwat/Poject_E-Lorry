@@ -251,6 +251,7 @@ function Discuss({ isVisible, onHide, comment }) {
         //  console.warn("111111", itemlike)   
         //  console.warn("222222", resp)
         setUpdatepost(1)
+        setAction(!action)
       }
       catch (error) {
         toast(error.response.data.message, {
@@ -1007,7 +1008,7 @@ const fun=()=>
                     {/* <button type="button" className="unactive" onClick={() => setShowevent(true)}>Add Events</button> */}
                     <button className="unactive" onClick={() => setShow(true)}><span className="plus-icon"><i class="fa-solid fa-plus"></i> </span>Start a Discussion</button>
 
-                    <button className="unactive" onClick={() => setShowevent(true)}><span className="plus-icon"><i class="fa-solid fa-plus"></i> </span>Add an event</button>
+                    <button className="unactive" onClick={() => setShowevent(true)}><span className="plus-icon"><i class="fa-solid fa-plus"></i> </span>Add an Event</button>
 
                   </div>
                   
@@ -1172,7 +1173,7 @@ const fun=()=>
               >
                 <Modal.Header closeButton>
                   <div className="pop-up-content-wrap">
-                    <h4 className="head-event">Add Events</h4>
+                    <h4 className="head-event">Add an Event</h4>
                   </div>
                 </Modal.Header>
                 <Modal.Body>
@@ -1720,7 +1721,7 @@ const fun=()=>
           }
 
 
-                 {!token ? <></> : <>
+                 {token ?  <>
                  <div className="discuss-grid-2 width-310">
               <div className="discuss-posti">
                 <div className="right-forms-1f">
@@ -1755,7 +1756,10 @@ const fun=()=>
                   </div>
                   </div>
                   </div>
-                  </>}
+                  </>
+                  :
+                  null
+                }
 
         
 
